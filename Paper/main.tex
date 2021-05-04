@@ -1,0 +1,156 @@
+\documentclass[12pt]{article}
+
+\input{preamble}
+
+\title{\textbf{Political Rents Under A Changing Electoral System}}
+\author{Bas Machielsen}
+\date{July 2020}
+
+\begin{document}
+
+\maketitle
+
+\begin{center} \textbf{Abstract:} \end{center}
+%\normal Numerous studies have shown evidence indicating that politicians profit financially from holding office by extracting rents. The mechanisms by which politicians extract these rents, however, remain unclear. In this paper, I focus on one possible determinant of political rents: electoral openness and competition. Exploiting a multitude of district-level elections in the 19th century Netherlands, and using a sample of [number] close elections, I use a regression discontinuity design to investigate the influence of being politically active on personal wealth at the end of politicians' lives relative to runners-up. I relate the results to various electoral reforms that were enacted over the course of the late 19th and early 20th centuries, which culminated in universal suffrage. I find that political rents decrease as the electoral arena opens up. The results are robust to several alternative estimators.
+
+ Several studies have shown evidence indicating that politicians profit financially from holding office by extracting rents. The mechanisms allowing them to do so, however, remain unclear. Based on newly-collected data from probate inventories, we obtain a measure of wealth for a sample of just-elected politicians and their losing contenders in Dutch district-level elections (1860-1917). Using a regression discontinuity design, we estimate the returns from politics, and then relate the estimates to various contending explanations: electoral reforms, career opportunities and party organization. The results show that close election winners, who end up in politics, are significantly wealthier than their contenders, and that this result can be explained by XXX. The results are robust to other analyses and changes in bandwidth and specification. 
+
+\clearpage
+
+\section{Introduction}
+
+In the majority of modern constitutions around the world, it is stipulated that the people have the power to decide what happens to their country. In practice, however, such direct forms of governance are hardly ever implemented, and national rule involves some delegation of power from the people to representatives, politicians, who are in turn expected to act in the interest of those who elected them. In many cases, this turns out to be only partially true. Politicians are often suspected to use and abuse their political position for private gain, or otherwise pursue policies that are counter to the interests of their constituents. Several studies have shown the existence of particular forms of political rents, that is to say, benefits accruing to politicians beyond their formal compensation \citep{fisman2014private}. Although often suspected to be monetary, political rents can take on many forms, including, but not limited to advantaging certain firms and sectors, creating excess employment, ignoring certain preferences of the electorate and prioritizing one's own, engaging in discretionary spending to increase their chances at reelection, and in more extreme cases, sabotage or otherwise tilt the playing field in favor of incumbent politicians over newcomers. 
+
+Throughout modern history, accusations of politicians' abuse of power have not escaped the attention of politicians themselves either. Many attempts have been made by politicians to regulate themselves in order to minimize or altogether root out abuse of power, the most prominent and often-used being of course regular elections. Regular elections are assumed to ensure at least some degree of accountability by providing politicians with an incentive to act in such a way as to increase their chances of being reelected. Elections, however, are not a panacea. Under many circumstances, elections fail to adequately reduce abuse of power by politicians, for example, in the case of failure of relevant information about politicians' performance reaching the general public. Elections are not the only mechanisms that politicians, political theorists and economists have come up with: several other mechanisms aimed at ensuring accountability include term limits, to prevent the same individuals from holding power too long, asset disclosure laws, to force politicians to disclose information about their wealth, its origin and its evolution, the institution of a publicly accessible debate, for example in an assembly or lower house, or a free press to disseminate relevant and trustworthy information. Furthermore, constitutions itself can be thought of as a device to enact constraints on the behavior of politicians as well as the general public. Other institutions that are present in a large number of countries include a senate, or other independent judicial organs that yield various degrees of power to ensure judicial coherence of laws. In many countries, there are also various restrictions on eligibility: it is often the case that a member of parliament cannot simultaneously serve as an executive. Finally, supranational institutions can also be thought of attempts at constraining national politicians' behavior and at ensuring that the rights of certain constituencies are respected. 
+
+All of the aforementioned instruments are often thought to play an important role in reducing corruption and improving democratic accountability, but politicians have also used the very same instruments at their disposal to entrench themselves or have otherwise distorted those institutions. Some examples involve delaying, annulling or falsifying elections, or constraining the elections so as to place certain restrictions on candidates belonging to a certain gender or religion, or on a minimum amount of wealth. Propaganda can also be thought of as interference with the purpose of the press, that is, disseminating relevant and trustworthy information. 
+
+The effect of yet other mechanisms can be thought of as ambiguous: one case in point is the institution of a salary or other compensation for politicians: one the one hand, salaries are expected to increase the independence of politicians in face of attempts at bribery or other attempts at pressuring a politician. On the other hand, remuneration might attract less trustworthy or lower-ability individuals to politics that might not have the best interests of the constituents at heart, or otherwise induces shirking on the part of politicians. Another example of an institution of which the mechanisms at work are not clear are political parties: political parties and associated party discipline serve as an additional constraint on elected politicians: political party membership can be thought of as a bargain between the party and an individual politician: a party might help an individual with political aspirations get elected by providing a platform to disseminate information about the individual's ideologies, policies and ideas. In return, the politician offers the party their popularity and the promise of broadly supporting the party's entire program (regardless of their views on any specific policy). Should the politician renege on this bargain, the party can decide to oust the politician. A competing perspective on the function of political parties argues that political parties can restrict the set of available policies, or force politicians to act in the party's interest, rather than in the interest of their constituents. 
+
+In this paper, I investigate a subset of the aforementioned mechanisms: I attempt to find what the influence is of eligibility and suffrage regimes and political parties on the ability of politicians to extract rents using a specific case in history: the road towards universal suffrage in the Netherlands in the late 19th and early 20th centuries. The Netherlands started out as a country under absolute monarchy in the early 19th century, but switched to constitutional monarchy and parliamentary control following liberal reforms in 1848. This meant by no means that the country met present-day standards in terms of democratic accountability: there were severe restrictions to suffrage in the most important governmental bodies: one had to be male, and pay a minimum amount of taxes to be accorded the right to vote, although eligibility was (theoretically) completely unconstrained. In the other governmental body, however, eligibility restrictions also applied: contrary to the lower house, there were restrictions on eligibility, again related to the amount of taxes paid. Throughout the late 19th and early 20th centuries, politicians have campaigned for, and ultimately achieved, universal suffrage. This happened in several stages: electoral reforms were enacted in 1887 and 1896 before universal male suffrage was introduced in 1917 and universal suffrage in 1918. I relate these different electoral regimes to regression discontinuity estimates of political rents [explain before what this is] to find out whether average political rents decreases after opening up the political arena to more and more stringent competition. 
+
+This same period also saw the development and rise in popularity of political parties. As the differences between liberal and confessional (Christian) factions of parliament mounted, politicians and politically conscious citizens began to organize themselves into election associations (\textit{Kiesvereenigingen}), the existence of which was quickly superseded by political parties as we know them today: the first political party, the Anti-Revolutionary Party (ARP) was founded in 1879. The existence of political parties can have important consequences for political behavior, and by relating the RDD estimates to variation in party allegiance, I investigate what the influence of political parties are on the ability of politicians to extract rents. 
+
+% Why not just a simple regression of Being politically active on wealth augmented w/ controls
+The principal methodological problem is to identify the causal effect of being politically active on personal end-of-life wealth. A more naive analysis would encompass regressing personal wealth on being politically active, but there might be many (observable and unobservable) differences that are potentially correlated with personal wealth. As an example of observables, politicians might be older than their contestant counterparts, leaving them with less time to accumulate wealth, which would confound the \textit{ceteris paribus} effect of politically active on personal wealth. As an example of an unobservable difference, politicians might be In this paper, we use a regression discontinuity approach to identify the causal effect of being politically active on personal end-of-life wealth. 
+More generally, politicians are usually selected on observables and also likely on observables rather than being randomly allocated to a political position irrespective of any confounding covariates \citep{besley2005political}. 
+
+
+The results show firstly that politicians who marginally won elections are significantly wealthier at the end of their life than politicians who marginally lost. 
+
+\begin{center}
+    [Results]
+\end{center}
+
+The remainder of this study is structured as follows. First, in section 2, we discuss the historical background by focusing on (i) the details of eligibility and suffrage restrictions and their evolution over time, (ii) electoral associations and the origins political parties, and (iii) the logic and system of elections in the district system, which was active until 1917. In section 3, we introduce the methodology. In section 4, we show the results and investigate various alternative explanations. In section 5, we conclude.  
+
+\section{Institutional Background}
+
+\subsection{Elections in the Netherlands, 1848-1917}
+
+    In the period 1848-1917, all elections to the lower house were organized in the framework of a district system. Before 1848, the year in which constitutional reforms liberalized the electoral system and political institutions of the country, delegates to the Lower house were elected indirectly: the enfranchised electorate elected delegates to an intermediary assembly called the Provincial Estates, which then elected delegates to the lower house. Delegates to the upper house were elected in a similar way, and in contrast to the lower house elections, the 1848 constitution left this system intact for the elections to the upper house, whereas the elections to the lower house were subject to reform, effectively rendering them direct, and more democratic \citep{blok1987stemmen}. From 1849 onward, lower house elections took place biannually, in which every two years, half of the seats were up for contest. In almost all cases, districts features two seats, and hence, in each election, one seat was up for election. This also meant that a lower house member was elected for four years. 
+    
+    The precise mapping from municipality (the lowest-level administrative unit of the Netherlands) to district was stipulated in the electoral law (\textit{Kieswet}), in which the stated objective was that each district, and consequently each representative, represent about 45,000 inhabitants \citep{de1999van}. Accordingly, after the constitutional revision in 1848, the lower house had 68 seats, corresponding roughly to the representation of 45,000 inhabitants by each of those seats. In the meantime, however, population growth had taken off, meaning that it was more and more difficult to apply this rule. The lawmakers responded to this issue by increasing the number of seats, creating and changing the composition of districts: the number of lower house seats raised from 68 to 86 in about 10 years. However, because of the stakes involved (issues related to gerrymandering), it became more and more difficult to agree upon a given composition, effectively delaying any reform from 1878 to a constitutional revision in 1887, after it was capped at 100. At the same time, with population growth not stalling, and compromise aimed at the reallocation of districts being difficult, the district system saw imbalances between districts become more and more salient. This particularly favored sparsely over densely populated districts. Even the electoral law reforms of 1896, which encompassed, among other reforms, a partition of the largest cities into various districts, effectively increasing their representation, could not change the imbalance that disfavored them. 
+
+    Issues like these also caused the district system to come under fire from various sides of the political spectrum. One frequently expressed criticism focused on the strong deviation from proportional representation caused by the district system: in the population, it was argued, confessional (Protestant and Catholic) parties could count on a majority, of which they were deprived during the district system. In the first election under proportional representation (1918), this was indeed the case. Another issue was related to the set of rules that stipulated under which circumstances an election was won. Significantly, throughout the entire period, elections required that an absolute majority of votes be obtained. This also applied to elections which were contested by more than two candidates: in case no candidate obtained an absolute majority, a second round was organized in which the two candidates who obtained the highest amount of votes competed against each other. As mentioned, this first-past-the-post-like system particularly favored the liberal party over confessional politicians, because even though confessional politicians were usually the most popular in the first round, a liberal-socialist coalition block could still beat the confessional candidate in the second. 
+
+    [Still add something about the balance between cities and countryside]
+    
+    [Still add something about the formal salary of lower house members, travel times, work load]
+    
+\subsection{Political Party Formation}
+
+[I want to write about the path leading to the existence of political parties from Kiesvereenigingen]
+
+[Here I want to write about campaigning, campaign financing]
+
+[I want to write about the ideological basis underlying various parties]
+
+\subsection{Electoral Reforms}
+
+[I want to talk about reforms of the \textit{Kieswet}, what and why - and how eventually universal suffrage came to existence]
+
+[Talk about active and passive suffrage and the changing requirements over time]
+
+
+\section{Data}
+\subsection{Close Elections}
+
+The \textit{Repositorium Tweede Kamerverkiezingen 1848-1917} (Repository Lower House Elections) is a repository containing information about all elections to the Dutch lower house over the period 1848-1917, in which elections were organized at the district-level. As mentioned, any candidate who met the requirements of passive suffrage could be voted for - there was no predetermined list of candidates. Theoretically, therefore, there was no cap on the number of contestants in a given elections. Practically, however, local newspapers diffused who would be the contestants in upcoming elections, which frequently went hand in hand with an endorsement by the editorial board of a particular candidate. In practice, elections were almost always contested by two candidates, whereas there is also a minority of elections in which one candidate ran uncontested. Other exceptions include the more densely populated cities, such as Amsterdam and Rotterdam, in which a relatively large number of candidates, sometimes up to 10, would contest for several (up to three) seats. 
+
+The \textit{Repositorium} contains data on virtually all these elections, including the names of the candidates who contested in a given election, the amount of votes they obtained, the number of enfranchised individuals in this district, voter turnout, and also some metadata, including the amount of seats that are contested in the particular election, the type of election, and the election date. Based on this data, we also define the set of winners in each election $e$, $\{ Winners \}_e$, which consists of candidates whose rank in terms of the amount of votes $\leq$ the amount of seats that were contested. 
+
+In total, there are about 2400 unique elections in the district system over the period 1860-1917. In line with other studies using close elections \citep[e.g.][]{lee2008randomized}, we use a vote margin-based approach to identify which elections are close: in particular, we first find the \textit{marginal winner (MW)} in the election, which is defined as a winning candidate with the lowest number of votes from all winning candidates. In the vast majority of cases, this amounts to the only winner, because the election had only one seat up for election, but in a significant minority of the cases, this yields a different candidate. Then, at the district-candidate level, we define and compute vote margins as follows:
+
+    \begin{equation}
+        \text{Margin}_i = \begin{cases}
+            \text{Amount of Votes}_i - \text{Amount of Votes}_{MW} &\mbox{ if } i \in \{ \text{Winners} \} \\
+            \text{Amount of Votes}_{MW} - \text{Amount of Votes}_i &\mbox{ if } i \notin \{ \text{Winners} \} 
+            \end{cases}
+    \end{equation}
+
+This way of defining the margin ensure that winners end up with a margin $\geq 0$, whereas losers have a negative margin. Then, a close election is an election in which there is at least a candidate with a margin $\in [-x, 0)$, where $x$ is an arbitrary bandwidth. After data collection, elaborated on in the next section, we chose bandwidth $x=20\%$, meaning that we identify elections as close if there is at least one candidate who obtained at most 20 percentage points fewer votes than the marginal winner. This yields about 500 close elections, in which there are at least 500 candidates that lost the election with a margin that is less in absolute value than $x\%$. There are a significant amount of elections in which some of the close candidates are candidates who either already were active in politics, or were elected in the lower house at a later moment. We then proceed to identify close losers who did not end up in politics later by requiring that the close candidates not be in the union of all Winners-sets, and we end up with candidates that (i) marginally lost an election and (ii) did not end up in the lower house later, or were not active in the lower house already. 
+
+\subsection{Matched and Nonmatched Samples}
+
+After having identified the nonpoliticians eligible to serve as counterfactual observations for just-elected politicians, we construct two datasets: one with the purpose of finding an election-fixed effects estimator, calculating the difference in wealth between just-winners and just-losers in the same election, and secondly, an unmatched dataset in which each observation, be it a closely-elected politician or a close runner-up nonpolitician, is an independent entry. The matched dataset set consists therefore of nonpolitician runners-up, who are matched to any politician who just beat them. In this dataset, there is some dependency of various observations. For example, if an election featured three candidates, one of which obtained 35\% of the vote count, the runner-up 33\%, and the last candidate 32\%, and there was one contested seat, both the runner-up and the last candidate qualify to be matched with the winner and feature in the matched dataset. If, by contrast, there were two contested seats, the third candidate closely lost to \textit{both} the first and the second candidate, warranting the inclusion of two separate observations: one match of the just-losing runner-up with the second candidate, and one with the first. In the analysis, we elaborate on the sensitivity of our results to the exclusion of these observations. In general, however, there is no reason to think that a sample of matched candidates would give an unbiased estimate of the average treatment effect. Anecdotal evidence suggests that close candidates in such second-round elections differ in at least one very important aspect: winners are usually liberal or socialist politicians, whereas losers tend to be confessional politicians \citep{huizinga1979een}. Only if within elections, candidates are very similar can such a matched estimator give a good estimate of the ATE. In other words, we want the treatment (being elected into lower house) to be uncorrelated to observable and non-observable covariates. With that purpose, we construct the second dataset. 
+
+The second dataset is constructed by going combining (i) all candidates that marginally lost an election and did not end up in the lower house later, and were not active in the lower house before, and (ii) all candidates that marginally won an election, i.e., with a margin $\in [0, x]$. In this dataset, there are also a number of dependencies: both runners-up and politicians can figure in the dataset more than once, implying that they have been exposed to the treatment (or the control group) more than once. To the extent that this can generate a bias, a systematic deviation between treated and controlled observations should become visible in the comparison of the distribution of covariates between the two groups. In the analysis, we also filter this dataset, so that each individual, be it a politician or a nonpolitician, only figures in the dataset the \textit{first time} they are exposed to the treatment. 
+
+\subsection{Personal Wealth}
+
+[Talk about the Memories van Successie, problem of time-comparability (time to death as a covariate), evasion and limited availability of data]
+
+
+\section{Methodology}
+
+\subsection{Natural Matching}
+
+We employ three different procedures to estimate the average treatment effect of being elected into national politics on personal wealth: first, we employ a natural matching procedure and traditional regression analysis: this entails that for every close election, we find the candidate $i$, who (i) marginally won, and the candidate $j$, who was the runner-up, and estimate the treatment effect as:
+
+\begin{equation}
+    W_{iet} - W_{jet} = \alpha + \text{Controls}_{et} \cdot \beta + \epsilon_{et}
+\end{equation}
+
+Where $\alpha$ is the average difference in wealth between the winner and the runner-up in election $e$ after accounting for all other factors, e.g. winners' margin, the winner's and loser's party allegiance, etc.  
+
+\subsection{Synthetic Matching}
+Secondly, we employ several synthetic matching procedures, which involves matching all winners to similar losers on the basis of district, demographic and other control variables. For a large subsection of runners-up, we were able to find their profession, using various sources, their date of birth, and their date of decease. The first procedure we employ is $k$-nearest neighbor matching. 
+
+\subsection{Regression Discontinuity}
+
+Thirdly, we employ a regression discontinuity design (RDD): 
+
+\begin{equation}
+    W_{i} = \alpha + \delta \cdot f(\text{Margin}_i) + X_i \beta + \epsilon_i
+\end{equation}
+
+In this specification, individual $i$ is either treated (Margin $> 0$), or untreated (Margin $< 0$). 
+
+\section{Analysis}
+
+[Plot of P(T|X) to see the discontinuity]
+
+[Plot of E[Y|X] to also see the discontinuity in outcomes]
+
+[Plot of E[W|X] to not see a discontinuity in covariates]
+
+[Density of X (check for manipulation, McGreary test]
+
+[Main reuslts]
+
+\section{Robustness Checks}
+[Placebo Checks]
+
+[Show robustness to different estimation windows]
+Here: use local linear regression, not global polynomials (Gelman and Imbens).
+[OLS, Local linear, and polynomial estimates]
+
+[binscatter plots of Y|X (discontinuity) and also covariates|X]
+
+\section{Conclusion}
+
+
+\bibliography{references}
+
+\end{document}
