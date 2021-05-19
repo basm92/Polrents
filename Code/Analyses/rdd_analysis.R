@@ -1,7 +1,7 @@
 library(readxl); library(tidyverse); library(rddtools); library(hrbrthemes)
 
 dataset <- read_csv("./Data/analysis/unmatched_sample_analysis.csv") %>%
-  select(-1) #%>%
+  select(-1) %>%
   mutate(defw = log(1+Vermogen_deflated)) %>%
   filter(!is.na(defw))
 
@@ -37,5 +37,6 @@ plot(dataset, h = c(0.01, 0.05, 0.1), nplot = 3)
 hoi <- rdd_reg_np(dataset, bw = bw_ik)
 
 plot(hoi, binwidth = 0.01)
+summary(hoi)
 
 dens_test(hoi)

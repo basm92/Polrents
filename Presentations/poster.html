@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="author" content="Bas Machielsen" />
+    <meta name="date" content="2018-11-30" />
+    <title>Political Rents in a Changing Electoral System</title>
+
+        <script src="poster_files/header-attrs-2.8/header-attrs.js"></script>
+    
+    
+    
+
+        <link rel="stylesheet" href="custom_css.css" type="text/css" />
+    
+  </head>
+  <body>
+
+
+<div class="poster-title">
+  <h1 class="title">Political Rents in a Changing Electoral System</h1>
+  <h2 class="author">Bas Machielsen</h2>
+  <h2 class="institute">Utrecht University</h2>
+</div>
+
+<!-- Section 2-->
+<div id="abstract" class="section level1 block">
+<h1>Abstract</h1>
+<p>Several studies have shown evidence indicating that politicians profit financially from holding office by extracting rents. The mechanisms allowing them to do so, however, remain unclear. Based on newly-collected data from probate inventories, we obtain a measure of wealth for a sample of just-elected politicians and their losing contenders in Dutch district-level elections (1860-1917). Using a regression discontinuity design, we estimate the returns from politics, and then relate the estimates to various contending explanations: electoral reforms, career opportunities and party organization. The results show that close election winners, who end up in politics, are significantly wealthier than their contenders, and that this result can be explained by the changing electoral system. The results are robust to other estimators, and changes in bandwidth and specification.</p>
+<!-- Section 3-->
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Lorem ipsum dolor <strong>sit amet</strong>, consectetur adipiscing elit. Donec ut volutpat elit. Sed laoreet accumsan mattis. Integer sapien tellus, auctor ac blandit eget, sollicitudin vitae lorem. Praesent dictum tempor pulvinar. Suspendisse potenti. Sed tincidunt varius ipsum, et porta nulla suscipit et. Etiam congue bibendum felis, ac dictum augue cursus a. <strong>Donec</strong> magna eros, iaculis sit amet placerat quis, laoreet id est.</p>
+<div class="figure"><span id="fig:cars-plot"></span>
+<img src="poster_files/figure-html/cars-plot-1.svg" alt="Figure Caption." width="100%" />
+<p class="caption">
+Figure 1: Figure Caption.
+</p>
+</div>
+<p>Test citations <span class="citation">R Core Team (2018)</span> <span class="citation">Xie and Lesur (2018)</span>. See Figure <a href="#fig:cars-plot">1</a>.</p>
+<!-- Section 4-->
+</div>
+<div id="close-elections" class="section level1">
+<h1>Close Elections</h1>
+<p>The  (Repository Lower House Elections) is a repository containing information about all elections to the Dutch lower house over the period 1848-1917, in which elections were organized at the district-level.</p>
+<p>In total, there are about 2400 unique elections in the district system over the period 1860-1917. In line with other studies using close elections (e.g. Lee, 2008), we use a vote margin-based approach to identify which elections are close: in particular, we first find the <em>Marginal Winner (MW)</em> in the election, which is defined as a winning candidate with the lowest number of votes from all winning candidates. In the vast majority of cases, this amounts to the only winner, because the election had only one seat up for election, but in a significant minority of the cases, this yields a different candidate.</p>
+<p>Then, at the district-candidate level, we define and compute vote margins as follows:</p>
+<p><span class="math display">\[\begin{equation}
+        \text{Margin}_i = \begin{cases}
+            \text{Amount of Votes}_i - \text{Amount of Votes}_{MW} &amp;\mbox{ if } i \in \{ \text{Winners} \} \\
+            \text{Amount of Votes}_{MW} - \text{Amount of Votes}_i &amp;\mbox{ if } i \notin \{ \text{Winners} \} 
+            \end{cases}
+  \end{equation}\]</span></p>
+<!-- Section 5-->
+</div>
+<div id="probate-inventories" class="section level1">
+<h1>Probate Inventories</h1>
+<p>The <em>Memories van Successie</em> are archives primarily containing documents specifying the appraisal of a deceased individual’s assets and liabilities with the purpose of levying inheritance taxes. The first inheritance tax that targeted lineal descendants was instated in 1877, and from that year onward, every individual whose estimated wealth was higher than some minimum threshold (in practice, almost everyone) was subjected to an appraisal of their assets and liabilities, and depending on the particular composition of the inheritance, a specific inheritance tax (Bos, 1990). Citizens were initially expected to voluntarily declare their assets and liabilities within a year after the decease, but the authorities were by no means depending on voluntary action: civil servants provided the tax authorities with lists of deceased individuals, after which descendants could be summoned to declare. In all cases, descendants had to declare under oath that the list of assets and liabilities they submitted was truthful in a court (Moes, 2012). Several miscellaneous documents containing internal correspondence within the tax agency also indicate that taxation was approached with care and legal requirements were paid attention to.</p>
+<!-- Section 6-->
+</div>
+<div id="mathematical-section" class="section level1">
+<h1>Mathematical Section</h1>
+<p>Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin. Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin.</p>
+<p><span class="math display" id="eq:Einstein">\[\begin{equation}
+E = mc^{2}
+\tag{1}
+\end{equation}\]</span></p>
+<p>Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin. Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin.</p>
+<p><span class="math display" id="eq:refname">\[\begin{equation}
+\cos^3 \theta =\frac{1}{4}\cos\theta+\frac{3}{4}\cos 3\theta
+\tag{2}
+\end{equation}\]</span></p>
+<p>Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin. Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin.</p>
+<p><span class="math display">\[\begin{equation}
+\kappa =\frac{\xi}{E_{\mathrm{max}}}
+\end{equation}\]</span></p>
+<p>Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin. Nam quis odio enim, in molestie libero. Vivamus cursus mi at nulla elementum sollicitudin.</p>
+<!-- Section 7-->
+</div>
+<div id="results" class="section level1">
+<h1>Results</h1>
+<div class="figure-example">
+<p>Placeholder<br />
+~~~~~~~<br />
+Image</p>
+<p>Figure 2: Figure caption.</p>
+</div>
+<p>Nunc tempus venenatis facilisis. Curabitur suscipit consequat eros non porttitor. Sed a massa dolor, id ornare enim:</p>
+<table>
+<caption><span id="tab:unnamed-chunk-1">Table 1: </span>Table caption.</caption>
+<thead>
+<tr class="header">
+<th align="right">Sepal.Length</th>
+<th align="right">Sepal.Width</th>
+<th align="right">Petal.Length</th>
+<th align="right">Petal.Width</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">5.1</td>
+<td align="right">3.5</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">4.9</td>
+<td align="right">3.0</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="odd">
+<td align="right">4.7</td>
+<td align="right">3.2</td>
+<td align="right">1.3</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">4.6</td>
+<td align="right">3.1</td>
+<td align="right">1.5</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="odd">
+<td align="right">5.0</td>
+<td align="right">3.6</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+</tr>
+</tbody>
+</table>
+<!-- Section 8-->
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>Nunc tempus venenatis facilisis. <strong>Curabitur suscipit</strong> consequat eros non porttitor. Sed a massa dolor, id ornare enim. Fusce quis massa dictum tortor <strong>tincidunt mattis</strong>. Donec quam est, lobortis quis pretium at, laoreet scelerisque lacus. Nam quis odio enim, in molestie libero. Vivamus cursus mi at <em>nulla elementum sollicitudin</em>.</p>
+<p>Nunc tempus venenatis facilisis. <strong>Curabitur suscipit</strong> consequat eros non porttitor. Sed a massa dolor, id ornare enim. Fusce quis massa dictum tortor <strong>tincidunt mattis</strong>. Donec quam est, lobortis quis pretium at, laoreet scelerisque lacus. Nam quis odio enim, in molestie libero. Vivamus cursus mi at <em>nulla elementum sollicitudin</em>.</p>
+<!-- Section 9-->
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-R-base" class="csl-entry">
+R Core Team. 2018. <span>“R: A Language and Environment for Statistical Computing.”</span> <a href="https://www.r-project.org">https://www.r-project.org</a>.
+</div>
+<div id="ref-R-pagedown" class="csl-entry">
+Xie, Yihui, and Romain Lesur. 2018. <span>“Paginate the HTML Output of R Markdown with CSS for Print.”</span> <a href="https://github.com/rstudio/pagedown">https://github.com/rstudio/pagedown</a>.
+</div>
+</div>
+<!-- Section 10-->
+</div>
+<div id="acknowledgements" class="section level1" data-color="red">
+<h1>Acknowledgements</h1>
+<p>Nam mollis tristique neque eu luctus. Suspendisse rutrum congue nisi sed convallis. Aenean id neque dolor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+<div class="logo-example">
+<p>Placeholder Logo</p>
+<p>Placeholder Logo</p>
+<p>Placeholder Logo</p>
+</div>
+<p>Nam mollis tristique neque eu luctus. Suspendisse rutrum congue nisi sed convallis. Aenean id neque dolor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+<!-- Section 11-->
+</div>
+<div id="contact-information" class="section level1 block" data-color="black" data-border-color="orange" data-background-color="white">
+<h1>Contact Information</h1>
+<ul>
+<li>Web: <a href="https://bas-m.netlify.app" class="uri">https://bas-m.netlify.app</a></li>
+<li>Email: <a href="mailto:a.h.machielsen@uu.nl" class="email">a.h.machielsen@uu.nl</a></li>
+<li>Github: <a href="http://github.com/basm92" class="uri">http://github.com/basm92</a></li>
+</ul>
+</div>
+
+<script type="text/javascript">
+(function() {
+  // add appropriate classes to h1 and its parent div
+  var i, d, p, s, el, els = document.getElementsByTagName('h1');
+  for (i = 0; i < els.length; i++) {
+    el = els[i]; p = el.parentNode;
+    if (p.className === 'section level1') {
+      el.append(document.createElement('hr'));
+    }
+    p.className += ' section-' + (i + 1);
+    s = p.dataset['color'];
+    if (s) el.style.color = s;
+    s = p.dataset['backgroundColor'];
+    if (s) p.style.backgroundColor = s;
+    s = p.dataset['borderColor'];
+    if (s) {
+      el.style.backgroundColor = s;
+      p.style.borderColor = s;
+    }
+    d = document.createElement('div');
+    d.className = 'content';
+    while (el.nextSibling) {
+      d.append(el.nextSibling);
+    }
+    p.append(d);
+  }
+})();
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = `https://mathjax.rstudio.com/latest/MathJax.js` + "?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+
+  </body>
+</html>
