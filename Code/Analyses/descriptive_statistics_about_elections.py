@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
+import itertools
 
 # Read the data sources
 all_margins = pd.read_csv("./Data/elections/allmargins.csv").iloc[:,2:]
@@ -71,21 +71,46 @@ data = data.rename(columns={'election_year':'Year', 'District_x':'Without Politi
 data['Year'] = data['Year'].apply(lambda x: pd.Timestamp(x))
 data.fillna(method='backfill', inplace=True)
 
+#### Data for second subplot: new candidates per year
+all_margins['election_year'] = all_margins['election_year'].apply(lambda x: pd.to_numeric(x))
+
+newcandidates = pd.DataFrame({'election_year':range(1848, 1918), 'new_candidates':None})
+
+out = []
+old = []
+
+for i in range(1848, 1918):
+  new = []
+  for j in all_margins[all_margins['election_year'] == i].Naam.unique():
+    if j not in old:
+      new.append(j)
+    old.append(j)
+  out.append(len(new))
+newcandidates['new_candidates'] = out
+newcandidates['cumulative_new_candidates'] = newcandidates['new_candidates'].cumsum()
+
+
+
+plt.figure()
+plt.subplot(1,2,1)
 #### First subplot
 plt.plot(data['Year'], data['Without Politicians'], color = 'blue', label = 'Without Future Politicians')
 plt.plot(data['Year'], data['With Politicians'], color = 'orange', label = 'With Future Politicians')
+plt.xlabel("Year")
+plt.ylabel("Politicians Participated in Close Elections")
 plt.legend()
-plt.title("Cumulative Close Elections (20% Margin) With and Without Future Politicians")
+plt.title("Cumulative Close Elections (20% Margin) \n With and Without Future Politicians")
+
+plt.subplot(1,2,2)
+#### Second subplot
+plt.plot(newcandidates['election_year'], newcandidates['cumulative_new_candidates'], color = 'red')
+plt.xlabel("Year")
+plt.ylabel("Cumulative New Candidates")
+plt.title("Cumulative New Candidates over Time")
+
 plt.show()
+plt.clf()
 
-#### Data for second subplot: new candidates per year
-all_margins['election_year'] = all_margins['election_year'].apply(lambda x: pd.to_numeric(x))
-pd.DataFrame({'election_year':range(1848, 1917), 'new_candidates':None})
-
-all_margins[all_margins['election_year'] == '1848']
-
-
-
-## Two district heatmaps in one figure
+## Two district heatmaps in one figure - where are the close elections?
 
 
