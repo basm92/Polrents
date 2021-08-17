@@ -7,7 +7,7 @@ dataset <- read_csv("./Data/analysis/unmatched_sample_with_vars.csv") %>%
          distrverk = str_c(District, "-", Verkiezingdatum),
          politician_dummy = if_else(!is.na(`b1-nummer`), 1, 0)) %>%
   filter(!is.na(defw)) %>%
-  filter(margin > -0.20) %>% 
+  filter(margin > -0.18) %>% 
   filter(lubridate::dmy(Sterfdatum) < lubridate::dmy('01-01-1928'))
   ## Changing the last two lines helps alleviate the density asymmetry
   ## Making the max. margin equal
