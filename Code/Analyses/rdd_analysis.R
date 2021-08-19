@@ -3,9 +3,9 @@ library(rddtools); library(hrbrthemes);
 library(rdrobust); library(modelsummary)
 
 # Parameters
-target_margin_neg <- -Inf
-target_margin_pos <- Inf
-maxdate <- '01-01-1960'
+target_margin_neg <- -Inf #0.18
+target_margin_pos <- Inf #0.20
+maxdate <- '01-01-1928'
 
 ## Few mutations with the data set
 dataset <- read_csv("./Data/analysis/unmatched_sample_with_vars.csv") %>%
@@ -49,13 +49,14 @@ elections_for_ctrl_group <- dataset %>%
 dataset_matched <- dataset %>%
   filter(is.element(distrverk, elections_for_ctrl_group))
 
-elections_for_treat_group <- dataset_matched %>%
-  filter(!is.na(`b1-nummer`)) %>%
-  select(distrverk) %>%
-  pull()
+#elections_for_treat_group <- dataset_matched %>%
+#  filter(!is.na(`b1-nummer`)) %>%
+#  select(distrverk) %>%
+#  pull()
+#
 
-dataset_matched <- dataset_matched %>%
-  filter(is.element(distrverk, elections_for_treat_group))
+#dataset_matched <- dataset_matched %>%
+#  filter(is.element(distrverk, elections_for_treat_group))
 
 ## Create a covariate balance table
 caption <- "Politicians and Non-Politicians According to Various Characteristics"
@@ -109,7 +110,7 @@ p2 <- dataset %>%
 dataset_analysis <- rdd_data(
         y = defw,
          x = margin,
-         data = dataset,
+         data = dataset_matched,
          cutpoint = 0, covar = data.frame(lifespan, before, after))
 
 bw_ik <- rdd_bw_ik(dataset_analysis)
