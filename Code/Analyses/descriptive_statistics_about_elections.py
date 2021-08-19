@@ -111,6 +111,7 @@ plt.ylabel("Cumulative New Candidates")
 plt.title("Cumulative New Candidates over Time")
 
 plt.show()
+plt.savefig("./Data/shapefiles/close_elections_over_time.pdf")
 plt.clf()
 
 ## Two district heatmaps in one figure - where are the close elections?
