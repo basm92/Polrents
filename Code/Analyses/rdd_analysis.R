@@ -1,14 +1,41 @@
-library(readxl); library(tidyverse); library(rddtools); library(hrbrthemes); library(rdrobust)
+library(readxl); library(tidyverse); 
+library(rddtools); library(hrbrthemes); 
+library(rdrobust); library(modelsummary)
+
+# Parameters
+target_margin_neg <- -Inf
+target_margin_pos <- Inf
+maxdate <- '01-01-1960'
 
 ## Few mutations with the data set
 dataset <- read_csv("./Data/analysis/unmatched_sample_with_vars.csv") %>%
   select(-1) %>%
   mutate(defw = log(1+Vermogen_deflated),
          distrverk = str_c(District, "-", Verkiezingdatum),
-         politician_dummy = if_else(!is.na(`b1-nummer`), 1, 0)) %>%
+         lifespan = lifespan/365,
+         tenure = as.numeric(str_extract(tenure, "\\d+"))/365,
+         politician_dummy = if_else(!is.na(`b1-nummer`), 1, 0),
+         politician_indic = if_else(!is.na(`b1-nummer`), "Politician", "Non-Politician"),
+         rec_ar = case_when(stringr::str_detect(party_election, "AR|VA|NC|NH") ~ 1, 
+                            is.na(party_election) ~ 0,
+                                   TRUE~  0),
+         rec_kath = case_when(stringr::str_detect(party_election, "Ka|KD") ~ 1,
+                                     is.na(party_election) ~ 0,
+                                     TRUE~ 0),
+         rec_lib = case_when(stringr::str_detect(party_election, "Lib|VL|AH") ~ 1,
+                                    is.na(party_election) ~ 0,
+                                    TRUE~ 0),
+         rec_soc = case_when(stringr::str_detect(party_election, "Rad|Soc|SDAP|SDP") ~ 1,
+                                    is.na(party_election) ~ 0,
+                                    TRUE~ 0),
+         elec_type_alg = if_else(election_type == "algemeen", 1, 0),
+         elec_type_else = if_else(election_type != "algemeen", 1, 0),
+         yod = as.numeric(stringr::str_extract(Sterfdatum,"\\d{4}$")),
+         yoe = as.numeric(stringr::str_extract(Verkiezingdatum, "\\d{4}$"))
+         ) %>%
   filter(!is.na(defw)) %>%
-  filter(margin > -0.18) %>% 
-  filter(lubridate::dmy(Sterfdatum) < lubridate::dmy('01-01-1928'))
+  filter(margin > target_margin_neg, margin < target_margin_pos) %>% 
+  filter(lubridate::dmy(Sterfdatum) < lubridate::dmy(maxdate))
   ## Changing the last two lines helps alleviate the density asymmetry
   ## Making the max. margin equal
   ## Making the circumstances equal (last line)
@@ -19,27 +46,52 @@ elections_for_ctrl_group <- dataset %>%
   select(distrverk) %>%
   pull()
 
-dataset <- dataset %>%
+dataset_matched <- dataset %>%
   filter(is.element(distrverk, elections_for_ctrl_group))
 
+elections_for_treat_group <- dataset_matched %>%
+  filter(!is.na(`b1-nummer`)) %>%
+  select(distrverk) %>%
+  pull()
 
-test <- rdplot(y=dataset$defw, x=dataset$margin, binselect="espr", ci=95, 
+dataset_matched <- dataset_matched %>%
+  filter(is.element(distrverk, elections_for_treat_group))
+
+## Create a covariate balance table
+caption <- "Politicians and Non-Politicians According to Various Characteristics"
+
+tabledata <- dataset %>%
+  select(margin, turnout, contains("amount"), turnout, kiesdrempel, 
+         contains("rec"), contains("elec_type"),
+         before, after, lifespan, yod, yoe, politician_indic) 
+
+datasummary_balance(~politician_indic,
+                    data = tabledata,
+                    caption = caption,
+                    fmt=2, 
+                    dinm = TRUE,
+                    dinm_statistic = "p.value")
+
+
+rdplot(y=dataset$defw, x=dataset$margin, nbins = 10, ci=95, 
        title="RD Plot: U.S. Senate Election Data", 
        y.label="Vote Share in Election at time t+2",
        x.label="Vote Share in Election at time t") 
 
-summary(rdrobust(y=dataset$defw, x=dataset$margin, covs = cbind(dataset$lifespan,
+model1 <- rdrobust(y=dataset$defw, x=dataset$margin, covs = cbind(dataset$lifespan,
                                                                 dataset$before,
                                                                 dataset$after,
-                                                                dataset$amount_votes),
-        all = TRUE))
-
+                                                                dataset$amount_votes,
+                                                                dataset$rec_lib,
+                                                                dataset$rec_kath,
+                                                                dataset$yod),
+        all = TRUE)
 
 
 # [Plot of E[Y|X] to also see the discontinuity in outcomes]
 p1 <- dataset %>%
   ggplot(aes(x = margin, y = defw)) + 
-  geom_point() +
+  geom_point(alpha=0.5) +
   xlab("Margin") + 
   ylab("Log(Wealth)") +
   theme_minimal()
@@ -72,5 +124,5 @@ dens_test(model2)
 
 plot(dataset_analysis, h = c(0.005, 0.05, 0.1), nplot = 3)
 
-plotSensi(model1, from = 0, to = 0.25, by = 0.02)
+plotSensi(model1, from = 0, to = 0.25, by = 0.002)
 
