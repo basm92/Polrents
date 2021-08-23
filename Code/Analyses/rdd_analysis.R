@@ -3,7 +3,7 @@ library(rddtools); library(hrbrthemes);
 library(rdrobust); library(modelsummary)
 
 # Parameters
-target_margin_neg <- -Inf #0.18
+target_margin_neg <- -0.20 #0.18
 target_margin_pos <- Inf #0.20
 maxdate <- '01-01-1928'
 
@@ -53,25 +53,43 @@ dataset_matched <- dataset %>%
 #  filter(!is.na(`b1-nummer`)) %>%
 #  select(distrverk) %>%
 #  pull()
-#
+
 
 #dataset_matched <- dataset_matched %>%
 #  filter(is.element(distrverk, elections_for_treat_group))
 
 ## Create a covariate balance table
-caption <- "Politicians and Non-Politicians According to Various Characteristics"
+caption <- "Covariate Balance in Politicians and Non-Politicians"
 
 tabledata <- dataset %>%
-  select(margin, turnout, contains("amount"), turnout, kiesdrempel, 
-         contains("rec"), contains("elec_type"),
-         before, after, lifespan, yod, yoe, politician_indic) 
+  select(Margin = margin, Turnout = turnout, 
+         `Amount Votes` = amount_votes,
+         `Amount Seats in District` = amount_seats,
+         `Election: General` = elec_type_alg,
+         `Election: Other` = elec_type_else,
+         Kiesdrempel = kiesdrempel,
+         `Rec: AR` = rec_ar,
+         `Rec: RC` = rec_kath,
+         `Rec: Lib` = rec_lib,
+         `Rec: Soc` = rec_soc,
+         `# Elections Participated Before` = before,
+         `# Elections Participated After` = after,
+         `Yrs Lived After Close Election` = lifespan,
+         `Year of Death` = yod,
+         `Year of Election` = yoe,
+         politician_indic) 
 
+knitr::opts_current$set(label = "covariate_balance_standard")
 datasummary_balance(~politician_indic,
                     data = tabledata,
+                    output = "./Tables/covariate_balance_standard.tex",
+                    out = "kableExtra",
                     caption = caption,
                     fmt=2, 
                     dinm = TRUE,
-                    dinm_statistic = "p.value")
+                    dinm_statistic = "p.value")  %>%
+  kableExtra::kable_styling(latex_options = "hold_position",
+                            font_size = 9)
 
 
 rdplot(y=dataset$defw, x=dataset$margin, nbins = 10, ci=95, 
@@ -88,6 +106,7 @@ model1 <- rdrobust(y=dataset$defw, x=dataset$margin, covs = cbind(dataset$lifesp
                                                                 dataset$yod),
         all = TRUE)
 
+summary(model1)
 
 # [Plot of E[Y|X] to also see the discontinuity in outcomes]
 p1 <- dataset %>%
@@ -120,8 +139,21 @@ model1 <- rdd_reg_np(
 
 model2<- rdd_reg_lm(rdd_object = dataset_analysis)
 
+summary(model1);summary(model2)
 dens_test(model1)
 dens_test(model2)
+
+
+model3 <- rdrobust(y=dataset_matched$defw, x=dataset_matched$margin, covs = cbind(dataset_matched$lifespan,
+                                                                  dataset_matched$before,
+                                                                  dataset_matched$after,
+                                                                  dataset_matched$amount_votes,
+                                                                  dataset_matched$rec_lib,
+                                                                  dataset_matched$rec_kath,
+                                                                  dataset_matched$yod),
+                   all = TRUE)
+
+summary(model3)
 
 plot(dataset_analysis, h = c(0.005, 0.05, 0.1), nplot = 3)
 
