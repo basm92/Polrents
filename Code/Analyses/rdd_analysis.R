@@ -3,8 +3,8 @@ library(rddtools); library(hrbrthemes);
 library(rdrobust); library(modelsummary)
 
 # Parameters
-target_margin_neg <- -0.20 #0.18
-target_margin_pos <- Inf #0.20
+target_margin_neg <- -0.18 #0.18
+target_margin_pos <- 0.20 #0.20
 maxdate <- '01-01-1928'
 
 ## Few mutations with the data set
@@ -92,7 +92,7 @@ datasummary_balance(~politician_indic,
                             font_size = 9)
 
 
-rdplot(y=dataset$defw, x=dataset$margin, nbins = 10, ci=95, 
+rdplot(y=dataset$defw, x=dataset$margin, nbins = 10, ci=90, 
        title="RD Plot: U.S. Senate Election Data", 
        y.label="Vote Share in Election at time t+2",
        x.label="Vote Share in Election at time t") 
@@ -130,7 +130,7 @@ dataset_analysis <- rdd_data(
         y = defw,
          x = margin,
          data = dataset_matched,
-         cutpoint = 0, covar = data.frame(lifespan, before, after))
+         cutpoint = 0, covar = data.frame(lifespan, before, after, amount_votes, rec_lib, rec_kath, yod))
 
 bw_ik <- rdd_bw_ik(dataset_analysis)
 
@@ -154,6 +154,7 @@ model3 <- rdrobust(y=dataset_matched$defw, x=dataset_matched$margin, covs = cbin
                    all = TRUE)
 
 summary(model3)
+
 
 plot(dataset_analysis, h = c(0.005, 0.05, 0.1), nplot = 3)
 
