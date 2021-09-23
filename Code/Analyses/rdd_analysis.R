@@ -11,6 +11,7 @@ maxdate <- '01-01-1928'
 dataset <- read_csv("./Data/analysis/unmatched_sample_with_vars.csv") %>%
   select(-1) %>%
   mutate(defw = log(1+Vermogen_deflated),
+         defw2 = asinh(Vermogen_deflated),
          distrverk = str_c(District, "-", Verkiezingdatum),
          lifespan = lifespan/365,
          tenure = as.numeric(str_extract(tenure, "\\d+"))/365,
@@ -32,7 +33,10 @@ dataset <- read_csv("./Data/analysis/unmatched_sample_with_vars.csv") %>%
          elec_type_else = if_else(election_type != "algemeen", 1, 0),
          yod = as.numeric(stringr::str_extract(Sterfdatum,"\\d{4}$")),
          yoe = as.numeric(stringr::str_extract(Verkiezingdatum, "\\d{4}$"))
-         ) %>%
+         )
+
+## Aply the filter
+dataset <- dataset %>%
   filter(!is.na(defw)) %>%
   filter(margin > target_margin_neg, margin < target_margin_pos) %>% 
   filter(lubridate::dmy(Sterfdatum) < lubridate::dmy(maxdate))
@@ -92,7 +96,7 @@ datasummary_balance(~politician_indic,
                             font_size = 9)
 
 
-rdplot(y=dataset$defw, x=dataset$margin, nbins = 10, ci=90, 
+rdplot(y=dataset$defw, x=dataset$margin, ci=90, 
        title="RD Plot: U.S. Senate Election Data", 
        y.label="Vote Share in Election at time t+2",
        x.label="Vote Share in Election at time t") 
