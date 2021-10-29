@@ -1,5 +1,4 @@
-library(readxl); library(tidyverse); 
-library(rddtools); library(hrbrthemes); 
+library(readxl); library(tidyverse); library(hrbrthemes); 
 library(rdrobust); library(modelsummary)
 
 # Parameters
