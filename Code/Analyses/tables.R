@@ -7,7 +7,7 @@ target_margin_pos <- 0.20 #0.20
 maxdate <- '01-01-1928'
 ihs <- function(x) {log(x + sqrt(x^2 + 1))}
 ## Few mutations with the data set
-dataset <- read_delim("../test.csv", delim="\t") %>% # %>% #"./Data/analysis/unmatched_sample_with_vars.csv") %>%
+dataset <- read_delim("./Code/test.csv", delim="\t") %>% # %>% #"./Data/analysis/unmatched_sample_with_vars.csv") %>%
   select(-1) %>%
   mutate(defw = log(1+Vermogen_deflated),
          defw2 = ihs(Vermogen_deflated),
@@ -34,7 +34,7 @@ dataset <- read_delim("../test.csv", delim="\t") %>% # %>% #"./Data/analysis/unm
          yoe = as.numeric(stringr::str_extract(Verkiezingdatum, "\\d{4}$"))
   )
 
-rdrobust::rdrobust(y= dataset$defw, x = dataset$margin) %>%
+rdrobust::rdplot(y= dataset$defw2, x = dataset$margin) #%>%
   summary()
 
 rdrobust::rdbwselect(y = dataset$defw, x = dataset$margin, bwselect = 'msetwo') %>%
