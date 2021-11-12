@@ -54,7 +54,7 @@ get_coef_and_se2 <- function(variable){
     format(nsmall=3)
   
   if (t_stat > 1.7) {
-  paste(coef, " ", "(", se, ")","\\*", sep = "") }
+  paste(coef, " ", "(", se, ")","*", sep = "") }
   else { paste(coef, " ", "(", se, ")", sep = "")}
 }
 
@@ -80,8 +80,61 @@ sd_control_close <- function(x){ x[dataset$politician_dummy == 1 & abs(dataset$m
 
 # todo: create a new column with p-values
 ## Find the element to extract the p-value
-p_val_close <- function(x) {t.test(x[abs(dataset$margin) < close] ~ dataset$politician_dummy[abs(dataset$margin) < close])}
-p_val_far <- function(x) {t.test(x[abs(dataset$margin) < far] ~ dataset$politician_dummy[abs(dataset$margin) < far])}
+p_val_close <- function(x) {
+  out <- t.test(x[abs(dataset$margin) < close] ~ dataset$politician_dummy[abs(dataset$margin) < close])
+  if(out$p.value > 0.1){
+    pv <- out$p.value %>%
+      round(3) %>%
+      format(nsmall=3)
+    return(pv)
+  }
+  else if(between(out$p.value, 0.05, 0.10)){
+    pv <- out$p.value %>%
+      round(3) %>%
+      format(nsmall=3)
+    paste(pv, "*", sep = "")
+  }
+  else if(between(out$p.value, 0.01, 0.05)){
+    pv <- out$p.value %>%
+      round(3) %>%
+      format(nsmall=3)
+    paste(pv, "**", sep = "")
+  }
+  else if(out$p.value < 0.01){
+    pv <- out$p.value %>%
+      round(3) %>%
+      format(nsmall=3)
+    paste(pv, "***", sep = "")
+  }
+}
+
+p_val_far <- function(x) {
+  out <- t.test(x[abs(dataset$margin) < far] ~ dataset$politician_dummy[abs(dataset$margin) < far])
+  if(out$p.value > 0.1){
+    pv <- out$p.value %>%
+      round(3) %>%
+      format(nsmall=3)
+    return(pv)
+  }
+  else if(between(out$p.value, 0.05, 0.10)){
+    pv <- out$p.value %>%
+      round(3) %>%
+      format(nsmall=3)
+    paste(pv, "*", sep = "")
+  }
+  else if(between(out$p.value, 0.01, 0.05)){
+    pv <- out$p.value %>%
+      round(3) %>%
+      format(nsmall=3)
+    paste(pv, "**", sep = "")
+  }
+  else if(out$p.value < 0.01){
+    pv <- out$p.value %>%
+      round(3) %>%
+      format(nsmall=3)
+    paste(pv, "***", sep = "")
+  }
+}
 # see ?datasummary for new columns to find out how to specify where the new column should be
 datasummary(data = dataset,
             formula = 
@@ -108,17 +161,17 @@ datasummary(data = dataset,
               district_share_prot +
               district_share_cath +
               district_agri +
-              district_indus ~ mean_treatment_far  + mean_control_far + mean_treatment_close + mean_control_close + get_coef_and_se2, 
+              district_indus ~ mean_treatment_far  + mean_control_far + p_val_far + mean_treatment_close + mean_control_close + p_val_close + get_coef_and_se2, 
             out = "kableExtra") %>%
   kableExtra::group_rows("Panel A: Newspaper Recommendations", 1,4) %>%
   kableExtra::group_rows("Panel B: Pre-Election Demographic Characteristics", 5, 8) %>%
   kableExtra::group_rows("Panel C: Election Characteristics", 9, 12) %>%
   kableExtra::group_rows("Panel D: Birthplace Characteristics", 13, 20)  %>%
   kableExtra::group_rows("Panel E: District Characteristics", 21, 24) %>% 
-  kableExtra::add_header_above(c(" " = 1, "Margin < 0.2" = 2, "Margin < 0.05" = 2, " " = 1)) %>%
+  kableExtra::add_header_above(c(" " = 1, "Margin < 0.2" = 3, "Margin < 0.05" = 3, " " = 1)) %>%
   kableExtra::footnote(general = "hoisdfjaosdfjaosidfjaiosjfadsjfaso", threeparttable = TRUE)
 
-rdrobust::rdrobust(y= dataset$rec_kath, x = dataset$margin) -> test
+rdrobust::rdplot(y= dataset$defw, x = dataset$margin)
 
 rdrobust::rdrobust(y= dataset$defw2, x = dataset$margin) %>%
   summary()
