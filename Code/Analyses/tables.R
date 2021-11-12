@@ -104,16 +104,17 @@ datasummary(data = dataset,
               birthplace_indus +
               taxespercap_1859 +
               taxespercap_1889 +
+              distance_bp_hag +
               district_share_prot +
               district_share_cath +
               district_agri +
-              district_indus ~ mean_treatment_far  + mean_control_far + p_value_far + mean_treatment_close + mean_control_close + get_coef_and_se2, 
+              district_indus ~ mean_treatment_far  + mean_control_far + mean_treatment_close + mean_control_close + get_coef_and_se2, 
             out = "kableExtra") %>%
   kableExtra::group_rows("Panel A: Newspaper Recommendations", 1,4) %>%
   kableExtra::group_rows("Panel B: Pre-Election Demographic Characteristics", 5, 8) %>%
   kableExtra::group_rows("Panel C: Election Characteristics", 9, 12) %>%
-  kableExtra::group_rows("Panel D: Birthplace Characteristics", 13, 19)  %>%
-  kableExtra::group_rows("Panel E: District Characteristics", 20, 23) %>% 
+  kableExtra::group_rows("Panel D: Birthplace Characteristics", 13, 20)  %>%
+  kableExtra::group_rows("Panel E: District Characteristics", 21, 24) %>% 
   kableExtra::add_header_above(c(" " = 1, "Margin < 0.2" = 2, "Margin < 0.05" = 2, " " = 1)) %>%
   kableExtra::footnote(general = "hoisdfjaosdfjaosidfjaiosjfadsjfaso", threeparttable = TRUE)
 
