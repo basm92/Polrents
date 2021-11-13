@@ -1,6 +1,7 @@
 library(readxl); library(tidyverse); library(hrbrthemes); 
 library(rdrobust); library(modelsummary)
 
+source("./Code/Analyses/functions_for_tables.R")
 # Parameters
 
 ihs <- function(x) {log(x + sqrt(x^2 + 1))}
@@ -39,104 +40,15 @@ dataset <- read_delim("./Data/analysis/unmatched_sample_with_vars.csv", delim=",
 
 
 # show the rd coefficient of variable on margin
-get_coef_and_se2 <- function(variable){
-  #var <- deparse(substitute(variable))
-  regression_output <- rdrobust(y = variable, x = dataset[['margin']])
-  
-  t_stat <- as.numeric(regression_output['coef'][[1]][1])/as.numeric(regression_output['se'][[1]][3]) %>%
-    abs()
-  
-  coef <- regression_output['coef'][[1]][1] %>%
-    round(3) %>%
-    format(nsmall=3)
-  se <- regression_output['se'][[1]][3] %>%
-    round(3) %>%
-    format(nsmall=3)
-  
-  if (t_stat > 1.7) {
-  paste(coef, " ", "(", se, ")","*", sep = "") }
-  else { paste(coef, " ", "(", se, ")", sep = "")}
-}
-
 far <- 0.2
 close <- 0.05 
 
-mean_treatment_far <- function(x){ x[dataset$politician_dummy == 1 & abs(dataset$margin) < far] %>%
-    mean(na.rm= TRUE)}
-sd_treatment_far <- function(x){ x[dataset$politician_dummy == 1 & abs(dataset$margin) < far] %>%
-    sd(na.rm= TRUE)}
-mean_control_far <- function(x){ x[dataset$politician_dummy == 0 & abs(dataset$margin) < far] %>%
-    mean(na.rm= TRUE)}
-sd_control_far <- function(x){ x[dataset$politician_dummy == 1 & abs(dataset$margin) < far] %>%
-    sd(na.rm= TRUE)}
-mean_treatment_close <- function(x){ x[dataset$politician_dummy == 1 & abs(dataset$margin) < close] %>%
-    mean(na.rm= TRUE)}
-sd_treatment_close <- function(x){ x[dataset$politician_dummy == 1 & abs(dataset$margin) < close] %>%
-    sd(na.rm= TRUE)}
-mean_control_close <- function(x){ x[dataset$politician_dummy == 0 & abs(dataset$margin) < close] %>%
-    mean(na.rm= TRUE)}
-sd_control_close <- function(x){ x[dataset$politician_dummy == 1 & abs(dataset$margin) < close] %>%
-    sd(na.rm= TRUE)}
 
-# todo: create a new column with p-values
-## Find the element to extract the p-value
-p_val_close <- function(x) {
-  out <- t.test(x[abs(dataset$margin) < close] ~ dataset$politician_dummy[abs(dataset$margin) < close])
-  if(out$p.value > 0.1){
-    pv <- out$p.value %>%
-      round(3) %>%
-      format(nsmall=3)
-    return(pv)
-  }
-  else if(between(out$p.value, 0.05, 0.10)){
-    pv <- out$p.value %>%
-      round(3) %>%
-      format(nsmall=3)
-    paste(pv, "*", sep = "")
-  }
-  else if(between(out$p.value, 0.01, 0.05)){
-    pv <- out$p.value %>%
-      round(3) %>%
-      format(nsmall=3)
-    paste(pv, "**", sep = "")
-  }
-  else if(out$p.value < 0.01){
-    pv <- out$p.value %>%
-      round(3) %>%
-      format(nsmall=3)
-    paste(pv, "***", sep = "")
-  }
-}
-
-p_val_far <- function(x) {
-  out <- t.test(x[abs(dataset$margin) < far] ~ dataset$politician_dummy[abs(dataset$margin) < far])
-  if(out$p.value > 0.1){
-    pv <- out$p.value %>%
-      round(3) %>%
-      format(nsmall=3)
-    return(pv)
-  }
-  else if(between(out$p.value, 0.05, 0.10)){
-    pv <- out$p.value %>%
-      round(3) %>%
-      format(nsmall=3)
-    paste(pv, "*", sep = "")
-  }
-  else if(between(out$p.value, 0.01, 0.05)){
-    pv <- out$p.value %>%
-      round(3) %>%
-      format(nsmall=3)
-    paste(pv, "**", sep = "")
-  }
-  else if(out$p.value < 0.01){
-    pv <- out$p.value %>%
-      round(3) %>%
-      format(nsmall=3)
-    paste(pv, "***", sep = "")
-  }
-}
 # see ?datasummary for new columns to find out how to specify where the new column should be
+
+notes <- c("The table contains means for various set of variables conditioned on the absolute margin being < 0.2 (left panel) and <0.05 (right panel). The first two columns represent the means for politicians and non-politicians respectively, and the third column show the p-value of a Welch two-sample t-test. The last column shows the local non-parametric RD estimate, estimated by the procedure in \\citep{catt2020regression}. The standard error is shown between brackets. Significance is indicated by *: p < 0.1, **: p < 0.05, ***: p < 0.01.")
 datasummary(data = dataset,
+            align = c("llllllll"),
             formula = 
               rec_ar + 
               rec_lib + 
@@ -161,7 +73,11 @@ datasummary(data = dataset,
               district_share_prot +
               district_share_cath +
               district_agri +
-              district_indus ~ mean_treatment_far  + mean_control_far + p_val_far + mean_treatment_close + mean_control_close + p_val_close + get_coef_and_se2, 
+              district_indus ~ (`Politicians`=mean_treatment_far)  + 
+              (`Non-Politicians`=mean_control_far) + 
+              (`p-val.`=p_val_far) + 
+              (`Politicians`=mean_treatment_close) + (`Non-Politicians`=mean_control_close) +
+              (`p-val.` = p_val_close) + (`RD Estimate (SD)`=get_coef_and_se2), 
             out = "kableExtra") %>%
   kableExtra::group_rows("Panel A: Newspaper Recommendations", 1,4) %>%
   kableExtra::group_rows("Panel B: Pre-Election Demographic Characteristics", 5, 8) %>%
@@ -169,7 +85,140 @@ datasummary(data = dataset,
   kableExtra::group_rows("Panel D: Birthplace Characteristics", 13, 20)  %>%
   kableExtra::group_rows("Panel E: District Characteristics", 21, 24) %>% 
   kableExtra::add_header_above(c(" " = 1, "Margin < 0.2" = 3, "Margin < 0.05" = 3, " " = 1)) %>%
-  kableExtra::footnote(general = "hoisdfjaosdfjaosidfjaiosjfadsjfaso", threeparttable = TRUE)
+  kableExtra::footnote(general = notes, threeparttable = TRUE)
+
+
+# Still another, more classical descr. stat table here:
+datasummary(data = dataset %>%
+              mutate(politician_indic = factor(politician_indic, levels=c('Politician','Non-Politician')),
+                     lib = if_else(party_category=="liberal", 1, 0),
+                     prot = if_else(party_category=="protestant", 1, 0),
+                     cath = if_else(party_category=="catholic", 1, 0)),
+            formula = 
+              rec_ar + 
+              rec_lib + 
+              rec_soc + 
+              rec_kath +
+              lifespan +
+              age_at_election +
+              yod +
+              yoe + 
+              howmany_before_alg +
+              log(turnout) +
+              log(turnout_previous_el) +
+              log(1+birthplace_pop_1859) +
+              birthplace_share_cath +
+              birthplace_share_prot +
+              birthplace_agri +
+              birthplace_indus +
+              taxespercap_1859 +
+              taxespercap_1889 +
+              distance_bp_hag +
+              district_share_prot +
+              district_share_cath +
+              district_agri +
+              district_indus +
+              defw +
+              age_of_death + 
+              election_after_arp +
+              election_after_rk +
+              election_after_lib + 
+              lib + 
+              prot +
+              cath +
+              prof_business +
+              prof_politics +
+              prof_colonial 
+              ~ politician_indic*(Mean + SD + Min + Max + N),
+            out = "kableExtra") %>%
+  kableExtra::group_rows("Panel A: Newspaper Recommendations", 1,4) %>%
+  kableExtra::group_rows("Panel B: Demographic Characteristics Politicians", 5, 8) %>%
+  kableExtra::group_rows("Panel C: Election Characteristics", 9, 12) %>%
+  kableExtra::group_rows("Panel D: Birthplace Characteristics", 13, 19)  %>%
+  kableExtra::group_rows("Panel E: District Characteristics", 20, 23) %>% 
+  kableExtra::group_rows("Panel F: Ex-Post Characteristics", 24, 25) %>%
+  kableExtra::group_rows("Panel G: Party and Career Characteristics", 26, 34) %>%
+  kableExtra::footnote(general = notes, threeparttable = TRUE) 
+
+# Regression table with the main results
+# Panel A: Without Covariates
+new_rows <- data.frame(bw = "Bandwith", set1 = "Optimal", set2="2 x Optimal")
+new_cols <- data.frame('hoi' = c('a','b','c', 'd'))
+
+panel_a <- data.frame(names = c("Coefficient", 
+                     "SE (BC)",
+                     "SE (Rob.)",
+                     "Mean DV Politicians (1%)",
+                     "Mean DV Non-Politicians (1%)",
+                     "N (Politicians)",
+                     "N (Non-Politicians)",
+                     "Bandwidth"),
+           an_defw=c(get_coef(dataset$defw),
+                      get_se_bc(dataset$defw),
+                      get_se_rob(dataset$defw),
+                      mean_wealth_pols(dataset$defw),
+                      mean_wealth_nonpols(dataset$defw),
+                      n_pols(dataset$defw),
+                      n_nonpols(dataset$defw),
+                      "Optimal"),
+           an_defw_w = c(get_coef_w(dataset$defw),
+                         get_se_bc_w(dataset$defw),
+                         get_se_rob_w(dataset$defw),
+                         mean_wealth_pols(dataset$defw),
+                         mean_wealth_nonpols(dataset$defw),
+                        n_pols(dataset$defw),
+                        n_nonpols(dataset$defw),
+                         "2 x Optimal"),
+           an_defw2 = c(get_coef(dataset$defw2),
+                        get_se_bc(dataset$defw2),
+                        get_se_rob(dataset$defw2),
+                        mean_wealth_pols(dataset$defw2),
+                        mean_wealth_nonpols(dataset$defw2),
+                        n_pols(dataset$defw2),
+                        n_nonpols(dataset$defw2),
+                        "Optimal"),
+           an_defw2_w = c(get_coef_w(dataset$defw2),
+                          get_se_bc_w(dataset$defw2),
+                          get_se_rob_w(dataset$defw2),
+                          mean_wealth_pols(dataset$defw2),
+                          mean_wealth_nonpols(dataset$defw2),
+                          n_pols(dataset$defw2),
+                          n_nonpols(dataset$defw2),
+                          "2 x Optimal")
+)
+
+
+# Panel B: With Covariates which are significant in Panel A at 0.05 cutoff point
+# yoe, howmany_before_alg, log(1+birthplace_pop_1859), birthplace_agri, 
+# birthplace_indus, age_at_election, yod, rec_soc
+
+panel_b <- data.frame(names = c("Coefficient", 
+                                "SE (BC)",
+                                "SE (Rob.)",
+                                "Mean DV Politicians (1%)",
+                                "Mean DV Non-Politicians (1%)",
+                                "N (Politicians)",
+                                "N (Non-Politicians)",
+                                "Bandwidth"),
+                      an_defw=c(get_coef(dataset$defw),
+                                get_se_bc(dataset$defw),
+                                get_se_rob(dataset$defw),
+                                mean_wealth_pols(dataset$defw),
+                                mean_wealth_nonpols(dataset$defw),
+                                n_pols(dataset$defw),
+                                n_nonpols(dataset$defw),
+                                "Optimal"),
+
+datasummary_df(panel_a, 
+               out = "kableExtra") %>%
+  kableExtra::add_header_above(c(" " = 1, "Log(Wealth)" = 2, "Ihs(Wealth)" = 2)) %>%
+  kableExtra::group_rows("Panel A: Baseline Estimates", 1, 8) # %>%
+# kableExtra::group_rows("Panel B: Estimates With Selected Covariates, 9, 16)
+
+
+# Regression table: placebo tests with false cutoff point
+
+
 
 rdrobust::rdplot(y= dataset$defw, x = dataset$margin)
 
