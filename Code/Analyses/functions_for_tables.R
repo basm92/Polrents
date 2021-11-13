@@ -248,4 +248,83 @@ n_nonpols <- function(variable){
   regression_output[['N']][1]
 }
 
-get_coef_cov <- function()
+# Panel B: 
+get_coef_cov <- function(variable, covs, bw_mult =1){
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], covs = covs)
+  h <- regression_output[['bws']][1]
+  b <- regression_output[['bws']][2]
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], covs = covs,
+                                b = bw_mult*b,
+                                h = bw_mult*h)
+  
+  coef <- regression_output['coef'][[1]][1] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  paste(coef)
+}
+
+get_se_bc_cov <- function(variable, covs, bw_mult=1){
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], cluster=dataset[['place_of_birth']], covs = covs)
+  h <- regression_output[['bws']][1]
+  b <- regression_output[['bws']][2]
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], cluster = dataset[['place_of_birth']], covs = covs,
+                                b = bw_mult*b,
+                                h = bw_mult*h)
+  
+  se <- regression_output['se'][[1]][2] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  pv <- regression_output['pv'][[1]][2]
+  
+  if(between(pv, 0.05, 0.1)){
+    paste("(", se, ")", "*", sep = "")
+  } else if(between(pv, 0.01, 0.05)){
+    paste("(", se, ")", "**", sep = "")
+  } else if(between(pv, 0, 0.05)){
+    paste("(", se, ")", "***", sep = "")
+  } else {
+    paste("(", se, ")", sep = "")
+  }
+}
+
+get_se_rob_cov <- function(variable, covs, bw_mult=1){
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], covs = covs)
+  h <- regression_output[['bws']][1]
+  b <- regression_output[['bws']][2]
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], covs = covs,
+                                b = bw_mult*b,
+                                h = bw_mult*h)
+  
+  se <- regression_output['se'][[1]][3] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  pv <- regression_output['pv'][[1]][3]
+  
+  if(between(pv, 0.05, 0.1)){
+    paste("(", se, ")", "*", sep = "")
+  } else if(between(pv, 0.01, 0.05)){
+    paste("(", se, ")", "**", sep = "")
+  } else if(between(pv, 0, 0.05)){
+    paste("(", se, ")", "***", sep = "")
+  } else {
+    paste("(", se, ")", sep = "")
+  }
+}
+
+n_pols_cov <- function(variable, covs){
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], covs = covs)
+  regression_output[['N']][2]
+}
+
+n_nonpols_cov <- function(variable, covs){
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], covs = covs)
+  regression_output[['N']][1]
+}
+

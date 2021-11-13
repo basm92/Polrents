@@ -1,5 +1,5 @@
 library(readxl); library(tidyverse); library(hrbrthemes); 
-library(rdrobust); library(modelsummary)
+library(rdrobust); library(modelsummary); library(ggtext)
 
 source("./Code/Analyses/functions_for_tables.R")
 # Parameters
@@ -142,9 +142,6 @@ datasummary(data = dataset %>%
 
 # Regression table with the main results
 # Panel A: Without Covariates
-new_rows <- data.frame(bw = "Bandwith", set1 = "Optimal", set2="2 x Optimal")
-new_cols <- data.frame('hoi' = c('a','b','c', 'd'))
-
 panel_a <- data.frame(names = c("Coefficient", 
                      "SE (BC)",
                      "SE (Rob.)",
@@ -191,6 +188,17 @@ panel_a <- data.frame(names = c("Coefficient",
 # Panel B: With Covariates which are significant in Panel A at 0.05 cutoff point
 # yoe, howmany_before_alg, log(1+birthplace_pop_1859), birthplace_agri, 
 # birthplace_indus, age_at_election, yod, rec_soc
+# rdrobust(y=dataset$defw, x = dataset$margin, 
+
+covariates <- cbind(dataset$yoe, 
+                   dataset$howmany_before_alg,
+                   log(1+dataset$birthplace_pop_1859), 
+                   dataset$birthplace_agri, 
+                   dataset$birthplace_indus, 
+                   dataset$age_at_election, 
+                   dataset$yod, 
+                   dataset$rec_soc)
+
 
 panel_b <- data.frame(names = c("Coefficient", 
                                 "SE (BC)",
@@ -200,30 +208,124 @@ panel_b <- data.frame(names = c("Coefficient",
                                 "N (Politicians)",
                                 "N (Non-Politicians)",
                                 "Bandwidth"),
-                      an_defw=c(get_coef(dataset$defw),
-                                get_se_bc(dataset$defw),
-                                get_se_rob(dataset$defw),
+                      an_defw=c(get_coef_cov(dataset$defw, covs = covariates),
+                                get_se_bc_cov(dataset$defw, covs = covariates),
+                                get_se_rob_cov(dataset$defw, covs = covariates),
                                 mean_wealth_pols(dataset$defw),
                                 mean_wealth_nonpols(dataset$defw),
-                                n_pols(dataset$defw),
-                                n_nonpols(dataset$defw),
+                                n_pols_cov(dataset$defw, covs = covariates),
+                                n_nonpols_cov(dataset$defw, covs = covariates),
                                 "Optimal"),
+                      an_defw_w = c(get_coef_cov(dataset$defw, bw_mult = 2, covs = covariates),
+                                    get_se_bc_cov(dataset$defw, bw_mult = 2, covs = covariates),
+                                    get_se_rob_cov(dataset$defw, bw_mult = 2, covs = covariates),
+                                    mean_wealth_pols(dataset$defw),
+                                    mean_wealth_nonpols(dataset$defw),
+                                    n_pols_cov(dataset$defw, covs = covariates),
+                                    n_nonpols_cov(dataset$defw, covs = covariates),
+                                    "2 x Optimal"),
+                      an_defw2 = c(get_coef_cov(dataset$defw2, covs = covariates),
+                                   get_se_bc_cov(dataset$defw2, covs = covariates),
+                                   get_se_rob_cov(dataset$defw2, covs = covariates),
+                                   mean_wealth_pols(dataset$defw2),
+                                   mean_wealth_nonpols(dataset$defw2),
+                                   n_pols_cov(dataset$defw2, covs = covariates),
+                                   n_nonpols_cov(dataset$defw2, covs = covariates),
+                                   "Optimal"),
+                      an_defw2_w = c(get_coef_cov(dataset$defw2, bw_mult = 2, covs = covariates),
+                                     get_se_bc_cov(dataset$defw2, bw_mult = 2, covs = covariates),
+                                     get_se_rob_cov(dataset$defw2, bw_mult = 2, covs = covariates),
+                                     mean_wealth_pols(dataset$defw2),
+                                     mean_wealth_nonpols(dataset$defw2),
+                                     n_pols_cov(dataset$defw2, covs = covariates),
+                                     n_nonpols_cov(dataset$defw2, covs = covariates),
+                                     "2 x Optimal"))
 
-datasummary_df(panel_a, 
+notitie <- "Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level. Panel A shows univariate regressions under the optimal MSE bandwidth, and twice the optimal bandwidth. In panel B, selected covariates are added, in particular, covariates that seemed to be unbalanced at the 2% cutoff. In particular, the regression controls for lifespan, times participated in election, birthplace population, birthplace characteristics, age at election, and socialist recommendations. *: p < 0.10, **: p < 0.05, ***: p < 0.01."
+datasummary_df(bind_rows(panel_a, panel_b) %>%
+                 rename(` ` = names, 
+                        "(1)" = an_defw,
+                        "(2)" = an_defw_w,
+                        "(3)" = an_defw2,
+                        "(4)"  = an_defw2_w), 
                out = "kableExtra") %>%
   kableExtra::add_header_above(c(" " = 1, "Log(Wealth)" = 2, "Ihs(Wealth)" = 2)) %>%
-  kableExtra::group_rows("Panel A: Baseline Estimates", 1, 8) # %>%
-# kableExtra::group_rows("Panel B: Estimates With Selected Covariates, 9, 16)
+  kableExtra::group_rows("Panel A: Baseline Estimates", 1, 8)  %>%
+  kableExtra::group_rows("Panel B: Estimates With Selected Covariates", 9, 16) %>%
+  kableExtra::footnote(general = notitie, threeparttable = TRUE) 
 
 
-# Regression table: placebo tests with false cutoff point
+# Regression figure: placebo tests with false cutoff point - Make a figure
+fig_data <- data.frame(cutoff = seq(from = -0.15, to = 0.15, by = 0.01), 
+                       coef = vector(length = 31), 
+                       lb = vector(length = 31), 
+                       ub = vector(length = 31))
+
+for(i in 1:length(seq(from = -0.15, to = 0.15, by = 0.01))){
+  regression <- rdrobust(y = dataset$defw, x = dataset$margin, c = fig_data[['cutoff']][i])
+  fig_data[['lb']][i] <- regression[['ci']][3,][1]
+  fig_data[['ub']][i] <- regression[['ci']][3,][2]
+  fig_data[['coef']][i] <- regression[['coef']][1]
+}
+
+good <- subset(fig_data, cutoff == 0)
+
+fig_data %>%
+  ggplot(aes(x = cutoff, y = coef)) + geom_point(color = 'blue') + 
+  theme_bw() +
+  xlab("Cut-off point") + ylab("RD Estimate") +
+  geom_errorbar(aes(x = cutoff, ymin = lb, ymax = ub), size = 0.2, color = 'black') +
+  geom_point(data = good, color = "red", size = 2) +
+  geom_text(data = good, label = "Actual Estimate", vjust =c(-5), hjust = c(-0.1)) +
+  geom_segment(aes(x = 0.025, y = 3.3, xend = 0.005, yend = 2.3), arrow = arrow(length = unit(0.2, "cm")))
+
+# Now create two plots, one with and one without covariate adjustment for log wealth
+# And combine them in one plot
+
+step1 <- rdplot(y = dataset$defw, x = dataset$margin, covs = covariates, col.lines = 'red')
+step2 <- step1$rdplot
+step2$layers <- step2$layers[1:3]
+
+step2 + 
+  geom_line(data = step1$vars_bins[1:18,],
+            aes(x = rdplot_mean_bin,
+                y = rdplot_mean_y - 1.96*rdplot_se_y), color = 'grey', lty = 2) +
+  geom_line(data = step1$vars_bins[1:18,],
+              aes(x = rdplot_mean_bin,
+                  y = rdplot_mean_y + 1.96*rdplot_se_y), color = 'grey', lty = 2) +
+  geom_line(data = step1$vars_bins[19:32,],
+                aes(x = rdplot_mean_bin,
+                    y = rdplot_mean_y - 1.96*rdplot_se_y), color = 'grey', lty = 2) +
+  geom_line(data = step1$vars_bins[19:32,],
+              aes(x = rdplot_mean_bin,
+                  y = rdplot_mean_y + 1.96*rdplot_se_y), color = 'grey', lty = 2) +
+  xlim(-0.2, 0.2) + 
+  geom_vline(aes(xintercept = 0), lty = 2) +
+  ylab("Log(Wealth)") + xlab("Margin") + ggtitle(" ") 
+
+
+step1 <- rdplot(y = dataset$defw, x = dataset$margin, col.lines = 'red')
+step2 <- step1$rdplot
+step2$layers <- step2$layers[1:3] # Remove the line
+
+# todo: find out how to make plot
+step2 + 
+  geom_line(data = step1$vars_bins[1:18,],
+            aes(x = step1$vars_bins[1:18,]$rdplot_min_bin,
+                y = step1$vars_bins[1:18,]$rdplot_mean_y - 1.96*step1$vars_bins[1:18,]$rdplot_se_y), color = 'grey', lty = 2)# +
+  geom_line(data = step1$vars_bins[1:18,],
+            aes(x = rdplot_min_bin,
+                y = rdplot_mean_y + 1.96*rdplot_se_y), color = 'grey', lty = 2) +
+  geom_line(data = step1$vars_bins[19:32,],
+            aes(x = rdplot_min_bin,
+                y = rdplot_mean_y - 1.96*rdplot_se_y), color = 'grey', lty = 2) +
+  geom_line(data = step1$vars_bins[19:32,],
+            aes(x = rdplot_min_bin,
+                y = rdplot_mean_y + 1.96*rdplot_se_y), color = 'grey', lty = 2) +
+  xlim(-0.2, 0.2) + ylim(7.5, 13) +
+  geom_vline(aes(xintercept = 0), lty = 2) +
+  ylab("Log(Wealth)") + xlab("Margin") + ggtitle(" ")
 
 
 
-rdrobust::rdplot(y= dataset$defw, x = dataset$margin)
 
-rdrobust::rdrobust(y= dataset$defw2, x = dataset$margin) %>%
-  summary()
-
-rdrobust::rdbwselect(y = dataset$defw, x = dataset$margin, bwselect = 'msetwo') %>%
-  summary()
