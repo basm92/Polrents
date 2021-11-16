@@ -89,12 +89,13 @@ datasummary(data = dataset,
   kableExtra::group_rows("Panel E: District Characteristics", 20, 23) %>% 
   kableExtra::add_header_above(c(" " = 1, "Margin < 0.2" = 3, "Margin < 0.05" = 3, " " = 1)) %>%
   kableExtra::kable_styling(latex_options = c("hold_position", "scale_down")) %>%
-  kableExtra::footnote(general = notes, footnote_as_chunk = T, threeparttable = T, escape = F,)  %>%
+  kableExtra::footnote(general = notes, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
   kableExtra::save_kable("./Tables/covariate_balance.tex")
 
 
 # Still another, more classical descr. stat table here:
 knitr::opts_current$set(label = "descriptivestats")
+notes <- "This table shows descriptive statistics for politicians (left panel) and non-politicians (right panel). In panel A, I show newspaper recommendations for each major political faction. Panel B discusses demographic characteristics, and panel C discusses characteristics related to elections. Panels D and E contain birthplace and district characteristics. Panel F contains ex-post variables and Panel G contains several variables related to party and career characteristics."
 datasummary(data = dataset %>%
               mutate(politician_indic = factor(politician_indic, levels=c('Politician','Non-Politician')),
                      lib = if_else(party_category=="liberal", 1, 0),
@@ -146,9 +147,26 @@ datasummary(data = dataset %>%
   kableExtra::group_rows("Panel E: District Characteristics", 20, 23) %>% 
   kableExtra::group_rows("Panel F: Ex-Post Characteristics", 24, 25) %>%
   kableExtra::group_rows("Panel G: Party and Career Characteristics", 26, 34) %>%
-  kableExtra::footnote(general = notes, threeparttable = TRUE) %>%
   kableExtra::kable_styling(latex_options = c("hold_position", "scale_down")) %>%
+  kableExtra::footnote(general = notes, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
   kableExtra::save_kable("./Tables/descriptivestats_trad.tex")
+
+# Density plot of margin, defw, and defw2
+p1 <- dataset %>%
+  ggplot(aes(x = margin)) + geom_density() +
+  theme_classic() + ylab("Density") + xlab("Margin")
+p2 <- dataset %>%
+  ggplot(aes(x = defw)) + geom_density() +
+  theme_classic() + ylab("Density") + xlab("Log(Wealth)")
+p3 <- dataset %>%
+  ggplot(aes(x = defw2)) + geom_density() +
+  theme_classic() + ylab("Density") + xlab("Ihs(Wealth)")
+
+plottie <- cowplot::plot_grid(p1, p2, p3, ncol = 3)
+cowplot::save_plot("./Tables/Density_Plot_MarginWealth.pdf", 
+                   plottie,
+                   base_height = 3.5, 
+                   base_width = 10)
 
 # Regression table with the main results
 # Panel A: Without Covariates
@@ -251,7 +269,7 @@ panel_b <- data.frame(names = c("Coefficient",
                                      n_nonpols_cov(dataset$defw2, covs = covariates),
                                      "2 x Optimal"))
 
-notitie <- "Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level. Panel A shows univariate regressions under the optimal MSE bandwidth, and twice the optimal bandwidth. In panel B, selected covariates are added, in particular, covariates that seemed to be unbalanced at the 2% cutoff. In particular, the regression controls for lifespan, times participated in election, birthplace population, birthplace characteristics, age at election, and socialist recommendations. *: p < 0.10, **: p < 0.05, ***: p < 0.01."
+notitie <- "Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level. Panel A shows univariate regressions under the optimal MSE bandwidth, and twice the optimal bandwidth. In panel B, selected covariates are added, in particular, covariates that seemed to be unbalanced at the 2\\\\% cutoff. In particular, the regression controls for lifespan, times participated in election, birthplace population, birthplace characteristics, age at election, and socialist recommendations. *: p < 0.10, **: p < 0.05, ***: p < 0.01."
 knitr::opts_current$set(label = "mainresults")
 datasummary_df(bind_rows(panel_a, panel_b) %>%
                  rename(` ` = names, 
@@ -263,11 +281,12 @@ datasummary_df(bind_rows(panel_a, panel_b) %>%
                output = "latex",
                title = "Main RD Estimates") %>%
   kableExtra::add_header_above(c(" " = 1, "Log(Wealth)" = 2, "Ihs(Wealth)" = 2)) %>%
-  kableExtra::kable_styling(latex_options=c("hold_position")) %>%
   kableExtra::group_rows("Panel A: Baseline Estimates", 1, 8)  %>%
   kableExtra::group_rows("Panel B: Estimates With Selected Covariates", 9, 16) %>%
-  kableExtra::footnote(general = notitie, threeparttable = TRUE) %>%
-  kableExtra::save_kable('./Tables/rdd_mainresults.tex')
+  kableExtra::kable_styling(latex_options = c("hold_position"), full_width = F, font_size = 10) %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::save_kable("./Tables/rdd_mainresults.tex")
+
 
 
 # Regression figure: placebo tests with false cutoff point - Make a figure
