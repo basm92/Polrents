@@ -47,6 +47,8 @@ close <- 0.05
 # see ?datasummary for new columns to find out how to specify where the new column should be
 
 notes <- c("The table contains means for various set of variables conditioned on the absolute margin being < 0.2 (left panel) and <0.05 (right panel). The first two columns represent the means for politicians and non-politicians respectively, and the third column show the p-value of a Welch two-sample t-test. The last column shows the local non-parametric RD estimate, estimated by the procedure in \\citep{catt2020regression}. The standard error is shown between brackets. Significance is indicated by *: p < 0.1, **: p < 0.05, ***: p < 0.01.")
+
+knitr::opts_current$set(label = "covbal")
 datasummary(data = dataset,
             align = c("llllllll"),
             formula = 
@@ -57,7 +59,7 @@ datasummary(data = dataset,
               lifespan +
               age_at_election +
               yod +
-              age_of_death + 
+            #  age_of_death + 
               yoe + 
               howmany_before_alg +
               log(turnout) +
@@ -78,17 +80,22 @@ datasummary(data = dataset,
               (`p-val.`=p_val_far) + 
               (`Politicians`=mean_treatment_close) + (`Non-Politicians`=mean_control_close) +
               (`p-val.` = p_val_close) + (`RD Estimate (SD)`=get_coef_and_se2), 
-            out = "kableExtra") %>%
+            out = "kableExtra",
+            output = "latex",
+            title = "Covariate Balance") %>%
   kableExtra::group_rows("Panel A: Newspaper Recommendations", 1,4) %>%
-  kableExtra::group_rows("Panel B: Pre-Election Demographic Characteristics", 5, 8) %>%
-  kableExtra::group_rows("Panel C: Election Characteristics", 9, 12) %>%
-  kableExtra::group_rows("Panel D: Birthplace Characteristics", 13, 20)  %>%
-  kableExtra::group_rows("Panel E: District Characteristics", 21, 24) %>% 
+  kableExtra::group_rows("Panel B: Pre-Election Demographic Characteristics", 5, 7) %>%
+  kableExtra::group_rows("Panel C: Election Characteristics", 8, 11) %>%
+  kableExtra::group_rows("Panel D: Birthplace Characteristics", 12, 19)  %>%
+  kableExtra::group_rows("Panel E: District Characteristics", 20, 23) %>% 
   kableExtra::add_header_above(c(" " = 1, "Margin < 0.2" = 3, "Margin < 0.05" = 3, " " = 1)) %>%
-  kableExtra::footnote(general = notes, threeparttable = TRUE)
+  kableExtra::footnote(general = notes, threeparttable = TRUE)  %>%
+  kableExtra::kable_styling(latex_options = c("hold_position", "scale_down")) %>%
+  kableExtra::save_kable("./Tables/covariate_balance.tex")
 
 
 # Still another, more classical descr. stat table here:
+knitr::opts_current$set(label = "descriptivestats")
 datasummary(data = dataset %>%
               mutate(politician_indic = factor(politician_indic, levels=c('Politician','Non-Politician')),
                      lib = if_else(party_category=="liberal", 1, 0),
@@ -130,7 +137,9 @@ datasummary(data = dataset %>%
               prof_politics +
               prof_colonial 
               ~ politician_indic*(Mean + SD + Min + Max + N),
-            out = "kableExtra") %>%
+            out = "kableExtra",
+            output="latex",
+            title = "Descriptive Statistics") %>%
   kableExtra::group_rows("Panel A: Newspaper Recommendations", 1,4) %>%
   kableExtra::group_rows("Panel B: Demographic Characteristics Politicians", 5, 8) %>%
   kableExtra::group_rows("Panel C: Election Characteristics", 9, 12) %>%
@@ -138,7 +147,9 @@ datasummary(data = dataset %>%
   kableExtra::group_rows("Panel E: District Characteristics", 20, 23) %>% 
   kableExtra::group_rows("Panel F: Ex-Post Characteristics", 24, 25) %>%
   kableExtra::group_rows("Panel G: Party and Career Characteristics", 26, 34) %>%
-  kableExtra::footnote(general = notes, threeparttable = TRUE) 
+  kableExtra::footnote(general = notes, threeparttable = TRUE) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position", "scale_down")) %>%
+  kableExtra::save_kable("./Tables/descriptivestats_trad.tex")
 
 # Regression table with the main results
 # Panel A: Without Covariates
@@ -242,17 +253,22 @@ panel_b <- data.frame(names = c("Coefficient",
                                      "2 x Optimal"))
 
 notitie <- "Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level. Panel A shows univariate regressions under the optimal MSE bandwidth, and twice the optimal bandwidth. In panel B, selected covariates are added, in particular, covariates that seemed to be unbalanced at the 2% cutoff. In particular, the regression controls for lifespan, times participated in election, birthplace population, birthplace characteristics, age at election, and socialist recommendations. *: p < 0.10, **: p < 0.05, ***: p < 0.01."
+knitr::opts_current$set(label = "mainresults")
 datasummary_df(bind_rows(panel_a, panel_b) %>%
                  rename(` ` = names, 
                         "(1)" = an_defw,
                         "(2)" = an_defw_w,
                         "(3)" = an_defw2,
                         "(4)"  = an_defw2_w), 
-               out = "kableExtra") %>%
+               out = "kableExtra",
+               output = "latex",
+               title = "Main RD Estimates") %>%
   kableExtra::add_header_above(c(" " = 1, "Log(Wealth)" = 2, "Ihs(Wealth)" = 2)) %>%
+  kableExtra::kable_styling(latex_options=c("hold_position")) %>%
   kableExtra::group_rows("Panel A: Baseline Estimates", 1, 8)  %>%
   kableExtra::group_rows("Panel B: Estimates With Selected Covariates", 9, 16) %>%
-  kableExtra::footnote(general = notitie, threeparttable = TRUE) 
+  kableExtra::footnote(general = notitie, threeparttable = TRUE) %>%
+  kableExtra::save_kable('./Tables/rdd_mainresults.tex')
 
 
 # Regression figure: placebo tests with false cutoff point - Make a figure
@@ -270,62 +286,60 @@ for(i in 1:length(seq(from = -0.15, to = 0.15, by = 0.01))){
 
 good <- subset(fig_data, cutoff == 0)
 
-fig_data %>%
+placebo <- fig_data %>%
   ggplot(aes(x = cutoff, y = coef)) + geom_point(color = 'blue') + 
   theme_bw() +
   xlab("Cut-off point") + ylab("RD Estimate") +
-  geom_errorbar(aes(x = cutoff, ymin = lb, ymax = ub), size = 0.2, color = 'black') +
+  geom_errorbar(aes(x = cutoff, ymin = lb, ymax = ub), size = 0.2, color = 'black', width=0.003) +
   geom_point(data = good, color = "red", size = 2) +
   geom_text(data = good, label = "Actual Estimate", vjust =c(-5), hjust = c(-0.1)) +
   geom_segment(aes(x = 0.025, y = 3.3, xend = 0.005, yend = 2.3), arrow = arrow(length = unit(0.2, "cm")))
 
+
+ggplot2::ggsave("./Tables/placebo_test.pdf", placebo, width = 10, height = 5)
 # Now create two plots, one with and one without covariate adjustment for log wealth
 # And combine them in one plot
 
-step1 <- rdplot(y = dataset$defw, x = dataset$margin, covs = covariates, col.lines = 'red')
+step1 <- rdplot(y = dataset$defw, x = dataset$margin, covs = covariates, col.lines = 'red', ci = 90)
 step2 <- step1$rdplot
-step2$layers <- step2$layers[1:3]
-
-step2 + 
-  geom_line(data = step1$vars_bins[1:18,],
-            aes(x = rdplot_mean_bin,
-                y = rdplot_mean_y - 1.96*rdplot_se_y), color = 'grey', lty = 2) +
-  geom_line(data = step1$vars_bins[1:18,],
-              aes(x = rdplot_mean_bin,
-                  y = rdplot_mean_y + 1.96*rdplot_se_y), color = 'grey', lty = 2) +
-  geom_line(data = step1$vars_bins[19:32,],
-                aes(x = rdplot_mean_bin,
-                    y = rdplot_mean_y - 1.96*rdplot_se_y), color = 'grey', lty = 2) +
-  geom_line(data = step1$vars_bins[19:32,],
-              aes(x = rdplot_mean_bin,
-                  y = rdplot_mean_y + 1.96*rdplot_se_y), color = 'grey', lty = 2) +
-  xlim(-0.2, 0.2) + 
+step2$layers <- step2$layers[c(1:4)]
+data_for_errorbar <- step2$layers[[4]]$data
+step2$layers <- step2$layers[c(1:3)]
+p1 <- step2 + xlim(-0.2, 0.2)  +  
   geom_vline(aes(xintercept = 0), lty = 2) +
+  geom_errorbar(data= data_for_errorbar, aes(x = rdplot_mean_bin, 
+                                             ymin = rdplot_cil_bin,
+                                             ymax = rdplot_cir_bin), 
+                color = 'dark grey', 
+                width = 0.004) +
   ylab("Log(Wealth)") + xlab("Margin") + ggtitle(" ") 
 
-
-step1 <- rdplot(y = dataset$defw, x = dataset$margin, col.lines = 'red')
+step1 <- rdplot(y = dataset$defw2, x = dataset$margin, covs = covariates, col.lines = 'red', ci = 90)
 step2 <- step1$rdplot
-step2$layers <- step2$layers[1:3] # Remove the line
-
-# todo: find out how to make plot
-step2 + 
-  geom_line(data = step1$vars_bins[1:18,],
-            aes(x = step1$vars_bins[1:18,]$rdplot_min_bin,
-                y = step1$vars_bins[1:18,]$rdplot_mean_y - 1.96*step1$vars_bins[1:18,]$rdplot_se_y), color = 'grey', lty = 2)# +
-  geom_line(data = step1$vars_bins[1:18,],
-            aes(x = rdplot_min_bin,
-                y = rdplot_mean_y + 1.96*rdplot_se_y), color = 'grey', lty = 2) +
-  geom_line(data = step1$vars_bins[19:32,],
-            aes(x = rdplot_min_bin,
-                y = rdplot_mean_y - 1.96*rdplot_se_y), color = 'grey', lty = 2) +
-  geom_line(data = step1$vars_bins[19:32,],
-            aes(x = rdplot_min_bin,
-                y = rdplot_mean_y + 1.96*rdplot_se_y), color = 'grey', lty = 2) +
-  xlim(-0.2, 0.2) + ylim(7.5, 13) +
+step2$layers <- step2$layers[c(1:4)]
+data_for_errorbar <- step2$layers[[4]]$data
+step2$layers <- step2$layers[c(1:3)]
+p2 <- step2 + xlim(-0.2, 0.2) + ylim(2,16) +  
   geom_vline(aes(xintercept = 0), lty = 2) +
-  ylab("Log(Wealth)") + xlab("Margin") + ggtitle(" ")
+  geom_errorbar(data= data_for_errorbar, aes(x = rdplot_mean_bin, 
+                                             ymin = rdplot_cil_bin,
+                                             ymax = rdplot_cir_bin), 
+                color = 'dark grey', 
+                width = 0.004) +
+  ylab("Ihs(Wealth)") + xlab("Margin") + ggtitle(" ") 
+
+plot <- cowplot::plot_grid(p1, p2, nrow = 1)
+cowplot::save_plot("./Tables/RDD_Plot.pdf", plot, base_width = 10, base_height = 4)
 
 
+## Mechanism 1: electoral competition (before/after expansion)
+
+## Mechanism 2: Party organization (before/after party establishment)
+
+## Mechanism 3: Career Paths
+
+
+
+# todo: kableExtra notes align, notes fontsize
 
 

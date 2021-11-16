@@ -1,0 +1,53 @@
+\begin{table}[!h]
+
+\caption{\label{tab:covbal}Covariate Balance}
+\centering
+\begin{threeparttable}
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{llllllll}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{Margin < 0.2} & \multicolumn{3}{c}{Margin < 0.05} & \multicolumn{1}{c}{ } \\
+\cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
+  & Politicians & Non-Politicians & p-val. & Politicians  & Non-Politicians  & p-val.  & RD Estimate (SD)\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{8}{l}{\textbf{Panel A: Newspaper Recommendations}}\\
+\hspace{1em}rec\_ar & \num{0.16} & \num{0.14} & 0.693 & \num{0.16} & \num{0.22} & 0.354 & 0.034 (0.132)\\
+\hspace{1em}rec\_lib & \num{0.34} & \num{0.29} & 0.242 & \num{0.37} & \num{0.32} & 0.506 & -0.204 (0.166)\\
+\hspace{1em}rec\_soc & \num{0.04} & \num{0.02} & 0.370 & \num{0.03} & \num{0.00} & 0.045** & 0.036 (0.033)\\
+\hspace{1em}rec\_kath & \num{0.20} & \num{0.16} & 0.283 & \num{0.17} & \num{0.20} & 0.577 & -0.100 (0.137)\\
+\addlinespace[0.3em]
+\multicolumn{8}{l}{\textbf{Panel B: Pre-Election Demographic Characteristics}}\\
+\hspace{1em}lifespan & \num{20.73} & \num{19.67} & 0.290 & \num{20.17} & \num{20.24} & 0.973 & -0.469 (4.065)\\
+\hspace{1em}age\_at\_election & \num{51.14} & \num{49.16} & 0.022** & \num{51.18} & \num{46.20} & 0.005*** & 4.995 (4.200)\\
+\hspace{1em}yod & \num{1906.39} & \num{1900.77} & 0.000*** & \num{1904.95} & \num{1900.38} & 0.039** & 4.479 (4.073)\\
+\addlinespace[0.3em]
+\multicolumn{8}{l}{\textbf{Panel C: Election Characteristics}}\\
+\hspace{1em}yoe & \num{1885.60} & \num{1880.99} & 0.000*** & \num{1884.67} & \num{1880.03} & 0.029** & 4.964 (4.289)\\
+\hspace{1em}howmany\_before\_alg & \num{2.62} & \num{0.59} & 0.000*** & \num{1.77} & \num{0.71} & 0.002*** & 1.547 (0.942)\\
+\hspace{1em}log(turnout) & \num{8.38} & \num{7.90} & 0.000*** & \num{8.58} & \num{8.29} & 0.109 & 0.180 (0.343)\\
+\hspace{1em}log(turnout\_previous\_el) & \num{8.05} & \num{7.72} & 0.000*** & \num{8.31} & \num{7.99} & 0.059* & 0.169 (0.314)\\
+\addlinespace[0.3em]
+\multicolumn{8}{l}{\textbf{Panel D: Birthplace Characteristics}}\\
+\hspace{1em}log(1 + birthplace\_pop\_1859) & \num{10.09} & \num{9.30} & 0.000*** & \num{10.32} & \num{9.47} & 0.002*** & 1.059 (0.660)\\
+\hspace{1em}birthplace\_share\_cath & \num{0.31} & \num{0.28} & 0.333 & \num{0.31} & \num{0.28} & 0.494 & -0.020 (0.104)\\
+\hspace{1em}birthplace\_share\_prot & \num{0.65} & \num{0.69} & 0.116 & \num{0.65} & \num{0.68} & 0.325 & 0.006 (0.098)\\
+\hspace{1em}birthplace\_agri & \num{0.03} & \num{0.07} & 0.000*** & \num{0.02} & \num{0.07} & 0.004*** & -0.045 (0.031)\\
+\hspace{1em}birthplace\_indus & \num{0.22} & \num{0.20} & 0.049** & \num{0.23} & \num{0.20} & 0.028** & 0.033 (0.035)\\
+\hspace{1em}taxespercap\_1859 & \num{3.66} & \num{3.82} & 0.305 & \num{3.87} & \num{3.96} & 0.771 & 1.144 (0.755)\\
+\hspace{1em}taxespercap\_1889 & \num{4.32} & \num{4.69} & 0.031** & \num{4.55} & \num{4.73} & 0.539 & 1.122 (0.764)\\
+\hspace{1em}distance\_bp\_hag & \num{187.25} & \num{83.60} & 0.067* & \num{91.34} & \num{83.91} & 0.530 & -6.350 (30.337)\\
+\addlinespace[0.3em]
+\multicolumn{8}{l}{\textbf{Panel E: District Characteristics}}\\
+\hspace{1em}district\_share\_prot & \num{0.70} & \num{0.70} & 0.916 & \num{0.70} & \num{0.71} & 0.592 & 0.060 (0.089)\\
+\hspace{1em}district\_share\_cath & \num{0.26} & \num{0.27} & 0.627 & \num{0.25} & \num{0.25} & 0.959 & -0.073 (0.088)\\
+\hspace{1em}district\_agri & \num{0.06} & \num{0.07} & 0.275 & \num{0.04} & \num{0.05} & 0.938 & -0.018 (0.042)\\
+\hspace{1em}district\_indus & \num{0.23} & \num{0.24} & 0.210 & \num{0.23} & \num{0.24} & 0.361 & 0.000 (0.036)\\
+\bottomrule
+\end{tabular}}
+\begin{tablenotes}
+\item \textit{Note: } 
+\item The table contains means for various set of variables conditioned on the absolute margin being < 0.2 (left panel) and <0.05 (right panel). The first two columns represent the means for politicians and non-politicians respectively, and the third column show the p-value of a Welch two-sample t-test. The last column shows the local non-parametric RD estimate, estimated by the procedure in \textbackslash{}citep\{catt2020regression\}. The standard error is shown between brackets. Significance is indicated by *: p < 0.1, **: p < 0.05, ***: p < 0.01.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

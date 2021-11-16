@@ -1,0 +1,68 @@
+\begin{table}[!h]
+
+\caption{\label{tab:descriptivestats}Descriptive Statistics}
+\centering
+\begin{threeparttable}
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{lrrrrrrrrrr}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{5}{c}{Politician} & \multicolumn{5}{c}{Non-Politician} \\
+\cmidrule(l{3pt}r{3pt}){2-6} \cmidrule(l{3pt}r{3pt}){7-11}
+  & Mean & SD & Min & Max & N & Mean  & SD  & Min  & Max  & N \\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{11}{l}{\textbf{Panel A: Newspaper Recommendations}}\\
+\hspace{1em}rec\_ar & \num{0.16} & \num{0.36} & \num{0.00} & \num{1.00} & 348 & \num{0.13} & \num{0.34} & \num{0.00} & \num{1.00} & 263\\
+\hspace{1em}rec\_lib & \num{0.34} & \num{0.47} & \num{0.00} & \num{1.00} & 348 & \num{0.27} & \num{0.45} & \num{0.00} & \num{1.00} & 263\\
+\hspace{1em}rec\_soc & \num{0.04} & \num{0.19} & \num{0.00} & \num{1.00} & 348 & \num{0.02} & \num{0.15} & \num{0.00} & \num{1.00} & 263\\
+\hspace{1em}rec\_kath & \num{0.20} & \num{0.40} & \num{0.00} & \num{1.00} & 348 & \num{0.15} & \num{0.36} & \num{0.00} & \num{1.00} & 263\\
+\addlinespace[0.3em]
+\multicolumn{11}{l}{\textbf{Panel B: Demographic Characteristics Politicians}}\\
+\hspace{1em}lifespan & \num{20.73} & \num{11.66} & \num{0.57} & \num{51.10} & 348 & \num{20.30} & \num{12.46} & \num{-16.13} & \num{64.61} & 263\\
+\hspace{1em}age\_at\_election & \num{51.14} & \num{9.75} & \num{29.19} & \num{76.47} & 348 & \num{48.93} & \num{10.83} & \num{10.41} & \num{74.98} & 263\\
+\hspace{1em}yod & \num{1906.39} & \num{16.23} & \num{1877.00} & \num{1947.00} & 348 & \num{1900.06} & \num{14.62} & \num{1860.00} & \num{1927.00} & 263\\
+\hspace{1em}yoe & \num{1885.60} & \num{15.28} & \num{1848.00} & \num{1916.00} & 348 & \num{1879.66} & \num{15.03} & \num{1848.00} & \num{1913.00} & 263\\
+\addlinespace[0.3em]
+\multicolumn{11}{l}{\textbf{Panel C: Election Characteristics}}\\
+\hspace{1em}howmany\_before\_alg & \num{2.62} & \num{3.76} & \num{0.00} & \num{24.00} & 348 & \num{0.57} & \num{1.65} & \num{0.00} & \num{14.00} & 263\\
+\hspace{1em}log(turnout) & \num{8.38} & \num{1.04} & \num{6.35} & \num{11.85} & 315 & \num{7.85} & \num{0.82} & \num{6.10} & \num{11.85} & 263\\
+\hspace{1em}log(turnout\_previous\_el) & \num{8.05} & \num{0.98} & \num{5.71} & \num{11.85} & 300 & \num{7.69} & \num{0.78} & \num{5.90} & \num{11.85} & 254\\
+\hspace{1em}log(1 + birthplace\_pop\_1859) & \num{10.09} & \num{1.76} & \num{0.00} & \num{12.03} & 278 & \num{9.31} & \num{1.82} & \num{0.00} & \num{12.03} & 254\\
+\addlinespace[0.3em]
+\multicolumn{11}{l}{\textbf{Panel D: Birthplace Characteristics}}\\
+\hspace{1em}birthplace\_share\_cath & \num{0.31} & \num{0.21} & \num{0.00} & \num{1.00} & 269 & \num{0.28} & \num{0.25} & \num{0.00} & \num{0.99} & 247\\
+\hspace{1em}birthplace\_share\_prot & \num{0.65} & \num{0.20} & \num{0.00} & \num{1.00} & 269 & \num{0.69} & \num{0.24} & \num{0.01} & \num{1.00} & 247\\
+\hspace{1em}birthplace\_agri & \num{0.03} & \num{0.07} & \num{0.00} & \num{0.62} & 275 & \num{0.06} & \num{0.11} & \num{0.00} & \num{0.62} & 253\\
+\hspace{1em}birthplace\_indus & \num{0.22} & \num{0.08} & \num{0.00} & \num{0.39} & 275 & \num{0.20} & \num{0.11} & \num{0.00} & \num{0.59} & 253\\
+\hspace{1em}taxespercap\_1859 & \num{3.66} & \num{2.04} & \num{0.50} & \num{7.27} & 348 & \num{3.83} & \num{1.86} & \num{0.50} & \num{7.27} & 263\\
+\hspace{1em}taxespercap\_1889 & \num{4.32} & \num{2.31} & \num{0.50} & \num{8.51} & 348 & \num{4.71} & \num{1.79} & \num{0.50} & \num{10.34} & 263\\
+\hspace{1em}distance\_bp\_hag & \num{187.25} & \num{1050.04} & \num{0.00} & \num{11402.66} & 348 & \num{86.30} & \num{73.60} & \num{0.00} & \num{555.94} & 257\\
+\addlinespace[0.3em]
+\multicolumn{11}{l}{\textbf{Panel E: District Characteristics}}\\
+\hspace{1em}district\_share\_prot & \num{0.70} & \num{0.20} & \num{0.00} & \num{1.00} & 316 & \num{0.70} & \num{0.20} & \num{0.02} & \num{1.00} & 239\\
+\hspace{1em}district\_share\_cath & \num{0.26} & \num{0.20} & \num{0.00} & \num{1.00} & 316 & \num{0.27} & \num{0.20} & \num{0.00} & \num{0.98} & 239\\
+\hspace{1em}district\_agri & \num{0.06} & \num{0.10} & \num{0.00} & \num{0.45} & 329 & \num{0.07} & \num{0.11} & \num{0.00} & \num{0.45} & 249\\
+\hspace{1em}district\_indus & \num{0.23} & \num{0.09} & \num{0.00} & \num{0.59} & 329 & \num{0.24} & \num{0.10} & \num{0.00} & \num{0.59} & 249\\
+\addlinespace[0.3em]
+\multicolumn{11}{l}{\textbf{Panel F: Ex-Post Characteristics}}\\
+\hspace{1em}defw & \num{11.31} & \num{2.24} & \num{0.00} & \num{14.77} & 323 & \num{10.32} & \num{2.78} & \num{0.00} & \num{14.36} & 258\\
+\hspace{1em}age\_of\_death & \num{71.87} & \num{9.84} & \num{43.79} & \num{93.72} & 348 & \num{69.23} & \num{12.00} & \num{38.04} & \num{95.50} & 263\\
+\addlinespace[0.3em]
+\multicolumn{11}{l}{\textbf{Panel G: Party and Career Characteristics}}\\
+\hspace{1em}election\_after\_arp & \num{0.73} & \num{0.44} & \num{0.00} & \num{1.00} & 348 & \num{0.59} & \num{0.49} & \num{0.00} & \num{1.00} & 263\\
+\hspace{1em}election\_after\_rk & \num{0.30} & \num{0.46} & \num{0.00} & \num{1.00} & 348 & \num{0.23} & \num{0.42} & \num{0.00} & \num{1.00} & 263\\
+\hspace{1em}election\_after\_lib & \num{0.73} & \num{0.44} & \num{0.00} & \num{1.00} & 348 & \num{0.59} & \num{0.49} & \num{0.00} & \num{1.00} & 263\\
+\hspace{1em}lib & \num{0.59} & \num{0.49} & \num{0.00} & \num{1.00} & 348 & \num{0.00} & \num{0.00} & \num{0.00} & \num{0.00} & 263\\
+\hspace{1em}prot & \num{0.26} & \num{0.44} & \num{0.00} & \num{1.00} & 348 & \num{0.00} & \num{0.00} & \num{0.00} & \num{0.00} & 263\\
+\hspace{1em}cath & \num{0.11} & \num{0.31} & \num{0.00} & \num{1.00} & 348 & \num{0.00} & \num{0.00} & \num{0.00} & \num{0.00} & 263\\
+\hspace{1em}prof\_business & \num{0.18} & \num{0.38} & \num{0.00} & \num{1.00} & 348 & \num{0.00} & \num{0.00} & \num{0.00} & \num{0.00} & 263\\
+\hspace{1em}prof\_politics & \num{0.15} & \num{0.36} & \num{0.00} & \num{1.00} & 348 & \num{0.00} & \num{0.00} & \num{0.00} & \num{0.00} & 263\\
+\hspace{1em}prof\_colonial & \num{0.11} & \num{0.31} & \num{0.00} & \num{1.00} & 348 & \num{0.00} & \num{0.00} & \num{0.00} & \num{0.00} & 263\\
+\bottomrule
+\end{tabular}}
+\begin{tablenotes}
+\item \textit{Note: } 
+\item The table contains means for various set of variables conditioned on the absolute margin being < 0.2 (left panel) and <0.05 (right panel). The first two columns represent the means for politicians and non-politicians respectively, and the third column show the p-value of a Welch two-sample t-test. The last column shows the local non-parametric RD estimate, estimated by the procedure in \textbackslash{}citep\{catt2020regression\}. The standard error is shown between brackets. Significance is indicated by *: p < 0.1, **: p < 0.05, ***: p < 0.01.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
