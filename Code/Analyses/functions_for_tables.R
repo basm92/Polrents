@@ -328,3 +328,33 @@ n_nonpols_cov <- function(variable, covs){
   regression_output[['N']][1]
 }
 
+#bandwidth function for loop
+get_coef_and_ci <- function(variable, covs = NULL, bw_mult){
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], covs = covs)
+  h <- regression_output[['bws']][1]
+  b <- regression_output[['bws']][2]
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], covs = covs,
+                                b = bw_mult*b,
+                                h = bw_mult*h)
+  
+  out <- list(coef = regression_output$coef[1], 
+              cil = regression_output$ci[3],
+              ciu = regression_output$ci[6])
+  
+  return(out)
+}
+
+
+make_covariates <- function(dataset){
+  cbind(dataset$yoe, 
+        dataset$howmany_before_alg,
+        log(1+dataset$birthplace_pop_1859), 
+        dataset$birthplace_agri, 
+        dataset$birthplace_indus, 
+        dataset$age_at_election, 
+        dataset$yod, 
+        dataset$rec_soc,
+        dataset$lifespan)
+  
+}

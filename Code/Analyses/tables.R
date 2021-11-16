@@ -1,5 +1,5 @@
 library(readxl); library(tidyverse); library(hrbrthemes); 
-library(rdrobust); library(modelsummary); library(ggtext)
+library(rdrobust); library(modelsummary); library(ggtext); library(RATest); library(lubridate)
 
 source("./Code/Analyses/functions_for_tables.R")
 # Parameters
@@ -92,6 +92,19 @@ datasummary(data = dataset,
   kableExtra::footnote(general = notes, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
   kableExtra::save_kable("./Tables/covariate_balance.tex")
 
+# Canay and Kanat (2018) equality of dist. test:
+#RDperm(W = c("rec_ar", 
+#             "rec_lib", 
+#             "rec_soc", 
+#             "rec_kath", 
+#             "lifespan", 
+#             "age_at_election",
+#             "yod",
+#             "yoe",
+#             "howmany_before_alg"), 
+#       z = "margin", 
+#       q_type = 25,
+#       data = dataset)
 
 # Still another, more classical descr. stat table here:
 knitr::opts_current$set(label = "descriptivestats")
@@ -225,7 +238,8 @@ covariates <- cbind(dataset$yoe,
                    dataset$birthplace_indus, 
                    dataset$age_at_election, 
                    dataset$yod, 
-                   dataset$rec_soc)
+                   dataset$rec_soc,
+                   dataset$lifespan)
 
 
 panel_b <- data.frame(names = c("Coefficient", 
@@ -269,7 +283,7 @@ panel_b <- data.frame(names = c("Coefficient",
                                      n_nonpols_cov(dataset$defw2, covs = covariates),
                                      "2 x Optimal"))
 
-notitie <- "Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level. Panel A shows univariate regressions under the optimal MSE bandwidth, and twice the optimal bandwidth. In panel B, selected covariates are added, in particular, covariates that seemed to be unbalanced at the 2\\\\% cutoff. In particular, the regression controls for lifespan, times participated in election, birthplace population, birthplace characteristics, age at election, and socialist recommendations. *: p < 0.10, **: p < 0.05, ***: p < 0.01."
+notitie <- "Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level. Panel A shows univariate regressions under the optimal MSE bandwidth, and twice the optimal bandwidth. In panel B, selected covariates are added, in particular, covariates that seemed to be unbalanced at the 2\\\\% cutoff. In particular, the regression controls for lifespan, times participated in election, birthplace population, birthplace characteristics, age at election, and socialist recommendations. In addition, I control for politicians' lifespan. *: p < 0.10, **: p < 0.05, ***: p < 0.01."
 knitr::opts_current$set(label = "mainresults")
 datasummary_df(bind_rows(panel_a, panel_b) %>%
                  rename(` ` = names, 
@@ -315,6 +329,36 @@ placebo <- fig_data %>%
 
 
 ggplot2::ggsave("./Tables/placebo_test.pdf", placebo, width = 10, height = 5)
+
+# Create a bandwidth robuustness graph
+fig_data <- data.frame(bw_mult = seq(from = 0.3, to = 5, by = 0.1), 
+                       coef = vector(length = 48), 
+                       cil = vector(length = 48), 
+                       ciu = vector(length = 48))
+
+for(i in 1:length(seq(from = 0.3, to = 5, by = 0.1))){
+  
+  fig_data[['coef']][i] <- get_coef_and_ci(dataset$defw, bw_mult = fig_data[['bw_mult']][i])$coef
+  fig_data[['cil']][i] <- get_coef_and_ci(dataset$defw, bw_mult = fig_data[['bw_mult']][i])$cil
+  fig_data[['ciu']][i] <- get_coef_and_ci(dataset$defw, bw_mult = fig_data[['bw_mult']][i])$ciu
+  }
+
+
+bandwidthje <- fig_data %>%
+  ggplot(aes(x = bw_mult, y = coef)) + geom_line(color ='blue') +
+  geom_ribbon(aes(x = bw_mult, 
+                    ymin = cil, 
+                    ymax = ciu), 
+              alpha = 0.2,
+              size = 0.2, 
+              color = 'black') +
+  theme_bw() +
+  scale_x_continuous(breaks = scales::extended_breaks(n=15)) +
+  xlab("Optimal Bandwidth Multiplier") + ylab("Coefficient Estimate (95% CI)")
+
+ggplot2::ggsave("./Tables/bandwidth_test.pdf", bandwidthje, width = 10, height = 5)
+
+
 # Now create two plots, one with and one without covariate adjustment for log wealth
 # And combine them in one plot
 
@@ -351,13 +395,191 @@ cowplot::save_plot("./Tables/RDD_Plot.pdf", plot, base_width = 10, base_height =
 
 
 ## Mechanism 1: electoral competition (before/after expansion)
+make_covariates <- function(dataset){
+  cbind(dataset$yoe, 
+        dataset$howmany_before_alg,
+        log(1+dataset$birthplace_pop_1859), 
+        dataset$birthplace_agri, 
+        dataset$birthplace_indus, 
+        dataset$age_at_election, 
+        dataset$yod, 
+        dataset$rec_soc,
+        dataset$lifespan,
+        dataset$turnout)
+  
+}
+
+fig_data <- data.frame(cutoff =  seq(from = dmy("01-01-1880"), to = dmy("01-01-1900"), by = "6 months"),
+           coef_after = vector(length = 41),
+           coef_before = vector(length = 41),
+           se_after = vector(length = 41),
+           se_before = vector(length = 41))
+## calculate difference in rents by cutoff point 
+j <- 1
+for(i in seq(from = dmy("01-01-1880"), to = dmy("01-01-1900"), by = "6 months")){
+  
+  dataset2 <- dataset %>%
+    filter(lubridate::dmy(Verkiezingdatum) > i)
+  
+  covs <- NULL #make_covariates(dataset2)
+  regression_output <- rdrobust(y=dataset2[['defw']], x = dataset2[['margin']], covs = covs)
+  
+  coef_after <- regression_output$coef[1]
+  se_after <- regression_output$se[2]
+  
+  dataset3 <- dataset %>%
+    filter(lubridate::dmy(Verkiezingdatum) < i | politician_dummy == 0)
+  
+  #covs <- make_covariates(dataset3)
+  regression_output <- rdrobust(y=dataset3[['defw']], x = dataset3[['margin']], covs = covs)
+  
+  coef_before <- regression_output$coef[1]
+  se_before <- regression_output$se[2]
+  
+  fig_data[['coef_after']][j] <- coef_after
+  fig_data[['coef_before']][j] <- coef_before
+  fig_data[['se_after']][j] <- se_after
+  fig_data[['se_before']][j] <- se_before
+  
+  j <- j+1
+  
+}
+
+fig_data <- fig_data %>%
+  mutate(diff = coef_after - coef_before, 
+         var_diff = se_after^2 + se_before^2, 
+         z_val = pnorm(diff, mean = 0, sd = sqrt(var_diff)),
+         cil = diff - 1.65*sqrt(var_diff),
+         ciu = diff + 1.65*sqrt(var_diff))
+
+electoral_comp <- fig_data %>%
+  ggplot(aes(x = cutoff, y = diff)) + 
+  geom_errorbar(aes(x = cutoff, ymin = cil, ymax = ciu), width = 50, color = 'grey') +
+  geom_point(color='blue') +
+  theme_bw() +
+  geom_vline(xintercept = dmy("01-01-1887"), lty=2) +
+  geom_vline(xintercept = dmy("01-01-1896"), lty=2) + 
+  ylab("Difference in Rents Estimate After - Before") + xlab("Cutoff Election Date")
+
+ggsave("./Tables/electoral_competition.pdf", electoral_comp, width = 10, height = 5)
+
+## 2. Exploit differences in turnout
+
+## Turnout quantile graph
+
+fig_data <- data.frame(quantile = seq(from = 0.5, to = 0.98, by = 0.02),
+                       coef_after = vector(length = 25),
+                       coef_before = vector(length = 25),
+                       se_after = vector(length = 25),
+                       se_before = vector(length = 25))
+
+j <- 1
+
+for(i in seq(from = 0.5, to = 0.98, by = 0.02)){
+  # todo: get a better proxy for how many people live in the district in a late year
+  dataset2 <- dataset %>%
+    filter(turnout/(district_ov + district_prot + district_cath) > i)
+  
+  covs <- NULL #make_covariates(dataset2)
+  regression_output <- rdrobust(y=dataset2[['defw']], x = dataset2[['margin']], covs = covs)
+  
+  coef_after <- regression_output$coef[1]
+  se_after <- regression_output$se[2]
+  
+  dataset3 <- dataset %>%
+    filter(turnout/(district_ov + district_prot + district_cath) < i)
+  
+  #covs <- make_covariates(dataset3)
+  regression_output <- rdrobust(y=dataset3[['defw']], x = dataset3[['margin']], covs = covs)
+  
+  coef_before <- regression_output$coef[1]
+  se_before <- regression_output$se[2]
+  
+  fig_data[['coef_after']][j] <- coef_after
+  fig_data[['coef_before']][j] <- coef_before
+  fig_data[['se_after']][j] <- se_after
+  fig_data[['se_before']][j] <- se_before
+  
+  j <- j+1
+  
+}
+
+
+
+##(Differences in turnout) quantile graph
+
+rdrobust(y=dataset$defw, 
+         x= dataset$margin*log(dataset$turnout), 
+         covs=cbind(dataset$margin, dataset$turnout)) %>% 
+  summary()
+
+dataset_high <- dataset %>%
+  filter(turnout > median(turnout, na.rm = T))
+dataset_low <- dataset %>%
+  filter(turnout < median(turnout, na.rm = TRUE))
+
+rdrobust(dataset_high$defw, dataset_high$margin) %>% summary()
+rdrobust(dataset_low$defw, dataset_low$margin) %>% summary()
 
 ## Mechanism 2: Party organization (before/after party establishment)
 
 ## Mechanism 3: Career Paths
 
+## Business: 
+business <- dataset %>%
+  filter(prof_business == 1 | politician_dummy == 0)
+
+nonbusiness <- dataset %>%
+  filter(prof_business == 0 | politician_dummy == 0)
+
+covs <- make_covariates(business)
+rdrobust(y = business$defw, x = business$margin, covs = covs) %>% summary()
+
+covs <- make_covariates(nonbusiness)
+rdrobust(y = nonbusiness$defw, x = nonbusiness$margin, covs = covs) %>% summary()
+
+## Colonial:
+colonial <- dataset %>%
+  filter(prof_colonial == 1 | politician_dummy == 0)
+noncolonial <- dataset %>%
+  filter(prof_colonial == 0 | politician_dummy == 0)
+
+covs <- make_covariates(colonial)
+rdrobust(y = colonial$defw, x = colonial$margin) %>% summary()
+
+covs <- make_covariates(noncolonial)
+rdrobust(y=noncolonial$defw, x = noncolonial$margin, covs = covs) %>% summary()
 
 
-# todo: kableExtra notes align, notes fontsize
+## Politics:
+politics <- dataset %>%
+  filter(prof_politics == 1 | politician_dummy == 0) 
+nonpolitics <- dataset %>%
+  filter(prof_politics == 0 | politician_dummy == 0) 
+
+covs <- make_covariates(politics)
+rdrobust(y=politics$defw, x = politics$margin, covs = covs) %>% summary()
+
+covs <- make_covariates(nonpolitics)
+rdrobust(y=nonpolitics$defw, x = nonpolitics$margin, covs = covs) %>% summary()
 
 
+## Other way of testing politics with tenure
+hightenure <- dataset %>%
+  filter(tenure > quantile(tenure, 0.7, na.rm = TRUE) | politician_dummy == 0)
+lowtenure <- dataset %>%
+  filter(tenure < quantile(tenure, 0.7,  na.rm = TRUE) | politician_dummy == 0) 
+
+covs <- make_covariates(hightenure)
+rdrobust(y=hightenure$defw, x=hightenure$margin, covs = covs) %>% summary()
+
+covs <- make_covariates(lowtenure) 
+rdrobust(y=lowtenure$defw, x = lowtenure$margin, covs = covs) %>% summary()
+
+
+## All together
+career <- dataset %>%
+  filter(prof_business == 1 | prof_politics == 1 | prof_colonial == 1 | politician_dummy == 0)
+
+covs <- make_covariates(career)
+rdrobust(y=career$defw, x = career$margin, covs = covs) %>% summary()
