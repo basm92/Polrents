@@ -46,8 +46,7 @@ close <- 0.05
 
 # see ?datasummary for new columns to find out how to specify where the new column should be
 
-notes <- c("The table contains means for various set of variables conditioned on the absolute margin being < 0.2 (left panel) and <0.05 (right panel). The first two columns represent the means for politicians and non-politicians respectively, and the third column show the p-value of a Welch two-sample t-test. The last column shows the local non-parametric RD estimate, estimated by the procedure in \\citep{catt2020regression}. The standard error is shown between brackets. Significance is indicated by *: p < 0.1, **: p < 0.05, ***: p < 0.01.")
-
+notes <- c("The table contains means for various sets of variables conditioned on the absolute margin being < 0.2 (left panel) and <0.05 (right panel). The first two columns represent the means for politicians and non-politicians respectively, and the third column shows the p-value of a Welch two-sample t-test. The last column shows the local non-parametric RD estimate, estimated by the procedure in \\\\cite{cattaneo2019practical}. HC-Robust standard errors are shown between brackets. Significance is indicated by *: p < 0.1, **: p < 0.05, ***: p < 0.01.")
 knitr::opts_current$set(label = "covbal")
 datasummary(data = dataset,
             align = c("llllllll"),
@@ -89,8 +88,8 @@ datasummary(data = dataset,
   kableExtra::group_rows("Panel D: Birthplace Characteristics", 12, 19)  %>%
   kableExtra::group_rows("Panel E: District Characteristics", 20, 23) %>% 
   kableExtra::add_header_above(c(" " = 1, "Margin < 0.2" = 3, "Margin < 0.05" = 3, " " = 1)) %>%
-  kableExtra::footnote(general = notes, threeparttable = TRUE)  %>%
   kableExtra::kable_styling(latex_options = c("hold_position", "scale_down")) %>%
+  kableExtra::footnote(general = notes, footnote_as_chunk = T, threeparttable = T, escape = F,)  %>%
   kableExtra::save_kable("./Tables/covariate_balance.tex")
 
 
