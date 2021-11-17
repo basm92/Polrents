@@ -360,20 +360,21 @@ make_covariates <- function(dataset){
 }
 
 # Write a function to extract all these statistics at once
-get_stats_for_partytable <- function(dataset, covs = NULL){
-  out1 <- rdrobust(dataset[['defw']], dataset[['margin']], covs = covs)
+get_stats_for_partytable <- function(dataset, dv, covs = NULL){
+  out1 <- rdrobust(dataset[[dv]], dataset[['margin']], covs = covs)
   
   coef <- paste(round(out1$coef[1], 3))
   se1 <- round(out1$se[2], 3)
   se2 <- round(out1$se[3], 3)
   pv1 <- out1$pv[2]
   pv2 <- out1$pv[3]
+  n <- out1$N[2]
   
   if(between(pv1, 0.05, 0.1)){
     se1_out <- paste("(", se1, ")", "*", sep = "")
   } else if(between(pv1, 0.01, 0.05)){
     se1_out <- paste("(", se1, ")", "**", sep = "")
-  } else if(between(pv1, 0.01, 0.05)){
+  } else if(between(pv1, 0.000001, 0.01)){
     se1_out <- paste("(", se1, ")", "***", sep = "")
   } else if(between(pv1, 0.10, 1)) {
     se1_out <- paste("(", se1, ")", sep = "")
@@ -383,14 +384,14 @@ get_stats_for_partytable <- function(dataset, covs = NULL){
     se2_out <- paste("(", se2, ")", "*", sep = "")
   } else if(between(pv2, 0.01, 0.05)){
     se2_out <- paste("(", se2, ")", "**", sep = "")
-  } else if(between(pv2, 0.01, 0.05)){
+  } else if(between(pv2, 0.0000001, 0.01)){
     se2_out <- paste("(", se2, ")", "***", sep = "")
   } else if(between(pv2, 0.10, 1)) {
     se2_out <- paste("(", se2, ")", sep = "")
   }
   
   
-  out <- list(coef = coef, se1_out = se1_out, se2_out = se2_out)
+  out <- list(coef = coef, se1_out = se1_out, se2_out = se2_out, n = n)
   
   return(out)
   

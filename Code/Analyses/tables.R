@@ -536,62 +536,137 @@ make_covariates <- function(dataset){
 }
 
 prot <- dataset %>% filter(party_category == "protestant" | politician_dummy == 0)
-covs <- make_covariates(prot)
-prot_1 <- rdrobust(y=prot$defw, x = prot$margin)
-prot_2 <- rdrobust(y=prot$defw, x = prot$margin, covs = covs)
+covs_prot <- make_covariates(prot)
 
 cath <- dataset %>% filter(party_category == "catholic" | politician_dummy == 0)
-covs <- make_covariates(cath)
-cath_1 <- rdrobust(y=cath$defw, x = cath$margin)
-cath_2 <- rdrobust(y=cath$defw, x = cath$margin, covs = covs)
+covs_cath <- make_covariates(cath)
 
 lib <- dataset %>% filter(party_category == "liberal" | politician_dummy == 0)
-covs <- make_covariates(lib)
-lib_1 <- rdrobust(y=lib$defw, x = lib$margin)
-lib_2 <- rdrobust(y=lib$defw, x = lib$margin, covs = covs)
-
-
-
-covs <- make_covariates(cath)
-get_stats_for_partytable(cath, covs = covs)
+covs_lib <- make_covariates(lib)
 
 ## Make a table on the basis of the above ^ 
-data.frame(names = c("Coefficient",
+panel_a <- data.frame(names = c("Coefficient",
                      "SE (BC)",
                      "SE (Rob.)",
                      "N Treatment",
                      "Covariates"),
-           prot_one = c(paste(round(prot_1$coef[1],3)),
-                        paste(round(prot_1$se[2],3)),
-                        paste(round(prot_1$se[3],3)),
-                        prot_1$N[2],
+           prot_one = c(get_stats_for_partytable(prot, 'defw')[[1]],
+                        get_stats_for_partytable(prot, 'defw')[[2]],
+                        get_stats_for_partytable(prot, 'defw')[[3]],
+                        get_stats_for_partytable(prot, 'defw')[[4]],
                         "No"),
-           prot_two = c(paste(round(prot_2$coef[1],3)),
-                        paste(round(prot_2$se[2],3)),
-                        paste(round(prot_2$se[3],3)),
-                        prot_2$N[2],
+           prot_two = c(get_stats_for_partytable(prot, 'defw', covs = covs_prot)[[1]],
+                        get_stats_for_partytable(prot, 'defw', covs = covs_prot)[[2]],
+                        get_stats_for_partytable(prot, 'defw', covs = covs_prot)[[3]],
+                        get_stats_for_partytable(prot, 'defw', covs = covs_prot)[[4]],
                         "Yes"),
-           cath_one = c(paste(round(cath_1$coef[1],3)), 
-                        paste(round(cath_1$se[2],3)),
-                        paste(round(cath_1$se[3],3)),
-                        cath_1$N[2],
+           cath_one = c(get_stats_for_partytable(cath, 'defw')[[1]],
+                        get_stats_for_partytable(cath, 'defw')[[2]],
+                        get_stats_for_partytable(cath, 'defw')[[3]],
+                        get_stats_for_partytable(cath, 'defw')[[4]],
                         "No"),
-           cath_two = c(paste(round(cath_2$coef[1],3)), 
-                        paste(round(cath_2$se[2],3)),
-                        paste(round(cath_2$se[3],3)),
-                        cath_2$N[2],
+           cath_two = c(get_stats_for_partytable(cath, 'defw', covs = covs_cath)[[1]],
+                        get_stats_for_partytable(cath, 'defw', covs = covs_cath)[[2]],
+                        get_stats_for_partytable(cath, 'defw', covs = covs_cath)[[3]],
+                        get_stats_for_partytable(cath, 'defw', covs = covs_cath)[[4]],
                         "Yes"),
-           lib_one = c(paste(round(lib_1$coef[1],3)), 
-                       paste(round(lib_1$se[2],3)),
-                       paste(round(lib_1$se[3],3)),
-                       lib_1$N[2],
-                       "No"),
-           lib_two = c(paste(round(lib_2$coef[1],3)), 
-                       paste(round(lib_2$se[2],3)),
-                       paste(round(lib_2$se[3],3)),
-                       lib_2$N[2],
+           lib_one = c(get_stats_for_partytable(lib, 'defw')[[1]],
+                        get_stats_for_partytable(lib, 'defw')[[2]],
+                        get_stats_for_partytable(lib, 'defw')[[3]],
+                        get_stats_for_partytable(lib, 'defw')[[4]],
+                        "No"),
+           lib_two = c(get_stats_for_partytable(lib, 'defw', covs = covs_lib)[[1]],
+                       get_stats_for_partytable(lib, 'defw', covs = covs_lib)[[2]],
+                       get_stats_for_partytable(lib, 'defw', covs = covs_lib)[[3]],
+                       get_stats_for_partytable(lib, 'defw', covs = covs_lib)[[4]],
                        "Yes"))
 
+panel_b <- data.frame(names = c("Coefficient",
+                                "SE (BC)",
+                                "SE (Rob.)",
+                                "N Treatment",
+                                "Covariates"),
+                      prot_one = c(get_stats_for_partytable(prot, 'defw2')[[1]],
+                                   get_stats_for_partytable(prot, 'defw2')[[2]],
+                                   get_stats_for_partytable(prot, 'defw2')[[3]],
+                                   get_stats_for_partytable(prot, 'defw2')[[4]],
+                                   "No"),
+                      prot_two = c(get_stats_for_partytable(prot, 'defw2', covs = covs_prot)[[1]],
+                                   get_stats_for_partytable(prot, 'defw2', covs = covs_prot)[[2]],
+                                   get_stats_for_partytable(prot, 'defw2', covs = covs_prot)[[3]],
+                                   get_stats_for_partytable(prot, 'defw2', covs = covs_prot)[[4]],
+                                   "Yes"),
+                      cath_one = c(get_stats_for_partytable(cath, 'defw2')[[1]],
+                                   get_stats_for_partytable(cath, 'defw2')[[2]],
+                                   get_stats_for_partytable(cath, 'defw2')[[3]],
+                                   get_stats_for_partytable(cath, 'defw2')[[4]],
+                                   "No"),
+                      cath_two = c(get_stats_for_partytable(cath, 'defw2', covs = covs_cath)[[1]],
+                                   get_stats_for_partytable(cath, 'defw2', covs = covs_cath)[[2]],
+                                   get_stats_for_partytable(cath, 'defw2', covs = covs_cath)[[3]],
+                                   get_stats_for_partytable(cath, 'defw2', covs = covs_cath)[[4]],
+                                   "Yes"),
+                      lib_one = c(get_stats_for_partytable(lib, 'defw2')[[1]],
+                                  get_stats_for_partytable(lib, 'defw2')[[2]],
+                                  get_stats_for_partytable(lib, 'defw2')[[3]],
+                                  get_stats_for_partytable(lib, 'defw2')[[4]],
+                                  "No"),
+                      lib_two = c(get_stats_for_partytable(lib, 'defw2', covs = covs_lib)[[1]],
+                                  get_stats_for_partytable(lib, 'defw2', covs = covs_lib)[[2]],
+                                  get_stats_for_partytable(lib, 'defw2', covs = covs_lib)[[3]],
+                                  get_stats_for_partytable(lib, 'defw2', covs = covs_lib)[[4]],
+                                  "Yes"))
+
+notitie <- "Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level. Panel A shows RD estimates of Log(Wealth) under the optimal MSE bandwidth per party. In panel B, I  show RD estimates of Ihs(Wealth) per party. I control for age, lifespan and newspaper recommendations. *: p < 0.10, **: p < 0.05, ***: p < 0.01."
+knitr::opts_current$set(label = "results_per_party")
+datasummary_df(bind_rows(panel_a, panel_b) %>%
+                 rename(` ` = names, 
+                        "(1)" = prot_one,
+                        "(2)" = prot_two,
+                        "(3)" = cath_one,
+                        "(4)"  = cath_two,
+                        "(5)" = lib_one,
+                        "(6)" = lib_two), 
+               out = "kableExtra",
+               output = "latex",
+               title = "RD Estimates by Party") %>%
+  kableExtra::add_header_above(c(" " = 1, "Protestants" = 2, "Catholics" = 2, "Liberals" = 2)) %>%
+  kableExtra::group_rows("Panel A: Log(Wealth)", 1, 5)  %>%
+  kableExtra::group_rows("Panel B: Ihs(Wealth)", 6, 10) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"), font_size=10) %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::save_kable("./Tables/rdd_resultsperparty.tex")
+
+# plots
+p1 <- rdplot(prot$defw, prot$margin, 
+       ci=90, 
+       x.lim = c(-0.2, 0.2), 
+       title = "Protestants", 
+       y.label = "Log(Wealth)",
+       x.label = "Margin")
+p1 <- p1$rdplot
+
+p2 <- rdplot(y=cath$defw, x= cath$margin, 
+       ci = 90,
+       x.lim = c(-0.2, 0.2),
+       title = "Catholics",
+       y.label = "Log(Wealth)",
+       x.label = "Margin")
+p2 <- p2$rdplot
+
+p3 <- rdplot(lib$defw, lib$margin, 
+       ci=90, 
+       x.lim = c(-0.2, 0.2),
+       title = "Liberals", 
+       y.label = "Log(Wealth)",
+       x.label = "Margin")
+p3 <- p3$rdplot
+
+plotteke <- cowplot::plot_grid(p1, p2, p3, ncol = 3)
+cowplot::save_plot("./Tables/rdplot_per_party.pdf", 
+                   plotteke, 
+                   base_height = 4.8, 
+                   base_width =12)
 
 ## Second thing: WITHIN party - make use of timing of party formation
 ### Set up a bootstrap to compute the differences 
