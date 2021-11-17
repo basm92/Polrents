@@ -589,6 +589,35 @@ data.frame(names = c("Coefficient",
 
 
 ## Second thing: WITHIN party - make use of timing of party formation
+dataset_wp <- dataset %>%
+  mutate(within_party = case_when(party_category == "catholic" & election_after_rk == 1 ~ 1,
+                                  party_category == "protestant" & election_after_arp == 1 ~ 1,
+                                  party_category == "liberal" & election_after_lib == 1 ~ 1,
+                                  TRUE ~ 0))
+
+make_covariates <- function(dataset){
+  cbind(
+    dataset$age_at_election, 
+    dataset$rec_soc,
+    dataset$rec_ar,
+    dataset$rec_kath,
+    dataset$rec_lib,
+    dataset$lifespan)
+  
+}
+
+test <- dataset_wp %>%
+  filter(within_party == 1 | politician_dummy == 0)
+
+test2 <- dataset_wp %>%
+  filter(within_party == 0 | politician_dummy == 0)
+
+covs <- make_covariates(test)
+rdrobust(test$defw, test$margin, covs = covs) %>% summary()
+covs <- make_covariates(test2)
+rdrobust(test2$defw, test2$margin, covs = covs) %>% summary()
+
+
 
 ## Mechanism 3: Career Paths
 
