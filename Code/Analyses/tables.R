@@ -467,37 +467,39 @@ ggsave("./Tables/electoral_competition.pdf", electoral_comp, width = 10, height 
 
 ## Turnout quantile graph
 
-fig_data <- data.frame(quantile = seq(from = 0.5, to = 0.98, by = 0.02),
-                       coef_after = vector(length = 25),
-                       coef_before = vector(length = 25),
-                       se_after = vector(length = 25),
-                       se_before = vector(length = 25))
+fig_data <- data.frame(quantile = seq(from = 0.4, to = 0.7, by = 0.01),
+                       coef_higher = vector(length = 31),
+                       coef_lower = vector(length = 31),
+                       se_after = vector(length = 31),
+                       se_before = vector(length = 31))
 
 j <- 1
 
-for(i in seq(from = 0.5, to = 0.98, by = 0.02)){
-  # todo: get a better proxy for how many people live in the district in a late year
+for(i in seq(from = 0.4, to = 0.7, by = 0.01)){
   dataset2 <- dataset %>%
-    mutate(effective_turnout = if_else(turnout/amount_electors > 1, 1, turnout/amount_electors))
-    filter(turnout_pct) > quantile(effective_turnout, i)
+    filter(!is.na(defw)) %>%
+    mutate(effective_turnout = if_else(turnout/amount_electors > 1, 1, turnout/amount_electors)) %>%
+    filter(effective_turnout > quantile(effective_turnout, i, na.rm = T))
   
-  covs <- NULL #make_covariates(dataset2)
+  covs <- make_covariates(dataset2)
   regression_output <- rdrobust(y=dataset2[['defw']], x = dataset2[['margin']], covs = covs)
   
   coef_after <- regression_output$coef[1]
   se_after <- regression_output$se[2]
   
+ 
   dataset3 <- dataset %>%
-    filter(turnout/(district_ov + district_prot + district_cath) < i)
+    mutate(effective_turnout = if_else(turnout/amount_electors > 1, 1, turnout/amount_electors)) %>%
+    filter(effective_turnout < quantile(effective_turnout, i, na.rm = T))
   
-  #covs <- make_covariates(dataset3)
+  covs <- make_covariates(dataset3)
   regression_output <- rdrobust(y=dataset3[['defw']], x = dataset3[['margin']], covs = covs)
   
   coef_before <- regression_output$coef[1]
   se_before <- regression_output$se[2]
   
-  fig_data[['coef_after']][j] <- coef_after
-  fig_data[['coef_before']][j] <- coef_before
+  fig_data[['coef_higher']][j] <- coef_after
+  fig_data[['coef_lower']][j] <- coef_before
   fig_data[['se_after']][j] <- se_after
   fig_data[['se_before']][j] <- se_before
   
@@ -505,24 +507,41 @@ for(i in seq(from = 0.5, to = 0.98, by = 0.02)){
   
 }
 
+fig_data <- fig_data %>%
+  mutate(diff = coef_higher - coef_lower, 
+         var_diff = se_after^2 + se_before^2, 
+         z_val = pnorm(diff, mean = 0, sd = sqrt(var_diff)),
+         cil = diff - 1.65*sqrt(var_diff),
+         ciu = diff + 1.65*sqrt(var_diff))
 
+turnout_competition <- fig_data %>%
+  ggplot(aes(x = quantile, y = diff)) + 
+  geom_errorbar(aes(x = quantile, ymin = cil, ymax = ciu), width = 0.005, color = 'grey') +
+  geom_point(color='blue') +
+  theme_bw() + ylab("Difference in Rents Estimate High - Low Quantile") + xlab("Turnout Quantile")
 
-##(Differences in turnout) quantile graph
-
-rdrobust(y=dataset$defw, 
-         x= dataset$margin*log(dataset$turnout), 
-         covs=cbind(dataset$margin, dataset$turnout)) %>% 
-  summary()
-
-dataset_high <- dataset %>%
-  filter(turnout > median(turnout, na.rm = T))
-dataset_low <- dataset %>%
-  filter(turnout < median(turnout, na.rm = TRUE))
-
-rdrobust(dataset_high$defw, dataset_high$margin) %>% summary()
-rdrobust(dataset_low$defw, dataset_low$margin) %>% summary()
+ggsave("./Tables/turnout_competition.pdf", turnout_competition, width = 10, height = 5)
 
 ## Mechanism 2: Party organization (before/after party establishment)
+make_covariates <- function(dataset){
+  cbind(
+        dataset$age_at_election, 
+        dataset$rec_soc,
+        dataset$rec_ar,
+        dataset$rec_kath,
+        dataset$rec_lib,
+        dataset$lifespan)
+  
+}
+
+prot <- dataset %>% filter(party_category == "protestant" | politician_dummy == 0)
+covs <- make_covariates(prot)
+rdrobust(y=prot$defw, x = prot$margin, covs = covs) %>% summary()
+cath <- dataset %>% filter(party_category == "catholic" | politician_dummy == 0)
+covs <- make_covariates(cath)
+rdrobust(y=cath$defw, x = cath$margin, covs = covs) %>% summary()
+lib <- dataset %>% filter(party_category == "liberal" | rec_lib == 1)
+rdrobust(y=lib$defw, x = lib$margin) %>% summary()
 
 ## Mechanism 3: Career Paths
 
