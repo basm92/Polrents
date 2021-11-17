@@ -523,6 +523,7 @@ turnout_competition <- fig_data %>%
 ggsave("./Tables/turnout_competition.pdf", turnout_competition, width = 10, height = 5)
 
 ## Mechanism 2: Party organization (before/after party establishment)
+### Make a table for this - BETWEEN party with and without covariates
 make_covariates <- function(dataset){
   cbind(
         dataset$age_at_election, 
@@ -536,12 +537,58 @@ make_covariates <- function(dataset){
 
 prot <- dataset %>% filter(party_category == "protestant" | politician_dummy == 0)
 covs <- make_covariates(prot)
-rdrobust(y=prot$defw, x = prot$margin, covs = covs) %>% summary()
+prot_1 <- rdrobust(y=prot$defw, x = prot$margin)
+prot_2 <- rdrobust(y=prot$defw, x = prot$margin, covs = covs)
+
 cath <- dataset %>% filter(party_category == "catholic" | politician_dummy == 0)
 covs <- make_covariates(cath)
-rdrobust(y=cath$defw, x = cath$margin, covs = covs) %>% summary()
-lib <- dataset %>% filter(party_category == "liberal" | rec_lib == 1)
-rdrobust(y=lib$defw, x = lib$margin) %>% summary()
+cath_1 <- rdrobust(y=cath$defw, x = cath$margin)
+cath_2 <- rdrobust(y=cath$defw, x = cath$margin, covs = covs)
+
+lib <- dataset %>% filter(party_category == "liberal" | politician_dummy == 0)
+covs <- make_covariates(lib)
+lib_1 <- rdrobust(y=lib$defw, x = lib$margin)
+lib_2 <- rdrobust(y=lib$defw, x = lib$margin, covs = covs)
+
+## Make a table
+data.frame(names = c("Coefficient",
+                     "SE (BC)",
+                     "SE (Rob.)",
+                     "N Treatment",
+                     "Covariates"),
+           prot_one = c(paste(round(prot_1$coef[1],3)),
+                        paste(round(prot_1$se[2],3)),
+                        paste(round(prot_1$se[3],3)),
+                        prot_1$N[2],
+                        "No"),
+           prot_two = c(paste(round(prot_2$coef[1],3)),
+                        paste(round(prot_2$se[2],3)),
+                        paste(round(prot_2$se[3],3)),
+                        prot_2$N[2],
+                        "Yes"),
+           cath_one = c(paste(round(cath_1$coef[1],3)), 
+                        paste(round(cath_1$se[2],3)),
+                        paste(round(cath_1$se[3],3)),
+                        cath_1$N[2],
+                        "No"),
+           cath_two = c(paste(round(cath_2$coef[1],3)), 
+                        paste(round(cath_2$se[2],3)),
+                        paste(round(cath_2$se[3],3)),
+                        cath_2$N[2],
+                        "Yes"),
+           lib_one = c(paste(round(lib_1$coef[1],3)), 
+                       paste(round(lib_1$se[2],3)),
+                       paste(round(lib_1$se[3],3)),
+                       lib_1$N[2],
+                       "No"),
+           lib_two = c(paste(round(lib_2$coef[1],3)), 
+                       paste(round(lib_2$se[2],3)),
+                       paste(round(lib_2$se[3],3)),
+                       lib_2$N[2],
+                       "Yes"))
+
+
+## Second thing: WITHIN party - make use of timing of party formation
 
 ## Mechanism 3: Career Paths
 
