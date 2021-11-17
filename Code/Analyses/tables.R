@@ -550,7 +550,12 @@ covs <- make_covariates(lib)
 lib_1 <- rdrobust(y=lib$defw, x = lib$margin)
 lib_2 <- rdrobust(y=lib$defw, x = lib$margin, covs = covs)
 
-## Make a table
+
+
+covs <- make_covariates(cath)
+get_stats_for_partytable(cath, covs = covs)
+
+## Make a table on the basis of the above ^ 
 data.frame(names = c("Coefficient",
                      "SE (BC)",
                      "SE (Rob.)",
@@ -589,6 +594,7 @@ data.frame(names = c("Coefficient",
 
 
 ## Second thing: WITHIN party - make use of timing of party formation
+### Set up a bootstrap to compute the differences 
 dataset_wp <- dataset %>%
   mutate(within_party = case_when(party_category == "catholic" & election_after_rk == 1 ~ 1,
                                   party_category == "protestant" & election_after_arp == 1 ~ 1,
@@ -606,17 +612,19 @@ make_covariates <- function(dataset){
   
 }
 
-test <- dataset_wp %>%
+in_party <- dataset_wp %>%
   filter(within_party == 1 | politician_dummy == 0)
 
-test2 <- dataset_wp %>%
+out_party <- dataset_wp %>%
   filter(within_party == 0 | politician_dummy == 0)
 
-covs <- make_covariates(test)
-rdrobust(test$defw, test$margin, covs = covs) %>% summary()
-covs <- make_covariates(test2)
-rdrobust(test2$defw, test2$margin, covs = covs) %>% summary()
+covs <- make_covariates(in_party)
+rdrobust(in_party$defw, in_party$margin, covs = covs) %>% summary()
+rdrobust(in_partyt$defw2, in_party$margin, covs = covs) %>% summary()
 
+covs <- make_covariates(out_party)
+rdrobust(out_party$defw, out_party$margin, covs = covs) %>% summary()
+rdrobust(out_party$defw2, out_party$margin, covs = covs) %>% summary()
 
 
 ## Mechanism 3: Career Paths
