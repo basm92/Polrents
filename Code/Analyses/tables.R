@@ -478,7 +478,8 @@ j <- 1
 for(i in seq(from = 0.5, to = 0.98, by = 0.02)){
   # todo: get a better proxy for how many people live in the district in a late year
   dataset2 <- dataset %>%
-    filter(turnout/(district_ov + district_prot + district_cath) > i)
+    mutate(effective_turnout = if_else(turnout/amount_electors > 1, 1, turnout/amount_electors))
+    filter(turnout_pct) > quantile(effective_turnout, i)
   
   covs <- NULL #make_covariates(dataset2)
   regression_output <- rdrobust(y=dataset2[['defw']], x = dataset2[['margin']], covs = covs)
