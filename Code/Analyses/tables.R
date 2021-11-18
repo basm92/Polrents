@@ -1,5 +1,5 @@
 library(readxl); library(tidyverse); library(hrbrthemes); 
-library(rdrobust); library(modelsummary); library(ggtext); library(RATest); library(lubridate)
+library(rdrobust); library(modelsummary); library(ggtext); library(RATest); library(lubridate); library(extraDistr)
 
 source("./Code/Analyses/functions_for_tables.R")
 # Parameters
@@ -669,12 +669,31 @@ cowplot::save_plot("./Tables/rdplot_per_party.pdf",
                    base_width =12)
 
 ## Second thing: WITHIN party - make use of timing of party formation
-### Set up a bootstrap to compute the differences 
+### Set up a bootstrap to compute the distribution
+
+# Within and without party variation
 dataset_wp <- dataset %>%
   mutate(within_party = case_when(party_category == "catholic" & election_after_rk == 1 ~ 1,
                                   party_category == "protestant" & election_after_arp == 1 ~ 1,
                                   party_category == "liberal" & election_after_lib == 1 ~ 1,
                                   TRUE ~ 0))
+
+in_party <- dataset_wp %>%
+  filter(within_party == 1 | politician_dummy == 0)
+
+out_party <- dataset_wp %>%
+  filter(within_party == 0 | politician_dummy == 0)
+
+make_covariates <- function(dataset){
+  cbind(
+        log(1+dataset$birthplace_pop_1859), 
+        dataset$yoe,
+        dataset$birthplace_agri, 
+        dataset$age_at_election, 
+        dataset$taxespercap_1859,
+        dataset$district_prot,
+        dataset$lifespan)
+}
 
 make_covariates <- function(dataset){
   cbind(
@@ -687,22 +706,151 @@ make_covariates <- function(dataset){
   
 }
 
+covs_ip <- make_covariates(in_party)
+covs_op <- make_covariates(out_party)
+
+# Full control group
+panel_a <- data.frame(names = c("Coefficient",
+                     "SE (BC)",
+                     "SE (Rob.)",
+                     "N Treated",
+                     "N Control", 
+                     "Covariates"),
+           inparty1 = c(get_stats_withinparty(in_party, dv = 'defw')[[1]],
+                        get_stats_withinparty(in_party, dv = 'defw')[[2]],
+                        get_stats_withinparty(in_party, dv = 'defw')[[3]],
+                        get_stats_withinparty(in_party, dv = 'defw')[[4]],
+                        get_stats_withinparty(in_party, dv = 'defw')[[5]],
+                        "No"),
+           outparty1 = c(get_stats_withinparty(out_party, dv = 'defw')[[1]],
+                         get_stats_withinparty(out_party, dv = 'defw')[[2]],
+                         get_stats_withinparty(out_party, dv = 'defw')[[3]],
+                         get_stats_withinparty(out_party, dv = 'defw')[[4]],
+                         get_stats_withinparty(out_party, dv = 'defw')[[5]],
+                         "No"),
+           diff1 = c(as.numeric(get_stats_withinparty(in_party, dv = 'defw')[[1]]) - as.numeric(get_stats_withinparty(out_party, dv = 'defw')[[1]]),
+                    round(calc_pv(-0.143), 3), 
+                    " ",
+                    " ", 
+                    " ",
+                    " "),
+           inparty2 = c(get_stats_withinparty(in_party, dv = 'defw', covs = covs_ip)[[1]],
+                        get_stats_withinparty(in_party, dv = 'defw', covs = covs_ip)[[2]],
+                        get_stats_withinparty(in_party, dv = 'defw', covs = covs_ip)[[3]],
+                        get_stats_withinparty(in_party, dv = 'defw', covs = covs_ip)[[4]],
+                        get_stats_withinparty(in_party, dv = 'defw', covs = covs_ip)[[5]],
+                        "Yes"),
+           outparty2 = c(get_stats_withinparty(out_party, dv = 'defw', covs = covs_op)[[1]],
+                         get_stats_withinparty(out_party, dv = 'defw', covs = covs_op)[[2]],
+                         get_stats_withinparty(out_party, dv = 'defw', covs = covs_op)[[3]],
+                         get_stats_withinparty(out_party, dv = 'defw', covs = covs_op)[[4]],
+                         get_stats_withinparty(out_party, dv = 'defw', covs = covs_op)[[5]],
+                         "Yes"),
+           diff2 = c(as.numeric(get_stats_withinparty(in_party, dv = 'defw', covs = covs_ip)[[1]]) - as.numeric(get_stats_withinparty(out_party, dv = 'defw', covs = covs_op)[[1]]),
+                    round(calc_pv(-1.256), 3), 
+                    " ",
+                    " ", 
+                    " ",
+                    " "))
+
 in_party <- dataset_wp %>%
-  filter(within_party == 1 | politician_dummy == 0)
-
+  filter(within_party == 1 | (politician_dummy == 0 & election_after_arp == 1))
 out_party <- dataset_wp %>%
-  filter(within_party == 0 | politician_dummy == 0)
+  filter(within_party == 0 & yoe < 1879)
 
-covs <- make_covariates(in_party)
-rdrobust(in_party$defw, in_party$margin, covs = covs) %>% summary()
-rdrobust(in_partyt$defw2, in_party$margin, covs = covs) %>% summary()
+covs_ip <- make_covariates(in_party)
+covs_op <- make_covariates(out_party)
 
-covs <- make_covariates(out_party)
-rdrobust(out_party$defw, out_party$margin, covs = covs) %>% summary()
-rdrobust(out_party$defw2, out_party$margin, covs = covs) %>% summary()
+# Contemporaneous control group
+panel_b <- data.frame(names = c("Coefficient",
+                                "SE (BC)",
+                                "SE (Rob.)",
+                                "N Treated",
+                                "N Control", 
+                                "Covariates"),
+                      inparty1 = c(get_stats_withinparty(in_party, dv = 'defw')[[1]],
+                                   get_stats_withinparty(in_party, dv = 'defw')[[2]],
+                                   get_stats_withinparty(in_party, dv = 'defw')[[3]],
+                                   get_stats_withinparty(in_party, dv = 'defw')[[4]],
+                                   get_stats_withinparty(in_party, dv = 'defw')[[5]],
+                                   "No"),
+                      outparty1 = c(get_stats_withinparty(out_party, dv = 'defw')[[1]],
+                                    get_stats_withinparty(out_party, dv = 'defw')[[2]],
+                                    get_stats_withinparty(out_party, dv = 'defw')[[3]],
+                                    get_stats_withinparty(out_party, dv = 'defw')[[4]],
+                                    get_stats_withinparty(out_party, dv = 'defw')[[5]],
+                                    "No"),
+                      diff1 = c(as.numeric(get_stats_withinparty(in_party, dv = 'defw')[[1]]) - as.numeric(get_stats_withinparty(out_party, dv = 'defw')[[1]]),
+                               round(calc_pv(-1.07), 3), 
+                               " ",
+                               " ", 
+                               " ",
+                               " "),
+                      inparty2 = c(get_stats_withinparty(in_party, dv = 'defw', covs = covs_ip)[[1]],
+                                   get_stats_withinparty(in_party, dv = 'defw', covs = covs_ip)[[2]],
+                                   get_stats_withinparty(in_party, dv = 'defw', covs = covs_ip)[[3]],
+                                   get_stats_withinparty(in_party, dv = 'defw', covs = covs_ip)[[4]],
+                                   get_stats_withinparty(in_party, dv = 'defw', covs = covs_ip)[[5]],
+                                   "Yes"),
+                      outparty2 = c(get_stats_withinparty(out_party, dv = 'defw', covs = covs_op)[[1]],
+                                    get_stats_withinparty(out_party, dv = 'defw', covs = covs_op)[[2]],
+                                    get_stats_withinparty(out_party, dv = 'defw', covs = covs_op)[[3]],
+                                    get_stats_withinparty(out_party, dv = 'defw', covs = covs_op)[[4]],
+                                    get_stats_withinparty(out_party, dv = 'defw', covs = covs_op)[[5]],
+                                    "Yes"),
+                      diff2 = c(as.numeric(get_stats_withinparty(in_party, dv = 'defw', covs=covs_ip)[[1]]) - as.numeric(get_stats_withinparty(out_party, dv = 'defw', covs = covs_op)[[1]]),
+                               round(calc_pv(-2.796), 3), 
+                               " ",
+                               " ", 
+                               " ",
+                               " "))
 
+# Now, create the table
+notitie <- "The table shows RD estimates using the MSE-optimal bandwidth \\\\citep{cattaneo2019practical}. The Dependent Variable is Log(Personal Wealth). I report bias-corrected and robust standard errors. Panel A uses the entire control group, whereas panel B opts for control-observations from the pre-and post-party periods respectively. Columns (1) and (2) contain estimates with no covariates, and columns (3) and (4) control for potential imbalances in lifespan, age and newspaper recommendations. *: p < 0.1, **: p < 0.05, ***: p < 0.01."
+knitr::opts_current$set(label = "results_within_party")
+datasummary_df(bind_rows(panel_a, panel_b) %>%
+                 rename(` ` = names,
+                        "(1)" = inparty1,
+                        "(2)" = outparty1,
+                        `  ` = diff1,
+                        "(3)" = inparty2,
+                        "(4)" = outparty2,
+                        `   ` = diff2),
+               align = c("lllrllr"),
+               out = "kableExtra",
+               output = "latex",
+               title = "RD Estimates of Political Rents according to Party Establishment") %>%
+  kableExtra::group_rows("Panel A: All control observations", 1, 6) %>%
+  kableExtra::group_rows("Panel B: Contemporaneous control observations", 7, 12) %>%
+  kableExtra::add_header_above(c(" " = 1, "After" = 1, "Before" = 1, "Diff. (p-value)" = 1, "After" = 1, "Before" = 1,  "Diff. (p-value)" = 1)) %>%
+  kableExtra::add_header_above(c(" " = 1, "No Covariates" = 3, "With Covariates" = 3)) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"), font_size=10) %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::save_kable("./Tables/in_out_party_effect.tex")
 
 ## Mechanism 3: Career Paths
+
+make_covariates <- function(dataset){
+  cbind(
+    dataset$age_at_election, 
+    dataset$rec_soc,
+    dataset$rec_ar,
+    dataset$rec_kath,
+    dataset$rec_lib,
+    dataset$lifespan)
+  
+}
+
+make_covariates <- function(dataset){
+  cbind(
+    log(1+dataset$birthplace_pop_1859), 
+    dataset$yoe,
+    dataset$birthplace_agri, 
+    dataset$age_at_election, 
+    dataset$taxespercap_1859,
+    dataset$district_prot,
+    dataset$lifespan)
+}
 
 ## Business: 
 business <- dataset %>%
@@ -712,10 +860,10 @@ nonbusiness <- dataset %>%
   filter(prof_business == 0 | politician_dummy == 0)
 
 covs <- make_covariates(business)
-rdrobust(y = business$defw, x = business$margin, covs = covs) %>% summary()
+rdrobust(y = business$defw2, x = business$margin, covs = make_covariates(business)) %>% summary()
 
 covs <- make_covariates(nonbusiness)
-rdrobust(y = nonbusiness$defw, x = nonbusiness$margin, covs = covs) %>% summary()
+rdrobust(y = nonbusiness$defw2, x = nonbusiness$margin, covs = make_covariates(nonbusiness)) %>% summary()
 
 ## Colonial:
 colonial <- dataset %>%
@@ -724,10 +872,10 @@ noncolonial <- dataset %>%
   filter(prof_colonial == 0 | politician_dummy == 0)
 
 covs <- make_covariates(colonial)
-rdrobust(y = colonial$defw, x = colonial$margin) %>% summary()
+rdrobust(y = colonial$defw2, x = colonial$margin, covs = make_covariates(colonial)) %>% summary()
 
 covs <- make_covariates(noncolonial)
-rdrobust(y=noncolonial$defw, x = noncolonial$margin, covs = covs) %>% summary()
+rdrobust(y=noncolonial$defw, x = noncolonial$margin, covs = make_covariates(noncolonial)) %>% summary()
 
 
 ## Politics:
@@ -737,28 +885,87 @@ nonpolitics <- dataset %>%
   filter(prof_politics == 0 | politician_dummy == 0) 
 
 covs <- make_covariates(politics)
-rdrobust(y=politics$defw, x = politics$margin, covs = covs) %>% summary()
+rdrobust(y=politics$defw, x = politics$margin, covs = make_covariates(politics)) %>% summary()
 
 covs <- make_covariates(nonpolitics)
-rdrobust(y=nonpolitics$defw, x = nonpolitics$margin, covs = covs) %>% summary()
+rdrobust(y=nonpolitics$defw, x = nonpolitics$margin, covs = make_covariates(nonpolitics)) %>% summary()
+
 
 
 ## Other way of testing politics with tenure
-hightenure <- dataset %>%
-  filter(tenure > quantile(tenure, 0.7, na.rm = TRUE) | politician_dummy == 0)
-lowtenure <- dataset %>%
-  filter(tenure < quantile(tenure, 0.7,  na.rm = TRUE) | politician_dummy == 0) 
+## Create dataset
+fig_data <- data.frame('quantile' = seq(0.5, 0.8, by = 0.05),
+                      'est_hightenure' = vector(length = 7),
+                      'se_hightenure' = vector(length =7),
+                       'est_lowtenure' = vector(length = 7),
+                      'se_lowtenure' = vector(length = 7))
 
-covs <- make_covariates(hightenure)
-rdrobust(y=hightenure$defw, x=hightenure$margin, covs = covs) %>% summary()
+for(i in 1:7){
+  sequence <- seq(0.5, 0.8, by = 0.05)
+  
+  hightenure <- dataset %>%
+    filter(tenure > quantile(tenure, sequence[i], na.rm = TRUE) | politician_dummy == 0)
+  lowtenure <- dataset %>%
+    filter(tenure < quantile(tenure, sequence[i], na.rm = TRUE) | politician_dummy == 0)  
+  
+  high <- rdrobust(y=hightenure$defw2, x=hightenure$margin, covs = make_covariates(hightenure))
+  low <- rdrobust(y=lowtenure$defw2, x = lowtenure$margin, covs = make_covariates(lowtenure))
+  
+  fig_data[['est_hightenure']][i] <- high$coef[1]
+  fig_data[['est_lowtenure']][i] <- low$coef[1]
+  fig_data[['se_hightenure']][i] <- high$se[1]
+  fig_data[['se_lowtenure']][i] <- low$se[1]
+  
+}
 
-covs <- make_covariates(lowtenure) 
-rdrobust(y=lowtenure$defw, x = lowtenure$margin, covs = covs) %>% summary()
+figgetje <- fig_data %>%
+  ggplot(aes(x = quantile)) + 
+  geom_line(aes(y = est_hightenure, color = 'Above Cut-Off')) +
+  theme_bw() + 
+  geom_errorbar(aes(x = quantile - 0.0025, 
+                    ymin = est_hightenure - 1.65*se_hightenure, 
+                    ymax = est_hightenure + 1.65*se_hightenure), 
+                width = 0.005,
+                color = 'brown',
+                lty = 1) + 
+  geom_point(aes(y = est_hightenure), color = 'brown') +
+  geom_line(aes(y = est_lowtenure, color = 'Below Cut-Off')) + 
+  geom_errorbar(aes(x = quantile + 0.0025,
+                    ymin = est_lowtenure - 1.65*se_lowtenure,
+                    ymax = est_lowtenure + 1.65*se_hightenure),
+                width = 0.005,
+                color = 'blue', 
+                lty = 3) + 
+  geom_point(aes(y = est_lowtenure), color = 'blue') + 
+  labs(color = "Tenure Status", x = "Quantile Cut-Off", y = "RD Estimate") +
+  scale_color_manual(values=c('brown', 'blue'))
+
+ggsave("./Tables/fig_tenure_politics.pdf", figgetje, width = 10, height = 4)
+
+## Randstad / Non-Randstad
+make_covariates <- function(dataset){
+  cbind(dataset$yoe, 
+        dataset$howmany_before_alg,
+        log(1+dataset$birthplace_pop_1859), 
+        dataset$birthplace_agri, 
+        dataset$birthplace_indus, 
+        dataset$age_at_election, 
+        dataset$yod, 
+        dataset$rec_soc,
+        dataset$lifespan,
+        dataset$turnout)
+}
 
 
-## All together
-career <- dataset %>%
-  filter(prof_business == 1 | prof_politics == 1 | prof_colonial == 1 | politician_dummy == 0)
+randstad <- dataset %>% 
+  filter(distance_bp_hag < 65)
 
-covs <- make_covariates(career)
-rdrobust(y=career$defw, x = career$margin, covs = covs) %>% summary()
+nonrandstad <- dataset %>%
+  filter(distance_bp_hag > 65)
+
+covs_randstad <- make_covariates(randstad)
+rdrobust(randstad$defw, randstad$margin, covs = covs_randstad) %>% summary()
+covs_nonrandstad <- make_covariates(nonrandstad)
+rdrobust(nonrandstad$defw, nonrandstad$margin, covs = covs_nonrandstad) %>% summary()
+
+2*(1-pnorm((2.981+0.333)/sqrt(0.525^2 + 1.672^2)))

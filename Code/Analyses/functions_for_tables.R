@@ -396,3 +396,51 @@ get_stats_for_partytable <- function(dataset, dv, covs = NULL){
   return(out)
   
 }
+
+get_stats_withinparty <- function(dataset, dv, covs = NULL){
+  out1 <- rdrobust(dataset[[dv]], dataset[['margin']], covs = covs)
+  
+  coef <- format(paste(round(out1$coef[1], 3)), nsmall = 3)
+  se1 <- format(round(out1$se[2], 3), nsmall = 3)
+  se2 <- format(round(out1$se[3], 3), nsmall = 3)
+  pv1 <- out1$pv[2]
+  pv2 <- out1$pv[3]
+  n_treatment <- out1$N[2]
+  n_control <- out1$N[1]
+  
+  if(between(pv1, 0.05, 0.1)){
+    se1_out <- paste("(", se1, ")", "*", sep = "")
+  } else if(between(pv1, 0.01, 0.05)){
+    se1_out <- paste("(", se1, ")", "**", sep = "")
+  } else if(between(pv1, 0.000001, 0.01)){
+    se1_out <- paste("(", se1, ")", "***", sep = "")
+  } else if(between(pv1, 0.10, 1)) {
+    se1_out <- paste("(", se1, ")", sep = "")
+  }
+  
+  if(between(pv2, 0.05, 0.1)){
+    se2_out <- paste("(", se2, ")", "*", sep = "")
+  } else if(between(pv2, 0.01, 0.05)){
+    se2_out <- paste("(", se2, ")", "**", sep = "")
+  } else if(between(pv2, 0.0000001, 0.01)){
+    se2_out <- paste("(", se2, ")", "***", sep = "")
+  } else if(between(pv2, 0.10, 1)) {
+    se2_out <- paste("(", se2, ")", sep = "")
+  }
+  
+  
+  out <- list(coef = coef, se1_out = se1_out, se2_out = se2_out, n_treatment = n_treatment, n_control = n_control)
+  
+  return(out)
+  
+}
+
+
+calc_pv <- function(diff){
+  pnorm(diff, mean = 0, sd = 
+          sqrt(
+            readr::parse_number(get_stats_withinparty(in_party, dv = 'defw')[[2]])^2 +
+              readr::parse_number(get_stats_withinparty(out_party, dv = 'defw')[[2]])^2
+          )
+  )
+}
