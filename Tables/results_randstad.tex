@@ -1,0 +1,26 @@
+\begin{table}[!h]
+
+\caption{\label{tab:results_randstad}Political Rents and Geography}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{threeparttable}
+\begin{tabular}[t]{lllll}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{Randstad} & \multicolumn{1}{c}{Non-Randstad} & \multicolumn{1}{c}{Randstad} & \multicolumn{1}{c}{Non-Randstad} \\
+\cmidrule(l{3pt}r{3pt}){2-2} \cmidrule(l{3pt}r{3pt}){3-3} \cmidrule(l{3pt}r{3pt}){4-4} \cmidrule(l{3pt}r{3pt}){5-5}
+  & (1) & (2) & (3) & (4)\\
+\midrule
+Coefficient & 3.242 & 1.563 & 3.065 & 0.215\\
+SE (BC) & (1.542)** & (0.699)** & (1.569)** & (0.620)\\
+SE (Rob.) & (1.876)* & (0.809)* & (1.859)* & (0.718)\\
+N Treated & 164 & 159 & 156 & 98\\
+N Control & 129 & 123 & 128 & 119\\
+Covariates & No & No & Yes & Yes\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para]
+\item \textit{Note: } 
+\item The table shows RD estimates using the MSE-optimal bandwidth \citep{cattaneo2019practical}. The Dependent Variable is Log(Personal Wealth). I report bias-corrected and robust standard errors. The table shows estimates for political rents in- and outside of the Randstad area, without (1 and 2) and with (3 and 4) selected covariates. *: p < 0.1, **: p < 0.05, ***: p < 0.01.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

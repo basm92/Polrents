@@ -35,8 +35,7 @@ dataset <- read_delim("./Data/analysis/unmatched_sample_with_vars.csv", delim=",
          yod = as.numeric(stringr::str_extract(Sterfdatum,"\\d{4}$")),
          yoe = as.numeric(stringr::str_extract(Verkiezingdatum, "\\d{4}$"))
   ) %>%
-  filter(!is.na(defw2)) #%>%
-  #filter(yoe < 1905)
+  filter(!is.na(defw2)) 
 
 
 # show the rd coefficient of variable on margin
@@ -848,49 +847,140 @@ make_covariates <- function(dataset){
     dataset$birthplace_agri, 
     dataset$age_at_election, 
     dataset$taxespercap_1859,
-    dataset$district_prot,
+  dataset$district_prot,
     dataset$lifespan)
 }
 
 ## Business: 
 business <- dataset %>%
   filter(prof_business == 1 | politician_dummy == 0)
-
 nonbusiness <- dataset %>%
   filter(prof_business == 0 | politician_dummy == 0)
-
-covs <- make_covariates(business)
-rdrobust(y = business$defw2, x = business$margin, covs = make_covariates(business)) %>% summary()
-
-covs <- make_covariates(nonbusiness)
-rdrobust(y = nonbusiness$defw2, x = nonbusiness$margin, covs = make_covariates(nonbusiness)) %>% summary()
-
 ## Colonial:
 colonial <- dataset %>%
   filter(prof_colonial == 1 | politician_dummy == 0)
 noncolonial <- dataset %>%
   filter(prof_colonial == 0 | politician_dummy == 0)
-
-covs <- make_covariates(colonial)
-rdrobust(y = colonial$defw2, x = colonial$margin, covs = make_covariates(colonial)) %>% summary()
-
-covs <- make_covariates(noncolonial)
-rdrobust(y=noncolonial$defw, x = noncolonial$margin, covs = make_covariates(noncolonial)) %>% summary()
-
-
 ## Politics:
 politics <- dataset %>%
   filter(prof_politics == 1 | politician_dummy == 0) 
 nonpolitics <- dataset %>%
   filter(prof_politics == 0 | politician_dummy == 0) 
 
-covs <- make_covariates(politics)
-rdrobust(y=politics$defw, x = politics$margin, covs = make_covariates(politics)) %>% summary()
+tablitsa <- data.frame('names' = c(
+  "Coefficient",
+  "SE (BC)", 
+  "SE (Rob.)",
+  "N Treated", 
+  "N Control"),
+  col1 = c(get_stats_withinparty(colonial, 'defw')[[1]],
+           get_stats_withinparty(colonial, 'defw')[[2]],
+           get_stats_withinparty(colonial, 'defw')[[3]],
+           get_stats_withinparty(colonial, 'defw')[[4]],
+           get_stats_withinparty(colonial, 'defw')[[5]]),
+  noncol1 = c(
+    get_stats_withinparty(noncolonial, 'defw')[[1]],
+    get_stats_withinparty(noncolonial, 'defw')[[2]],
+    get_stats_withinparty(noncolonial, 'defw')[[3]],
+    get_stats_withinparty(noncolonial, 'defw')[[4]],
+    get_stats_withinparty(noncolonial, 'defw')[[5]]),
+  bus1 = c(
+    get_stats_withinparty(business, 'defw')[[1]],
+    get_stats_withinparty(business, 'defw')[[2]],
+    get_stats_withinparty(business, 'defw')[[3]],
+    get_stats_withinparty(business, 'defw')[[4]],
+    get_stats_withinparty(business, 'defw')[[5]]
+  ),
+  nonbus1 = c(
+    get_stats_withinparty(nonbusiness, 'defw')[[1]],
+    get_stats_withinparty(nonbusiness, 'defw')[[2]],
+    get_stats_withinparty(nonbusiness, 'defw')[[3]],
+    get_stats_withinparty(nonbusiness, 'defw')[[4]],
+    get_stats_withinparty(nonbusiness, 'defw')[[5]]
+  ),
+  pol1 = c(
+    get_stats_withinparty(politics, 'defw')[[1]],
+    get_stats_withinparty(politics, 'defw')[[2]],
+    get_stats_withinparty(politics, 'defw')[[3]],
+    get_stats_withinparty(politics, 'defw')[[4]],
+    get_stats_withinparty(politics, 'defw')[[5]]
+  ),
+  nonpol1 = c(
+    get_stats_withinparty(nonpolitics, 'defw')[[1]],
+    get_stats_withinparty(nonpolitics, 'defw')[[2]],
+    get_stats_withinparty(nonpolitics, 'defw')[[3]],
+    get_stats_withinparty(nonpolitics, 'defw')[[4]],
+    get_stats_withinparty(nonpolitics, 'defw')[[5]]
+  ))
+           
 
-covs <- make_covariates(nonpolitics)
-rdrobust(y=nonpolitics$defw, x = nonpolitics$margin, covs = make_covariates(nonpolitics)) %>% summary()
-
-
+tablitsa2 <- data.frame('names' = c(
+  "Coefficient",
+  "SE (BC)", 
+  "SE (Rob.)",
+  "N Treated", 
+  "N Control"),
+  col1 = c(get_stats_withinparty(colonial, 'defw', covs = make_covariates(colonial))[[1]],
+           get_stats_withinparty(colonial, 'defw', covs = make_covariates(colonial))[[2]],
+           get_stats_withinparty(colonial, 'defw', covs = make_covariates(colonial))[[3]],
+           get_stats_withinparty(colonial, 'defw', covs = make_covariates(colonial))[[4]],
+           get_stats_withinparty(colonial, 'defw', covs = make_covariates(colonial))[[5]]),
+  noncol1 = c(
+    get_stats_withinparty(noncolonial, 'defw', covs = make_covariates(noncolonial))[[1]],
+    get_stats_withinparty(noncolonial, 'defw', covs = make_covariates(noncolonial))[[2]],
+    get_stats_withinparty(noncolonial, 'defw', covs = make_covariates(noncolonial))[[3]],
+    get_stats_withinparty(noncolonial, 'defw', covs = make_covariates(noncolonial))[[4]],
+    get_stats_withinparty(noncolonial, 'defw', covs = make_covariates(noncolonial))[[5]]),
+  bus1 = c(
+    get_stats_withinparty(business, 'defw', covs = make_covariates(business))[[1]],
+    get_stats_withinparty(business, 'defw', covs = make_covariates(business))[[2]],
+    get_stats_withinparty(business, 'defw', covs = make_covariates(business))[[3]],
+    get_stats_withinparty(business, 'defw', covs = make_covariates(business))[[4]],
+    get_stats_withinparty(business, 'defw', covs = make_covariates(business))[[5]]
+  ),
+  nonbus1 = c(
+    get_stats_withinparty(nonbusiness, 'defw', covs = make_covariates(nonbusiness))[[1]],
+    get_stats_withinparty(nonbusiness, 'defw', covs = make_covariates(nonbusiness))[[2]],
+    get_stats_withinparty(nonbusiness, 'defw', covs = make_covariates(nonbusiness))[[3]],
+    get_stats_withinparty(nonbusiness, 'defw', covs = make_covariates(nonbusiness))[[4]],
+    get_stats_withinparty(nonbusiness, 'defw', covs = make_covariates(nonbusiness))[[5]]
+  ),
+  pol1 = c(
+    get_stats_withinparty(politics, 'defw', covs = make_covariates(politics))[[1]],
+    get_stats_withinparty(politics, 'defw', covs = make_covariates(politics))[[2]],
+    get_stats_withinparty(politics, 'defw', covs = make_covariates(politics))[[3]],
+    get_stats_withinparty(politics, 'defw', covs = make_covariates(politics))[[4]],
+    get_stats_withinparty(politics, 'defw', covs = make_covariates(politics))[[5]]
+  ),
+  nonpol1 = c(
+    get_stats_withinparty(nonpolitics, 'defw', covs = make_covariates(nonpolitics))[[1]],
+    get_stats_withinparty(nonpolitics, 'defw', covs = make_covariates(nonpolitics))[[2]],
+    get_stats_withinparty(nonpolitics, 'defw', covs = make_covariates(nonpolitics))[[3]],
+    get_stats_withinparty(nonpolitics, 'defw', covs = make_covariates(nonpolitics))[[4]],
+    get_stats_withinparty(nonpolitics, 'defw', covs = make_covariates(nonpolitics))[[5]]
+  ))
+  
+notitie <- "The table shows RD estimates using the MSE-optimal bandwidth \\\\citep{cattaneo2019practical}. The Dependent Variable is Log(Personal Wealth). I report bias-corrected and robust standard errors. Panel A uses no covariates, whereas Panel B controls for several possible imbalances. The first equation in the panel estimates the rents for the politicians who have taken a given career paths, and the second equation estimates the rents for those who did not. *: p < 0.1, **: p < 0.05, ***: p < 0.01."
+knitr::opts_current$set(label = "results_careerpaths")
+modelsummary::datasummary_df(bind_rows(tablitsa, tablitsa2)
+                             %>% rename(" " = names,
+                               "(1)"= col1,
+                                        "(2)" = noncol1,
+                                        "(3)" = bus1,
+                                        "(4)" = nonbus1,
+                                        "(5)" = pol1,
+                                        "(6)" = nonpol1),
+                             title = "Political Rents and Career Paths",
+                             out = "kableExtra",
+                             output = "latex") %>%
+  kableExtra::add_header_above(c(" " = 1, rep(c("Yes", "No"), 3))) %>%
+  kableExtra::add_header_above(c(" " = 1, "Colonial" =  2, "Business" = 2, "Politics" = 2)) %>%
+  kableExtra::group_rows("Without Covariates", 1, 5)%>%
+  kableExtra::group_rows("With Covariates", 6, 10) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"), font_size=10) %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::save_kable("./Tables/results_careerpaths.tex")
+  
 
 ## Other way of testing politics with tenure
 ## Create dataset
@@ -948,12 +1038,10 @@ make_covariates <- function(dataset){
         dataset$howmany_before_alg,
         log(1+dataset$birthplace_pop_1859), 
         dataset$birthplace_agri, 
-        dataset$birthplace_indus, 
         dataset$age_at_election, 
         dataset$yod, 
         dataset$rec_soc,
-        dataset$lifespan,
-        dataset$turnout)
+        dataset$lifespan)
 }
 
 
@@ -968,4 +1056,100 @@ rdrobust(randstad$defw, randstad$margin, covs = covs_randstad) %>% summary()
 covs_nonrandstad <- make_covariates(nonrandstad)
 rdrobust(nonrandstad$defw, nonrandstad$margin, covs = covs_nonrandstad) %>% summary()
 
-2*(1-pnorm((2.981+0.333)/sqrt(0.525^2 + 1.672^2)))
+tabelletje <- data.frame(
+  names = c("Coefficient", 
+            "SE (BC)",
+            "SE (Rob.)",
+            "N Treated",
+            "N Control",
+            "Covariates"),
+  randstad = c(
+    get_stats_withinparty(randstad, 'defw')[[1]],
+    get_stats_withinparty(randstad, 'defw')[[2]],
+    get_stats_withinparty(randstad, 'defw')[[3]],
+    get_stats_withinparty(randstad, 'defw')[[4]],
+    get_stats_withinparty(randstad, 'defw')[[5]],
+    "No"),
+  nonrandstad = c(
+    get_stats_withinparty(nonrandstad, 'defw')[[1]],
+    get_stats_withinparty(nonrandstad, 'defw')[[2]],
+    get_stats_withinparty(nonrandstad, 'defw')[[3]],
+    get_stats_withinparty(nonrandstad, 'defw')[[4]],
+    get_stats_withinparty(nonrandstad, 'defw')[[5]],
+    "No"),
+    randstad2 = c(
+      get_stats_withinparty(randstad, 'defw', covs = make_covariates(randstad))[[1]],
+      get_stats_withinparty(randstad, 'defw', covs = make_covariates(randstad))[[2]],
+      get_stats_withinparty(randstad, 'defw', covs = make_covariates(randstad))[[3]],
+      get_stats_withinparty(randstad, 'defw', covs = make_covariates(randstad))[[4]],
+      get_stats_withinparty(randstad, 'defw', covs = make_covariates(randstad))[[5]],
+      "Yes"
+  ),
+  nonrandstad2 = c(
+  get_stats_withinparty(nonrandstad, 'defw', covs = make_covariates(nonrandstad))[[1]],
+  get_stats_withinparty(nonrandstad, 'defw', covs = make_covariates(nonrandstad))[[2]],
+  get_stats_withinparty(nonrandstad, 'defw', covs = make_covariates(nonrandstad))[[3]],
+  get_stats_withinparty(nonrandstad, 'defw', covs = make_covariates(nonrandstad))[[4]],
+  get_stats_withinparty(nonrandstad, 'defw', covs = make_covariates(nonrandstad))[[5]],
+  "Yes"))
+
+# make a table out of this
+notitie <- "The table shows RD estimates using the MSE-optimal bandwidth \\\\citep{cattaneo2019practical}. The Dependent Variable is Log(Personal Wealth). I report bias-corrected and robust standard errors. The table shows estimates for political rents in- and outside of the Randstad area, without (1 and 2) and with (3 and 4) selected covariates. *: p < 0.1, **: p < 0.05, ***: p < 0.01."
+knitr::opts_current$set(label = "results_randstad")
+modelsummary::datasummary_df(tabelletje %>% rename(" " = names,
+                                        "(1)"= randstad,
+                                        "(2)" = nonrandstad,
+                                        "(3)" = randstad2,
+                                        "(4)" = nonrandstad2),
+                             title = "Political Rents and Geography",
+                             out = "kableExtra",
+                             output = "latex") %>%
+  kableExtra::add_header_above(c(" " = 1, rep(c("Randstad", "Non-Randstad"), 2))) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"), font_size=10) %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::save_kable("./Tables/results_randstad.tex")
+
+
+## figure distance to the hague and rents
+fig_data <- data.frame("cutoff" = seq(10, 120, by = 5),
+                       "rents_within" = vector(length = 23),
+                       "se_within" = vector(length = 23),
+                       "rents_outside" = vector(length = 23),
+                       "se_outside" = vector(length = 23))
+
+for(i in 1:23){
+  
+  sequence <- seq(10, 120, by = 5)
+  
+  randstad <- dataset %>% 
+    filter(distance_bp_hag < sequence[i])
+  
+  nonrandstad <- dataset %>% 
+    filter(distance_bp_hag > sequence[i])
+  
+  est1 <- rdrobust(randstad[['defw']], randstad[['margin']], covs = make_covariates(randstad))
+  est2 <- rdrobust(nonrandstad[['defw']], nonrandstad[['margin']], covs = make_covariates(nonrandstad))
+  
+  fig_data[['rents_within']][i] <- est1$coef[1]
+  fig_data[['se_within']][i] <- est1$se[2]
+  
+  fig_data[['rents_outside']][i] <- est2$coef[1]
+  fig_data[['se_outside']][i] <- est2$se[2]
+  
+  
+  
+}
+
+plotinho <- fig_data %>%
+  ggplot(aes(x = cutoff)) + 
+  theme_bw() + 
+  geom_line(aes(y = rents_within, color = "Within Distance")) +
+  geom_line(aes(y = rents_outside, color = "Outside of Distance"), lty = 2) +
+  geom_errorbar(aes(x = cutoff + 0.5, ymin = rents_within - 1.65*se_within, ymax = rents_within + 1.65*se_within), 
+                color = 'brown', width = 1) +
+  geom_errorbar(aes(x = cutoff - 0.5, ymin = rents_outside - 1.65*se_outside, ymax = rents_outside + 1.65*se_outside), 
+                color = 'blue', width = 1, lty = 2) +
+  labs(color = "Distance to the Hague", x = "Cut-Off (km)", y = "RD Estimate") +
+  scale_color_manual(values=c('blue', 'brown'))
+
+ggsave("./Tables/randstad_distance.pdf", plotinho, width = 10, height= 4)

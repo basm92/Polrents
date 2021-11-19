@@ -1,0 +1,36 @@
+\begin{table}[!h]
+
+\caption{\label{tab:results_careerpaths}Political Rents and Career Paths}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{threeparttable}
+\begin{tabular}[t]{lllllll}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Colonial} & \multicolumn{2}{c}{Business} & \multicolumn{2}{c}{Politics} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5} \cmidrule(l{3pt}r{3pt}){6-7}
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{No} & \multicolumn{1}{c}{Yes} & \multicolumn{1}{c}{No} \\
+\cmidrule(l{3pt}r{3pt}){2-2} \cmidrule(l{3pt}r{3pt}){3-3} \cmidrule(l{3pt}r{3pt}){4-4} \cmidrule(l{3pt}r{3pt}){5-5} \cmidrule(l{3pt}r{3pt}){6-6} \cmidrule(l{3pt}r{3pt}){7-7}
+  & (1) & (2) & (3) & (4) & (5) & (6)\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{Without Covariates}}\\
+\hspace{1em}Log (Wealth) & 1.709 & 2.257 & 1.46 & 2.413 & 3.832 & 1.957\\
+\hspace{1em}SE (BC) & (1.389) & (1.000)** & (1.404) & (0.927)*** & (1.363)*** & (1.052)*\\
+\hspace{1em}SE (Rob.) & (1.685) & (1.218)* & (1.705) & (1.128)** & (1.618)*** & (1.268)\\
+\hspace{1em}N Treated & 35 & 288 & 62 & 261 & 47 & 276\\
+\hspace{1em}N Control & 258 & 258 & 258 & 258 & 258 & 258\\
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{With Covariates}}\\
+\hspace{1em}Ihs (Wealth) & 1.067 & 1.852 & 1.479 & 2.052 & 3.648 & 1.948\\
+\hspace{1em}SE (BC) & (1.526) & (1.092) & (1.490) & (1.023)** & (1.315)*** & (0.996)**\\
+\hspace{1em}SE (Rob.) & (1.878) & (1.316) & (1.800) & (1.231)* & (1.586)** & (1.202)*\\
+\hspace{1em}N Treated & 28 & 214 & 49 & 193 & 32 & 210\\
+\hspace{1em}N Control & 241 & 241 & 241 & 241 & 241 & 241\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para]
+\item \textit{Note: } 
+\item The table shows RD estimates using the MSE-optimal bandwidth \citep{cattaneo2019practical}. The Dependent Variable is Log(Personal Wealth). I report bias-corrected and robust standard errors. Panel A uses no covariates, whereas Panel B controls for several possible imbalances. The first equation in the panel estimates the rents for the politicians who have taken a given career paths, and the second equation estimates the rents for those who did not. *: p < 0.1, **: p < 0.05, ***: p < 0.01.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
