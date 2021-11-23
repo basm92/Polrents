@@ -1,0 +1,46 @@
+- Introductie
+	- Belangrijke vraag: identificatie is niet de rechtvaardiging van paper
+	- eerder beginnen met NL setting
+	- In 1e alinea moet duidelijk worden wat ik doe
+	
+	- Dus: 
+		- Eerst vraag
+		- Probleem (waarom niet normale aanpak)
+		- Oplossing (RDD en sample)
+		- Resultaten
+		- 4e alinea eerder
+		- Wellicht ook tegenhypothese arceren
+		- Belangrijkste conributie aan de literatuur
+		
+- Hoofdstuk 2
+	- Niet te lang
+	
+- Hoofdstuk 3
+	- Definitie van margin
+	- Noem aantal studies die aansluiten bij deze definitie
+	- Wellicht een voorbeeld noemen
+	- Hier ook:
+		- 2 Histogrammen voor Wealth distribution
+		- Ook als rechtvaardiging voor transformaties met Wealth die ik later doe
+		
+- Hoofdstuk 4
+	- Log spec als main, Ihs als alternatief
+	- Buncing probleem: geen controle over het treatment assignment process
+	- Later een aantal robustness checks
+	
+- Hoofdstuk 5
+	- Electoral Competitition korter
+	- structuur: kort een uitleg van theorie / logica mechanisme
+
+- tabs & figures
+	- Descr. stats: laat big obs weg in distance to the hague
+	- Tabel 2: aantal obs. toevoegen
+	- tabel met effect acc. to pol party: sets die het grootst zijn het eerst bespreken
+		- Lib, Prot, Cath
+	- Interpretatie > Afwijkend Stemgedrag, Corruptie + Spoorwegen
+	- Politics -> Rename to government
+	- Fig. 2: Niet cumulatief maar moving average of zo iets
+	- Fig. 7: Windows van 5 jaar of 10 jaar (niet replace, maar nieuw figuur)
+	- Fig 8: Probeer verhaal te pitchen
+	
+	
