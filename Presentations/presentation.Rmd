@@ -1,0 +1,245 @@
+---
+title: "Political Rents Under A Changing Electoral System"
+author: |
+  | Bas Machielsen
+  | a.h.machielsen@uu.nl
+institute: "Utrecht University"
+email: "a.h.machielsen@uu.nl"
+date: \today
+output: 
+  beamer_presentation:
+    includes:
+      in_header: preamble.tex
+classoption: "aspectratio=169"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(stargazer)
+library(tidyverse)
+library(ivreg)
+library(knitr)
+
+source("helper.R")
+```
+
+# Motivation
+
+## Motivation
+
+- Several studies have shown that politicians benefit from their position. These political rents can be accumulated in a multitude of ways:
+  - Monetary (e.g. Eggers & Hainmuller, 2009; Fisman et al., 2014)
+  - Nepotism (Dal Bo et al., 2009; Fafchamps & Labonne, 2017)
+  - Ideology (Mian et al., 2010)
+
+- Most studies are static in nature and do not focus on the institutional determinants of political rents. 
+  - Political rents are likely an equilibrium outcome (e.g. Barro, 1973; Trebbi, 2020)
+
+- Historically, political rents could have affected the democratization process.  
+  - How constrained were politicians when implementing universal suffrage step-by-step? (Przeworski, 2009)
+  - Political rents have implications for political selection (Besley, 2005) and politicians' voting behavior
+
+## This Study
+
+- I provide a dynamic perspective of political rents by focusing on the case of the Netherlands (1860-1917)
+
+- The Netherlands employed a district system at the time $\rightarrow$ Many (close) elections
+  - I employ a regression discontinuity methodology to estimate political rents based on Cattaneo et al. (2019)
+  - Detailed data on characteristics of politicians to examine what allows politicians to accrue rents
+
+- Setting allows me to provide insights in the effect on political rents of:
+  - Suffrage extensions and the monitoring of politicians
+  - The roles of political parties and geography 
+  - What career paths politicians followed to pursue rents
+
+## Results - Overview
+
+- At the margin, virtually all covariates are balanced among politicians and non-politicians, making non-politicians a convincing control group
+
+- There is a large and significant positive effect of being elected into politics on personal end-of-life wealth
+  - _A priori_ not obvious a politicians would accumulate surplus wealth relative to e.g. businessman, manufacturer, lawyer, etc. 
+
+- The effect seems to be most convincingly present of _Protestant_ politicians, and to a lesser degree _Liberals_
+  - These are the same politicians whose parties did not enforce strong voting discipline
+
+- Large discrepancies in estimates of political rents according to regional origin of politicians. 
+
+- Limited evidence of an influence of monitoring mechanisms and suffrage extensions further constraining politicians' rent-seeking activity. 
+
+# Data & Methodology
+
+## Close Elections
+
+- _Repositorium Tweede Kamerverkiezingen_ (Repository Lower House Elections) contains detailed data on every election that took place in the district system (1848-1917)
+  - Includes lists of candidates for each election, and amount of votes
+  - I take into account multi-candidate elections (cf. Lee, 2008)
+  - Somewhat more complicated definition of the running variable  _Margin_. For candidate $i$ in election $e$:
+  
+  $$
+  \text{Margin}_{i,e} = \frac{\text{Votes}_{i,e} - \text{Votes}_{j,e}}{\text{Total Votes}_e}
+  $$
+where $j$ is the _Marginal Loser_ if $i$ is a _Winning Contender_, and $j$ is the _Marginal Winner_ if $i$ is a _Losing Contender_. 
+
+- I then regard an individual as having taken part in a close election if $|\text{Margin}_{i,e}| < 0.2$. Using this criterion, about 600 close elections (out of approx. 2400)
+
+## Finding Candidates in Archives
+
+- **Politicians**: I use a proprietary dataset from the \textit{Politiek Documentatiecentrum} (PDC)
+
+- The database contains demographic and other variables related to a politicians' life, including their birth and death date and place, as well as information about their political allegiance and their professional career. 
+
+- Using this information, I can find politicians' probate inventories. 
+
+- **Non-Politicians**: For non-politicians, I make use of the search engines of provincial archives, the historical newspaper search engine _Delpher_ and various genealogy websites to find the dates and places of decease. 
+
+## Measure Political Rents
+
+- End of Life Wealth from the _Memories van Successies_ archives
+  - Probate inventories assembled with the purpose of levying inheritance taxation
+  - Containing a detailed description of the deceased's assets and liabilities, including an appraisal
+  - In practice, every individual deceased in the Netherlands (very few exemptions)
+  - I use Net Wealth and deflated it to 1900 guilders. 
+  
+- Freely accessible in the provincial archives from 1877-1927. Outside of this period without appraisal of assets and liabilities (<1877) or not publicly accessible (1927-). 
+
+- Finding rate: about 70% of inventories
+  - Main reason for absence: probate inventory registered in other place than place of death.
+
+## Other Data
+
+- Birthplace and district characteristics
+  - HDNG Database, containing information about Dutch Municipalities, including demographics, religious composition, taxes levied, professional composition at various points in time
+  
+- Election characteristics:
+  - Newspaper recommendations of each candidate, turnout, no. of times participated, year of election, on the basis of the _Repositorium_
+  
+- Demographic characteristics:
+  - Age at election, lifespan, year of death from the PDC and genealogy websites
+  
+## Method
+
+- I use the methodology by Cattaneo et al. (2019), who implement a local linear MSE-optimal RD Estimator
+
+- This estimator optimally trades off bias and variance when picking the bandwidth
+  - Consistent with recommendations of Imbens and Gelman (2018)
+  - Bias-corrected (Robust) confidence intervals for inference
+  
+- Specification:
+
+  $$
+     g(W_{i}) = \alpha + \delta \cdot 1_{\text{Margin}_i > 0}+ \eta \cdot \text{Margin}_i + X_i \beta + \epsilon_i
+  $$
+- I use two variants of $g$: $g(.) = \log (.)$ and $g(.) = \text{ihs}(.)$ 
+  
+# Analysis
+
+## Covariate Balance
+
+- The identifying assumption of the design implies that the control group (non-politicians) should be similar to the politicians at the margin: this gives evidence that the potential outcomes are not discontinuous at the cut-off point. 
+
+
+```{r}
+tab1
+```
+
+
+## Covariate Balance 
+
+```{r}
+tab2
+```
+
+## Geographic Variation
+
+- The elections also seem to be spread out geographically:
+
+```{r}
+knitr::include_graphics("../Data/shapefiles/close_elections_geographic.pdf")
+```
+
+## Main Results
+
+- The results show a significant and positive effect, irrespective of the inclusion of several covariates. 
+
+```{r, out.width="60%"}
+tab3
+```
+
+## Main Results (Graphically)
+
+```{r}
+knitr::include_graphics("../Tables/RDD_Plot.pdf")
+```
+
+# Mechanisms
+
+## Party Organization - Differences between parties
+
+- First, I focus on the difference between parties. 
+- Very large effect for Protestant politicians, intermediate for liberals and invisible for Catholic politicians. 
+
+```{r}
+knitr::include_graphics("../Tables/rdplot_per_party.pdf")
+```
+
+## Party Organization - Within Parties
+
+- I exploit the establishment of political parties to find out whether politicians with the same political allegiance have been able to accumulate more or less rents after establishment (and joining of) a political party.
+
+```{r}
+tab4
+```
+
+
+## Career Paths
+
+- Did politicians accrue rents by means of their network? Were they able to capure privileged, exclusive positions afterwards? 
+
+```{r}
+tab5
+```
+
+
+## Electoral Competition over Time
+
+- Do political rents change significantly following suffrage extensions? 
+  - The graph shows CI's based on bootstrapped standard errors. 
+
+```{r out.width="80%", fig.align='center'}
+knitr::include_graphics("../Tables/electoral_competition.pdf")
+```
+
+## Electoral Competition - Turnout
+
+- At the level of the district, does more turnout mean more monitoring, and lower rents? 
+  - I estimate the difference in rents between upper-quantile observations (in terms of relative turnout) and lower-quantiles. 
+
+```{r out.width="80%", fig.align='center'}
+knitr::include_graphics("../Tables/turnout_competition.pdf")
+```
+
+## Metropolitan vs. Rural Areas
+
+- Political Rents for politicians who have been born inside and outside a radius of $x$ km of the Hague (governmental capital)
+  - Politicians born within the Randstad (radius of about 60/70 km within the Hague) garner much more rents than politicians born outside. 
+
+```{r}
+knitr::include_graphics("../Tables/randstad_distance.pdf")
+```
+
+# Conclusion
+
+## Conclusion
+
+- Protestant politicians
+  - A lot of voting freedom
+  - Although parties limit voting freedom and thus rents
+  
+- Rewards: staying longer in politics - access to other political functions with discretion, possibility of rent-seeking
+
+- Primarily concentrated for politicians within a certain region
+  - Especially large contrast with Catholic politicians, not from this region
+
+- Electoral discipline and monitoring plays very small role
+
+
