@@ -46,9 +46,9 @@ source("helper.R")
 - This study focuses on a _dynamic_ environment in which the political system changes: the case of the Netherlands (1860-1917)
 
 - Many aspects of the political system changed: 
-  - The rise of the career politician
+  - The rise of the career politician (Career Paths)
   - Political party formation and party politics
-  - Suffrage extensions and universal suffrage (Przeworski, 2009)
+  - Suffrage extensions and universal suffrage
 
 - Setting allows me to investigate the influence of changing institutions on the magnitude of political rents available to politicians.
 
@@ -261,11 +261,11 @@ knitr::include_graphics("../Tables/turnout_competition.pdf")
   - Consistent with voting behavior serving as a signal, or as catering to interest groups 
   - Still, political parties limit voting freedom and thus the possibility to accrue rents
   
-- Rewards: staying longer in politics
+- Rewards obtained through staying longer in politics
   - Access to other political functions with discretion
   - Possibility of rent-seeking, superior information
 
-- Electoral discipline and monitoring plays very small role
+- Electoral discipline and monitoring plays a very small role
 
 # Robustness Checks
 
@@ -332,10 +332,74 @@ knitr::include_graphics("../Tables/Density_Plot_MarginWealth.pdf")
 knitr::include_graphics("../Tables/randstad_distance.pdf")
 ```
 
-
 ## Flexible Optimal Bandwidth - Career Paths
+
+- I estimate the rents for long-serving (tenure > 20) and short-serving (tenure < 5) politicians in the lower house. 
+  - Politicians who stay longer are able to obtain more rents than politicians who stay shorter.
+
+```{=latex}
+\begin{table}[!h]
+\centering
+\fontsize{7}{9}\selectfont
+\begin{threeparttable}
+\begin{tabular}[t]{lllll}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Log(Wealth)} & \multicolumn{2}{c}{Ihs(Wealth)} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{Tenure > 20} & \multicolumn{1}{c}{Tenure < 5} & \multicolumn{1}{c}{Tenure > 20} & \multicolumn{1}{c}{Tenure < 5} \\
+\cmidrule(l{3pt}r{3pt}){2-2} \cmidrule(l{3pt}r{3pt}){3-3} \cmidrule(l{3pt}r{3pt}){4-4} \cmidrule(l{3pt}r{3pt}){5-5}
+  & (1) & (2) & (3) & (4)\\
+\midrule
+Coefficient & 3.533 & 1.872 & 3.579 & 2.442\\
+SE (BC) & (1.401)** & (0.890)** & (1.837)* & (1.773)\\
+SE (Rob.) & (1.618)** & (1.100)* & (1.988)** & (2.075)\\
+N (Politicians) & 44 & 72 & 50 & 85\\
+N (Non-Politicians) & 241 & 241 & 245 & 245\\
+Bandwidth & Optimal & Optimal & Optimal & Optimal\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{table}
+
+```
 
 ## Flexible Optimal Bandwidth - Party Organization
 
-## Flexible Optimal Bandwidth - Suffrage Extensions
+- These estimates use the optimal bandwidth estimated at each side of the cut-off point
+  - The estimates in (4) are again significant at the 10% level
 
+```{=latex}
+\begin{table}[!h]
+\centering
+\fontsize{6}{8}\selectfont
+\begin{threeparttable}
+\begin{tabular}[t]{lllrllr}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{No Covariates} & \multicolumn{3}{c}{With Covariates} \\
+\cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{After} & \multicolumn{1}{c}{Before} & \multicolumn{1}{c}{Diff. (p-value)} & \multicolumn{1}{c}{After} & \multicolumn{1}{c}{Before} & \multicolumn{1}{c}{Diff. (p-value)} \\
+\cmidrule(l{3pt}r{3pt}){2-2} \cmidrule(l{3pt}r{3pt}){3-3} \cmidrule(l{3pt}r{3pt}){4-4} \cmidrule(l{3pt}r{3pt}){5-5} \cmidrule(l{3pt}r{3pt}){6-6} \cmidrule(l{3pt}r{3pt}){7-7}
+  & (1) & (2) &    & (3) & (4) &    \\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{Panel A: All control observations}}\\
+\hspace{1em}Coefficient & 1.977 & 2.178 & -0.143 & 2.29 & 3.555 & -1.265\\
+\hspace{1em}SE (BC) & (0.751)*** & (1.006)** & 0.462 & (0.890)*** & (1.071)*** & 0.204\\
+\hspace{1em}SE (Rob.) & (0.906)** & (1.214)* &  & (1.078)** & (1.296)*** & \\
+\hspace{1em}N Treated & 202 & 121 &  & 202 & 121 & \\
+\hspace{1em}N Control & 258 & 258 &  & 258 & 258 & \\
+\hspace{1em}Covariates & No & No &  & Yes & Yes \vphantom{1} & \\
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{Panel B: Contemporaneous control observations}}\\
+\hspace{1em}Coefficient & 1.594 & 3.098 & -1.504 & 1.939 & 4.876 & -2.937\\
+\hspace{1em}SE (BC) & (0.997) & (1.608)* & 0.237 & (0.983)* & (1.767)*** & 0.081\\
+\hspace{1em}SE (Rob.) & (1.213) & (1.941) &  & (1.202) & (2.074)** & \\
+\hspace{1em}N Treated & 202 & 92 &  & 202 & 92 & \\
+\hspace{1em}N Control & 151 & 107 &  & 151 & 107 & \\
+\hspace{1em}Covariates & No & No &  & Yes & Yes & \\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{table}
+
+```

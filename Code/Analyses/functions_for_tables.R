@@ -397,8 +397,8 @@ get_stats_for_partytable <- function(dataset, dv, covs = NULL){
   
 }
 
-get_stats_withinparty <- function(dataset, dv, covs = NULL){
-  out1 <- rdrobust(dataset[[dv]], dataset[['margin']], covs = covs)
+get_stats_withinparty <- function(dataset, dv, covs = NULL, bw = 'mserd'){
+  out1 <- rdrobust(dataset[[dv]], dataset[['margin']], covs = covs, bwselect = bw)
   
   coef <- format(paste(round(out1$coef[1], 3)), nsmall = 3)
   se1 <- format(round(out1$se[2], 3), nsmall = 3)
@@ -642,9 +642,9 @@ get_se_rob_cov2 <- function(variable, covs, bw_mult=1){
 
 
 ## For tenure table
-get_coef_t <- function(depvar, dataset){
+get_coef_t <- function(depvar, dataset, bw = 'mserd'){
   
-    regression_output <- rdrobust(y = dataset[[depvar]], x = dataset[['margin']], covs = make_covariates(dataset))
+    regression_output <- rdrobust(y = dataset[[depvar]], x = dataset[['margin']], covs = make_covariates(dataset), bwselect = bw)
     
     coef <- regression_output['coef'][[1]][1] %>%
       round(3) %>%
@@ -653,9 +653,9 @@ get_coef_t <- function(depvar, dataset){
     paste(coef)
 }
 
-get_se_bc_t <- function(depvar, dataset){
+get_se_bc_t <- function(depvar, dataset, bw = 'mserd'){
   
-  regression_output <- rdrobust(y = dataset[[depvar]], x = dataset[['margin']], covs = make_covariates(dataset))
+  regression_output <- rdrobust(y = dataset[[depvar]], x = dataset[['margin']], covs = make_covariates(dataset), bwselect = bw)
   
   se <- regression_output['se'][[1]][1] %>%
     round(3) %>%
@@ -674,9 +674,9 @@ get_se_bc_t <- function(depvar, dataset){
   }
 }
 
-get_se_rob_t <- function(depvar, dataset){
+get_se_rob_t <- function(depvar, dataset, bw = 'mserd'){
   
-  regression_output <- rdrobust(y = dataset[[depvar]], x = dataset[['margin']], covs = make_covariates(dataset))
+  regression_output <- rdrobust(y = dataset[[depvar]], x = dataset[['margin']], covs = make_covariates(dataset), bwselect = bw)
   
   se <- regression_output['se'][[1]][3] %>%
     round(3) %>%

@@ -1,0 +1,38 @@
+\begin{table}[!h]
+
+\caption{\label{tab:results_within_party_flexbw}RD Estimates of Political Rents according to Party Establishment}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{threeparttable}
+\begin{tabular}[t]{lllrllr}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{No Covariates} & \multicolumn{3}{c}{With Covariates} \\
+\cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{After} & \multicolumn{1}{c}{Before} & \multicolumn{1}{c}{Diff. (p-value)} & \multicolumn{1}{c}{After} & \multicolumn{1}{c}{Before} & \multicolumn{1}{c}{Diff. (p-value)} \\
+\cmidrule(l{3pt}r{3pt}){2-2} \cmidrule(l{3pt}r{3pt}){3-3} \cmidrule(l{3pt}r{3pt}){4-4} \cmidrule(l{3pt}r{3pt}){5-5} \cmidrule(l{3pt}r{3pt}){6-6} \cmidrule(l{3pt}r{3pt}){7-7}
+  & (1) & (2) &    & (3) & (4) &    \\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{Panel A: All control observations}}\\
+\hspace{1em}Coefficient & 1.977 & 2.178 & -0.143 & 2.29 & 3.555 & -1.265\\
+\hspace{1em}SE (BC) & (0.751)*** & (1.006)** & 0.462 & (0.890)*** & (1.071)*** & 0.204\\
+\hspace{1em}SE (Rob.) & (0.906)** & (1.214)* &  & (1.078)** & (1.296)*** & \\
+\hspace{1em}N Treated & 202 & 121 &  & 202 & 121 & \\
+\hspace{1em}N Control & 258 & 258 &  & 258 & 258 & \\
+\hspace{1em}Covariates & No & No &  & Yes & Yes \vphantom{1} & \\
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{Panel B: Contemporaneous control observations}}\\
+\hspace{1em}Coefficient & 1.594 & 3.098 & -1.504 & 1.939 & 4.876 & -2.937\\
+\hspace{1em}SE (BC) & (0.997) & (1.608)* & 0.237 & (0.983)* & (1.767)*** & 0.081\\
+\hspace{1em}SE (Rob.) & (1.213) & (1.941) &  & (1.202) & (2.074)** & \\
+\hspace{1em}N Treated & 202 & 92 &  & 202 & 92 & \\
+\hspace{1em}N Control & 151 & 107 &  & 151 & 107 & \\
+\hspace{1em}Covariates & No & No &  & Yes & Yes & \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para]
+\item \textit{Note: } 
+\item The table shows RD estimates using the MSE-optimal bandwidth \citep{cattaneo2019practical} separately for both sides. The Dependent Variable is Log(Personal Wealth). I report bias-corrected and robust standard errors. Panel A uses the entire control group, whereas panel B opts for control-observations from the pre-and post-party periods respectively. Columns (1) and (2) contain estimates with no covariates, and columns (3) and (4) control for potential imbalances in lifespan, age and newspaper recommendations. *: p < 0.1, **: p < 0.05, ***: p < 0.01.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

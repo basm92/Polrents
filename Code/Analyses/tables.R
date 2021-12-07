@@ -1337,3 +1337,54 @@ datasummary_df(tenure_table %>%
   kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"), full_width = F, font_size = 10) %>%
   kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
   kableExtra::save_kable("./Tables/rdd_results_tenure.tex")
+
+## tenure table with flexible bandwidth
+
+tenure_table_flexband <- data.frame(names = c("Coefficient", 
+                                     "SE (BC)",
+                                     "SE (Rob.)",
+                                     "N (Politicians)",
+                                     "N (Non-Politicians)",
+                                     "Bandwidth"),
+                           first = c(get_coef_t('defw', longtenure1, 'msetwo'),
+                                     get_se_bc_t('defw', longtenure1, 'msetwo'),
+                                     get_se_rob_t('defw', longtenure1, 'msetwo'),
+                                     get_n_treated_t(longtenure1, 'defw'),
+                                     get_n_untreated_t(longtenure1, 'defw'),
+                                     "Optimal"),
+                           second = c(get_coef_t('defw', shorttenure1, 'msetwo'),
+                                      get_se_bc_t('defw', shorttenure1, 'msetwo'),
+                                      get_se_rob_t('defw', shorttenure1, 'msetwo'),
+                                      get_n_treated_t(shorttenure1, 'defw'),
+                                      get_n_untreated_t(shorttenure1, 'defw'),
+                                      "Optimal"),
+                           third = c(get_coef_t('defw2', longtenure1, 'msetwo'),
+                                     get_se_bc_t('defw2', longtenure1, 'msetwo'),
+                                     get_se_rob_t('defw2', longtenure1, 'msetwo'),
+                                     get_n_treated_t(longtenure1, 'defw2'),
+                                     get_n_untreated_t(longtenure1, 'defw2'),
+                                     "Optimal"),
+                           fourth = c(get_coef_t('defw2', shorttenure1, 'msetwo'),
+                                      get_se_bc_t('defw2', shorttenure1, 'msetwo'),
+                                      get_se_rob_t('defw2', shorttenure1, 'msetwo'),
+                                      get_n_treated_t(shorttenure1, 'defw2'),
+                                      get_n_untreated_t(shorttenure1, 'defw2'),
+                                      "Optimal"))
+
+notitie <- "Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level. The table shows regressions under the optimal MSE bandwidth at each side of the cut-off, under the addition of several covariates (lifespan, newspaper recommendations and birthplace differences).  *: p < 0.10, **: p < 0.05, ***: p < 0.01."
+
+knitr::opts_current$set(label = "tenure_results_flexbw")
+datasummary_df(tenure_table_flexband %>%
+                 rename(` ` = names, 
+                        "(1)" = first,
+                        "(2)" = second,
+                        "(3)" = third,
+                        "(4)"  = fourth), 
+               out = "kableExtra",
+               output = "latex",
+               title = "RD Estimates According to Tenure") %>%
+  kableExtra::add_header_above(c(" " = 1, "Tenure > 20" = 1, "Tenure < 5" = 1, "Tenure > 20" = 1, "Tenure < 5" = 1)) %>%
+  kableExtra::add_header_above(c(" " = 1, "Log(Wealth)" = 2, "Ihs(Wealth)" = 2)) %>%
+  kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"), full_width = F, font_size = 10) %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::save_kable("./Tables/rdd_results_tenure_flexbw.tex")

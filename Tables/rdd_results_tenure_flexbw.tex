@@ -1,0 +1,28 @@
+\begin{table}[!h]
+
+\caption{\label{tab:tenure_results_flexbw}RD Estimates According to Tenure}
+\centering
+\fontsize{7}{9}\selectfont
+\begin{threeparttable}
+\begin{tabular}[t]{lllll}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Log(Wealth)} & \multicolumn{2}{c}{Ihs(Wealth)} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{Tenure > 20} & \multicolumn{1}{c}{Tenure < 5} & \multicolumn{1}{c}{Tenure > 20} & \multicolumn{1}{c}{Tenure < 5} \\
+\cmidrule(l{3pt}r{3pt}){2-2} \cmidrule(l{3pt}r{3pt}){3-3} \cmidrule(l{3pt}r{3pt}){4-4} \cmidrule(l{3pt}r{3pt}){5-5}
+  & (1) & (2) & (3) & (4)\\
+\midrule
+Coefficient & 3.533 & 1.872 & 3.579 & 2.442\\
+SE (BC) & (1.401)** & (0.890)** & (1.837)* & (1.773)\\
+SE (Rob.) & (1.618)** & (1.100)* & (1.988)** & (2.075)\\
+N (Politicians) & 44 & 72 & 50 & 85\\
+N (Non-Politicians) & 241 & 241 & 245 & 245\\
+Bandwidth & Optimal & Optimal & Optimal & Optimal\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para]
+\item \textit{Note: } 
+\item Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level. The table shows regressions under the optimal MSE bandwidth at each side of the cut-off, under the addition of several covariates (lifespan, newspaper recommendations and birthplace differences).  *: p < 0.10, **: p < 0.05, ***: p < 0.01.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
