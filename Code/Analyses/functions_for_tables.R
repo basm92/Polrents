@@ -444,3 +444,270 @@ calc_pv <- function(diff){
           )
   )
 }
+
+
+## For robustness table (two optimal bandwidths)
+
+get_coef2 <- function(variable){
+  #var <- deparse(substitute(variable))
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], bwselect = 'msetwo')
+  
+  coef <- regression_output['coef'][[1]][1] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  paste(coef)
+}
+
+get_se_bc2 <- function(variable){
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], bwselect = 'msetwo')
+  se <- regression_output['se'][[1]][2] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  pv <- regression_output['pv'][[1]][2]
+  
+  if(between(pv, 0.05, 0.1)){
+    paste("(", se, ")", "*", sep = "")
+  } else if(between(pv, 0.01, 0.05)){
+    paste("(", se, ")", "**", sep = "")
+  } else if(between(pv, 0, 0.01)){
+    paste("(", se, ")", "***", sep = "")
+  } else {
+    paste(se)
+  }
+}
+
+get_se_rob2 <- function(variable){
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], bwselect = 'msetwo')
+  se <- regression_output['se'][[1]][3] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  pv <- regression_output['pv'][[1]][3]
+  
+  if(between(pv, 0.05, 0.1)){
+    paste("(", se, ")", "*", sep = "")
+  } else if(between(pv, 0.01, 0.05)){
+    paste("(", se, ")", "**", sep = "")
+  } else if(between(pv, 0, 0.01)){
+    paste("(", se, ")", "***", sep = "")
+  } else {
+    paste(se)
+  }
+}
+
+
+get_coef_w2 <- function(variable){
+  #var <- deparse(substitute(variable))
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], bwselect = 'msetwo')
+  h <- regression_output[['bws']][1,]
+  b <- regression_output[['bws']][2,]
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']],
+                                b = 2*b,
+                                h = 2*h)
+  
+  coef <- regression_output['coef'][[1]][1] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  paste(coef)
+}
+
+get_se_bc_w2 <- function(variable){
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], bwselect = 'msetwo')
+  h <- regression_output[['bws']][1,]
+  b <- regression_output[['bws']][2,]
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']],
+                                b = 2*b,
+                                h = 2*h)
+  
+  se <- regression_output['se'][[1]][2] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  pv <- regression_output['pv'][[1]][2]
+  
+  if(between(pv, 0.05, 0.1)){
+    paste("(", se, ")", " ", "*", sep = "")
+  } else if(between(pv, 0.01, 0.05)){
+    paste("(", se, ")", "**", sep = "")
+  } else if(between(pv, 0, 0.01)){
+    paste("(", se, ")", "***", sep = "")
+  } else {
+    paste(se)
+  }
+}
+
+get_se_rob_w2 <- function(variable){
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], bwselect = 'msetwo')
+  h <- regression_output[['bws']][1,]
+  b <- regression_output[['bws']][2,]
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']],
+                                b = 2*b,
+                                h = 2*h)
+  
+  se <- regression_output['se'][[1]][3] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  pv <- regression_output['pv'][[1]][3]
+  
+  if(between(pv, 0.05, 0.1)){
+    paste("(", se, ")", "*", sep = "")
+  } else if(between(pv, 0.01, 0.05)){
+    paste("(", se, ")", "**", sep = "")
+  } else if(between(pv, 0, 0.01)){
+    paste("(", se, ")", "***", sep = "")
+  } else {
+    paste(se)
+  }
+}
+
+
+# Panel B: 
+get_coef_cov2 <- function(variable, covs, bw_mult =1){
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], covs = covs, bwselect = 'msetwo')
+  h <- regression_output[['bws']][1,]
+  b <- regression_output[['bws']][2,]
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], covs = covs,
+                                b = bw_mult*b,
+                                h = bw_mult*h)
+  
+  coef <- regression_output['coef'][[1]][1] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  paste(coef)
+}
+
+get_se_bc_cov2 <- function(variable, covs, bw_mult=1){
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], cluster=dataset[['place_of_birth']], covs = covs, bwselect = 'msetwo')
+  h <- regression_output[['bws']][1,]
+  b <- regression_output[['bws']][2,]
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], cluster = dataset[['place_of_birth']], covs = covs,
+                                b = bw_mult*b,
+                                h = bw_mult*h)
+  
+  se <- regression_output['se'][[1]][2] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  pv <- regression_output['pv'][[1]][2]
+  
+  if(between(pv, 0.05, 0.1)){
+    paste("(", se, ")", "*", sep = "")
+  } else if(between(pv, 0.01, 0.05)){
+    paste("(", se, ")", "**", sep = "")
+  } else if(between(pv, 0, 0.05)){
+    paste("(", se, ")", "***", sep = "")
+  } else {
+    paste("(", se, ")", sep = "")
+  }
+}
+
+get_se_rob_cov2 <- function(variable, covs, bw_mult=1){
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], covs = covs, bwselect = 'msetwo')
+  h <- regression_output[['bws']][1,]
+  b <- regression_output[['bws']][2,]
+  
+  regression_output <- rdrobust(y = variable, x = dataset[['margin']], covs = covs,
+                                b = bw_mult*b,
+                                h = bw_mult*h)
+  
+  se <- regression_output['se'][[1]][3] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  pv <- regression_output['pv'][[1]][3]
+  
+  if(between(pv, 0.05, 0.1)){
+    paste("(", se, ")", "*", sep = "")
+  } else if(between(pv, 0.01, 0.05)){
+    paste("(", se, ")", "**", sep = "")
+  } else if(between(pv, 0, 0.05)){
+    paste("(", se, ")", "***", sep = "")
+  } else {
+    paste("(", se, ")", sep = "")
+  }
+}
+
+
+
+## For tenure table
+get_coef_t <- function(depvar, dataset){
+  
+    regression_output <- rdrobust(y = dataset[[depvar]], x = dataset[['margin']], covs = make_covariates(dataset))
+    
+    coef <- regression_output['coef'][[1]][1] %>%
+      round(3) %>%
+      format(nsmall=3)
+    
+    paste(coef)
+}
+
+get_se_bc_t <- function(depvar, dataset){
+  
+  regression_output <- rdrobust(y = dataset[[depvar]], x = dataset[['margin']], covs = make_covariates(dataset))
+  
+  se <- regression_output['se'][[1]][1] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  pv <- regression_output['pv'][[1]][1]
+  
+  if(between(pv, 0.05, 0.1)){
+    paste("(", se, ")", "*", sep = "")
+  } else if(between(pv, 0.01, 0.05)){
+    paste("(", se, ")", "**", sep = "")
+  } else if(between(pv, 0, 0.05)){
+    paste("(", se, ")", "***", sep = "")
+  } else {
+    paste("(", se, ")", sep = "")
+  }
+}
+
+get_se_rob_t <- function(depvar, dataset){
+  
+  regression_output <- rdrobust(y = dataset[[depvar]], x = dataset[['margin']], covs = make_covariates(dataset))
+  
+  se <- regression_output['se'][[1]][3] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  pv <- regression_output['pv'][[1]][3]
+  
+  if(between(pv, 0.05, 0.1)){
+    paste("(", se, ")", "*", sep = "")
+  } else if(between(pv, 0.01, 0.05)){
+    paste("(", se, ")", "**", sep = "")
+  } else if(between(pv, 0, 0.05)){
+    paste("(", se, ")", "***", sep = "")
+  } else {
+    paste("(", se, ")", sep = "")
+  }
+  
+}
+
+get_n_untreated_t <- function(dataset, depvar){
+  
+  regression_output <- rdrobust(y = dataset[[depvar]], x = dataset[['margin']], covs = make_covariates(dataset))
+  
+  regression_output[['N']][1]
+}
+
+get_n_treated_t <- function(dataset, depvar){
+  
+  regression_output <- rdrobust(y = dataset[[depvar]], x = dataset[['margin']], covs = make_covariates(dataset))
+  
+  regression_output[['N']][2]
+}
+
+

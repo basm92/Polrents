@@ -1153,3 +1153,187 @@ plotinho <- fig_data %>%
   scale_color_manual(values=c('blue', 'brown'))
 
 ggsave("./Tables/randstad_distance.pdf", plotinho, width = 10, height= 4)
+
+
+
+### Robustness check - main analysis - compute the opt. bandwidth below and above the cutoff point and estimate regression
+# Panel A: Without Covariates
+panel_a <- data.frame(names = c("Coefficient", 
+                                "SE (BC)",
+                                "SE (Rob.)",
+                                "Mean DV Politicians (1%)",
+                                "Mean DV Non-Politicians (1%)",
+                                "N (Politicians)",
+                                "N (Non-Politicians)",
+                                "Bandwidth"),
+                      an_defw=c(get_coef2(dataset$defw),
+                                get_se_bc2(dataset$defw),
+                                get_se_rob2(dataset$defw),
+                                mean_wealth_pols(dataset$defw),
+                                mean_wealth_nonpols(dataset$defw),
+                                n_pols(dataset$defw),
+                                n_nonpols(dataset$defw),
+                                "Optimal"),
+                      an_defw_w = c(get_coef_w2(dataset$defw),
+                                    get_se_bc_w2(dataset$defw),
+                                    get_se_rob_w2(dataset$defw),
+                                    mean_wealth_pols(dataset$defw),
+                                    mean_wealth_nonpols(dataset$defw),
+                                    n_pols(dataset$defw),
+                                    n_nonpols(dataset$defw),
+                                    "2 x Optimal"),
+                      an_defw2 = c(get_coef2(dataset$defw2),
+                                   get_se_bc2(dataset$defw2),
+                                   get_se_rob2(dataset$defw2),
+                                   mean_wealth_pols(dataset$defw2),
+                                   mean_wealth_nonpols(dataset$defw2),
+                                   n_pols(dataset$defw2),
+                                   n_nonpols(dataset$defw2),
+                                   "Optimal"),
+                      an_defw2_w = c(get_coef_w2(dataset$defw2),
+                                     get_se_bc_w2(dataset$defw2),
+                                     get_se_rob_w2(dataset$defw2),
+                                     mean_wealth_pols(dataset$defw2),
+                                     mean_wealth_nonpols(dataset$defw2),
+                                     n_pols(dataset$defw2),
+                                     n_nonpols(dataset$defw2),
+                                     "2 x Optimal")
+)
+
+
+# Panel B: With Covariates which are significant in Panel A at 0.05 cutoff point
+# yoe, howmany_before_alg, log(1+birthplace_pop_1859), birthplace_agri, 
+# birthplace_indus, age_at_election, yod, rec_soc
+# rdrobust(y=dataset$defw, x = dataset$margin, 
+
+covariates <- cbind(dataset$yoe, 
+                    dataset$howmany_before_alg,
+                    log(1+dataset$birthplace_pop_1859), 
+                    dataset$birthplace_agri, 
+                    dataset$birthplace_indus, 
+                    dataset$age_at_election, 
+                    dataset$yod, 
+                    dataset$rec_soc,
+                    dataset$lifespan)
+
+
+panel_b <- data.frame(names = c("Coefficient", 
+                                "SE (BC)",
+                                "SE (Rob.)",
+                                "Mean DV Politicians (1%)",
+                                "Mean DV Non-Politicians (1%)",
+                                "N (Politicians)",
+                                "N (Non-Politicians)",
+                                "Bandwidth"),
+                      an_defw=c(get_coef_cov2(dataset$defw, covs = covariates),
+                                get_se_bc_cov2(dataset$defw, covs = covariates),
+                                get_se_rob_cov2(dataset$defw, covs = covariates),
+                                mean_wealth_pols(dataset$defw),
+                                mean_wealth_nonpols(dataset$defw),
+                                n_pols_cov(dataset$defw, covs = covariates),
+                                n_nonpols_cov(dataset$defw, covs = covariates),
+                                "Optimal"),
+                      an_defw_w = c(get_coef_cov2(dataset$defw, bw_mult = 2, covs = covariates),
+                                    get_se_bc_cov2(dataset$defw, bw_mult = 2, covs = covariates),
+                                    get_se_rob_cov2(dataset$defw, bw_mult = 2, covs = covariates),
+                                    mean_wealth_pols(dataset$defw),
+                                    mean_wealth_nonpols(dataset$defw),
+                                    n_pols_cov(dataset$defw, covs = covariates),
+                                    n_nonpols_cov(dataset$defw, covs = covariates),
+                                    "2 x Optimal"),
+                      an_defw2 = c(get_coef_cov2(dataset$defw2, covs = covariates),
+                                   get_se_bc_cov2(dataset$defw2, covs = covariates),
+                                   get_se_rob_cov2(dataset$defw2, covs = covariates),
+                                   mean_wealth_pols(dataset$defw2),
+                                   mean_wealth_nonpols(dataset$defw2),
+                                   n_pols_cov(dataset$defw2, covs = covariates),
+                                   n_nonpols_cov(dataset$defw2, covs = covariates),
+                                   "Optimal"),
+                      an_defw2_w = c(get_coef_cov2(dataset$defw2, bw_mult = 2, covs = covariates),
+                                     get_se_bc_cov2(dataset$defw2, bw_mult = 2, covs = covariates),
+                                     get_se_rob_cov2(dataset$defw2, bw_mult = 2, covs = covariates),
+                                     mean_wealth_pols(dataset$defw2),
+                                     mean_wealth_nonpols(dataset$defw2),
+                                     n_pols_cov(dataset$defw2, covs = covariates),
+                                     n_nonpols_cov(dataset$defw2, covs = covariates),
+                                     "2 x Optimal"))
+
+notitie <- "Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level. Panel A shows univariate regressions under the optimal MSE bandwidth computed separately for both sides from the cut-off point, and twice the optimal bandwidth. In panel B, selected covariates are added, in particular, covariates that seemed to be unbalanced at the 2\\\\% cutoff. In particular, the regression controls for lifespan, times participated in election, birthplace population, birthplace characteristics, age at election, and socialist recommendations. In addition, I control for politicians' lifespan. *: p < 0.10, **: p < 0.05, ***: p < 0.01."
+knitr::opts_current$set(label = "mainresults")
+datasummary_df(bind_rows(panel_a, panel_b) %>%
+                 rename(` ` = names, 
+                        "(1)" = an_defw,
+                        "(2)" = an_defw_w,
+                        "(3)" = an_defw2,
+                        "(4)"  = an_defw2_w), 
+               out = "kableExtra",
+               output = "latex",
+               title = "Main RD Estimates") %>%
+  kableExtra::add_header_above(c(" " = 1, "Log(Wealth)" = 2, "Ihs(Wealth)" = 2)) %>%
+  kableExtra::group_rows("Panel A: Baseline Estimates", 1, 8)  %>%
+  kableExtra::group_rows("Panel B: Estimates With Selected Covariates", 9, 16) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"), full_width = F, font_size = 10) %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::save_kable("./Tables/rdd_mainresults_twobandwidths.tex")
+
+
+## Table with analysis split by tenure
+longtenure1 <- dataset %>%
+  filter(politician_dummy == 0 | tenure > 25)
+
+shorttenure1 <- dataset %>%
+  filter(politician_dummy == 0 | tenure < 10)
+
+# Build these specifications into a table:
+# 1 with defw, long tenure, short tenure, 1 with defw2, long tenure, short tenure
+rdrobust(longtenure1$defw, longtenure1$margin, covs = make_covariates(longtenure1)) %>% summary()
+rdrobust(shorttenure1$defw, shorttenure1$margin, covs = make_covariates(shorttenure1)) %>% summary()
+
+tenure_table <- data.frame(names = c("Coefficient", 
+                                "SE (BC)",
+                                "SE (Rob.)",
+                                "N (Politicians)",
+                                "N (Non-Politicians)",
+                                "Bandwidth"),
+           first = c(get_coef_t('defw', longtenure1),
+                     get_se_bc_t('defw', longtenure1),
+                     get_se_rob_t('defw', longtenure1),
+                     get_n_treated_t(longtenure1, 'defw'),
+                     get_n_untreated_t(longtenure1, 'defw'),
+                     "Optimal"),
+           second = c(get_coef_t('defw', shorttenure1),
+                      get_se_bc_t('defw', shorttenure1),
+                      get_se_rob_t('defw', shorttenure1),
+                      get_n_treated_t(shorttenure1, 'defw'),
+                      get_n_untreated_t(shorttenure1, 'defw'),
+                      "Optimal"),
+           third = c(get_coef_t('defw2', longtenure1),
+                     get_se_bc_t('defw2', longtenure1),
+                     get_se_rob_t('defw2', longtenure1),
+                     get_n_treated_t(longtenure1, 'defw2'),
+                     get_n_untreated_t(longtenure1, 'defw2'),
+                     "Optimal"),
+           fourth = c(get_coef_t('defw2', shorttenure1),
+                      get_se_bc_t('defw2', shorttenure1),
+                      get_se_rob_t('defw2', shorttenure1),
+                      get_n_treated_t(shorttenure1, 'defw2'),
+                      get_n_untreated_t(shorttenure1, 'defw2'),
+                      "Optimal"))
+
+notitie <- "Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level. The table shows regressions under the optimal MSE bandwidth with the addition of several covariates (lifespan, newspaper recommendations and birthplace differences).  *: p < 0.10, **: p < 0.05, ***: p < 0.01."
+
+knitr::opts_current$set(label = "tenure_results")
+datasummary_df(tenure_table %>%
+                 rename(` ` = names, 
+                        "(1)" = first,
+                        "(2)" = second,
+                        "(3)" = third,
+                        "(4)"  = fourth), 
+               out = "kableExtra",
+               output = "latex",
+               title = "RD Estimates According to Tenure") %>%
+  kableExtra::add_header_above(c(" " = 1, "Tenure > 20" = 1, "Tenure < 5" = 1, "Tenure > 20" = 1, "Tenure < 5" = 1)) %>%
+  kableExtra::add_header_above(c(" " = 1, "Log(Wealth)" = 2, "Ihs(Wealth)" = 2)) %>%
+  kableExtra::kable_styling(latex_options = c("scale_down", "hold_position"), full_width = F, font_size = 10) %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::save_kable("./Tables/rdd_results_tenure.tex")
