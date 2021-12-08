@@ -27,7 +27,7 @@ source("helper.R")
 
 ## Motivation
 
-- It is a concern that politicians use public office to serve private interests. They can do so in various ways:
+- There is strong empirical evidence that politicians use public office to serve private interests. They can do so in various ways:
   - Monetary (e.g. Eggers & Hainmuller, 2009; Fisman et al., 2014)
   - Nepotism (Dal Bo et al., 2009; Fafchamps & Labonne, 2017, Folke et al., 2017)
   - Ideology (Mian et al., 2010)
@@ -58,8 +58,8 @@ source("helper.R")
   - Repeated suffrage extensions (1887, 1896) culminating in universal suffrage
   - From political factions to explicit political parties (Protestants, Catholics, Liberals)
   
-- Bicameral system: a lower house and an upper house
-  - Politics concentrated in lower house: from 75 to 100 seats
+- Bicameral system: a Lower House and an Upper House
+  - Politics concentrated in Lower House: from 75 to 100 seats
   - Modest formal salary (2500 guilders)
 
 - Elections on the basis of a district system at the time $\rightarrow$ Many (close) elections
@@ -69,9 +69,9 @@ source("helper.R")
 
 ## Results - Overview
 
-- I firstly replicate findings from the contemporary literature
+- I first replicate the methodology from the contemporary literature to show the existence of politcal rents in the 19th century Netherlands:
   
-```{r}
+```{r out.width="80%", fig.align='center'}
 knitr::include_graphics("../Tables/RDD_Plot.pdf")
 ```
 
@@ -97,9 +97,9 @@ knitr::include_graphics("../Tables/RDD_Plot.pdf")
 - _HDNG Database_, containing information about Dutch Municipalities, including demographics, religious composition, taxes levied, professional composition at various points in time
   - Used to extract birthplace and district characteristics
   
-- _Repositorium_:
-  - Newspaper recommendations of each candidate, turnout, no. of times participated, year of election
-  - Used to extract several election- and candidate characteristics
+- _Newspaper recommendations_:
+  - Newspaper recommendations of each candidate, turnout, no. of times participated, year of election, extracted from the _Repositorium_
+  - Used to extract several other election- and candidate characteristics
   
 - _Politiek Documentatie Centrum_:
   - Used to find demographic characteristics for politicians
@@ -146,7 +146,7 @@ tab1
 ```
 
 
-## Covariate Balance 
+## Covariate Balance - Cont'd
 
 ```{r}
 tab2
@@ -173,15 +173,15 @@ tab3
 ## Career Paths
 
 - Did politicians accrue rents by means of their network? Were they able to capure privileged, exclusive positions afterwards? 
-  - Most of the politicians staying in politics stayed in the lower house or became _burgemeesters_
+  - Most of the politicians staying in politics stayed in the Lower House or became _burgemeesters_
 
 ```{r}
 tab5
 ```
 ## Career Paths
 
-- Politicians who stayed in the lower house for a long time were also able to collect more rents
-  - I analyze the rents acquired by politicians with a longer period of stay in the lower house compared to those with a shorter period of stay (_Tenure_)
+- Politicians who stayed in the Lower House for a long time were also able to collect more rents
+  - I analyze the rents acquired by politicians with a longer period of stay in the Lower House compared to those with a shorter period of stay (_Tenure_)
 
 ```{=latex}
 \begin{table}[!h]
@@ -254,16 +254,18 @@ knitr::include_graphics("../Tables/turnout_competition.pdf")
 
 ## Conclusion
 
+- Politicians who just won elections are substantially wealthier at the end of their life than their contenders who just lost, even though pre-election, they were equal in many aspects. 
+  
+- Rewards obtained through staying longer in politics
+  - Access to other political functions with discretion
+  - Possibility of rent-seeking, superior information
+
 - Political rents mainly concentrated among Protestant and Liberal politicians
   - Large contrast with Catholics, possibly because of low value of rents for Catholic politicians
 
 - These politicians are not constrained (enough) by their party 
   - Consistent with voting behavior serving as a signal, or as catering to interest groups 
   - Still, political parties limit voting freedom and thus the possibility to accrue rents
-  
-- Rewards obtained through staying longer in politics
-  - Access to other political functions with discretion
-  - Possibility of rent-seeking, superior information
 
 - Electoral discipline and monitoring plays a very small role
 
@@ -334,7 +336,7 @@ knitr::include_graphics("../Tables/randstad_distance.pdf")
 
 ## Flexible Optimal Bandwidth - Career Paths
 
-- I estimate the rents for long-serving (tenure > 20) and short-serving (tenure < 5) politicians in the lower house. 
+- I estimate the rents for long-serving (tenure > 20) and short-serving (tenure < 5) politicians in the Lower House. 
   - Politicians who stay longer are able to obtain more rents than politicians who stay shorter.
 
 ```{=latex}
