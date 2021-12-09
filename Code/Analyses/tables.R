@@ -521,6 +521,55 @@ turnout_competition <- fig_data %>%
 
 ggsave("./Tables/turnout_competition.pdf", turnout_competition, width = 10, height = 5)
 
+## second attempt
+j <- 1
+
+for(i in seq(from = 0.4, to = 0.7, by = 0.01)){
+  dataset2 <- dataset %>%
+    filter(!is.na(defw)) %>%
+    mutate(effective_turnout = turnout/district_pop_1889) %>%
+    filter(effective_turnout > quantile(effective_turnout, i, na.rm = T))
+  
+  covs <- make_covariates(dataset2)
+  regression_output <- rdrobust(y=dataset2[['defw']], x = dataset2[['margin']], covs = covs)
+  
+  coef_after <- regression_output$coef[1]
+  se_after <- regression_output$se[2]
+  
+  
+  dataset3 <- dataset %>%
+    mutate(effective_turnout = if_else(turnout/amount_electors > 1, 1, turnout/amount_electors)) %>%
+    filter(effective_turnout < quantile(effective_turnout, i, na.rm = T))
+  
+  covs <- make_covariates(dataset3)
+  regression_output <- rdrobust(y=dataset3[['defw']], x = dataset3[['margin']], covs = covs)
+  
+  coef_before <- regression_output$coef[1]
+  se_before <- regression_output$se[2]
+  
+  fig_data[['coef_higher']][j] <- coef_after
+  fig_data[['coef_lower']][j] <- coef_before
+  fig_data[['se_after']][j] <- se_after
+  fig_data[['se_before']][j] <- se_before
+  
+  j <- j+1
+  
+}
+
+fig_data <- fig_data %>%
+  mutate(diff = coef_higher - coef_lower, 
+         var_diff = se_after^2 + se_before^2, 
+         z_val = pnorm(diff, mean = 0, sd = sqrt(var_diff)),
+         cil = diff - 1.65*sqrt(var_diff),
+         ciu = diff + 1.65*sqrt(var_diff))
+
+turnout_competition <- fig_data %>%
+  ggplot(aes(x = quantile, y = diff)) + 
+  geom_errorbar(aes(x = quantile, ymin = cil, ymax = ciu), width = 0.005, color = 'grey') +
+  geom_point(color='blue') +
+  theme_bw() + ylab("Difference in Rents Estimate High - Low Quantile") + xlab("Turnout Quantile")
+
+ggsave("./Tables/turnout_competition.pdf", turnout_competition, width = 10, height = 5)
 ## Mechanism 2: Party organization (before/after party establishment)
 ### Make a table for this - BETWEEN party with and without covariates
 make_covariates <- function(dataset){

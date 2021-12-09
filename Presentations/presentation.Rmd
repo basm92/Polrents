@@ -267,7 +267,7 @@ knitr::include_graphics("../Tables/turnout_competition.pdf")
   - Consistent with voting behavior serving as a signal, or as catering to interest groups 
   - Still, political parties limit voting freedom and thus the possibility to accrue rents
 
-- Electoral discipline and monitoring plays a very small role
+- Electoral discipline (turnout) at individual elections plays a role
 
 # Robustness Checks
 
