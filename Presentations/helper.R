@@ -51,17 +51,17 @@ knitr::opts_current$set(label = "covbal")
 tab1 <- datasummary(data = dataset,
             align = c("lllllllr"),
             formula = 
-              rec_ar + 
-              rec_lib + 
-              rec_soc + 
-              rec_kath +
-              lifespan +
-              age_at_election +
-              yod +
-              yoe + 
-              howmany_before_alg +
-              log(turnout) +
-              log(turnout_previous_el)  ~ (`Politicians`=mean_treatment_far)  + 
+              (`Rec: Protestant` = rec_ar) + 
+              (`Rec: Liberal` = rec_lib) + 
+              (`Rec: Socialist` = rec_soc) + 
+              (`Rec: Catholic` = rec_kath) +
+              (`Lifespan` = lifespan) +
+              (`Age at Election` = age_at_election) +
+              (`Year of Death` = yod) +
+              (`Year of Election` = yoe) + 
+              (`No. Participated` = howmany_before_alg) +
+              (`Log Turnout` = log(turnout)) +
+              (`Log Turnout Previous` = log(turnout_previous_el)) ~ (`Politicians`=mean_treatment_far)  + 
               (`Non-Politicians`=mean_control_far) + 
               (`p-val.`=p_val_far) + 
               (`Politicians`=mean_treatment_close) + (`Non-Politicians`=mean_control_close) +
@@ -78,17 +78,17 @@ notes <- c("The table contains means for various sets of variables conditioned o
 knitr::opts_current$set(label = "covbal")
 tab2 <- datasummary(data = dataset,
             align = c("lllllllr"),
-            formula = birthplace_share_cath +
-              birthplace_share_prot +
-              birthplace_agri +
-              birthplace_indus +
-              taxespercap_1859 +
-              taxespercap_1889 +
-              distance_bp_hag +
-              district_share_prot +
-              district_share_cath +
-              district_agri +
-              district_indus ~ (`Politicians`=mean_treatment_far)  + 
+            formula = (`Birthplace % Cath.` = birthplace_share_cath) +
+              (`Birthplace % Prot.` = birthplace_share_prot) +
+              (`Birthplace % Agri` = birthplace_agri) +
+              (`Birthplace % Industry` = birthplace_indus) +
+              (`BP Taxes per Cap (1859)` = taxespercap_1859) +
+              (`BP Taxes per Cap (1889)` = taxespercap_1889) +
+              (`Distance BP-The Hague` = distance_bp_hag )+
+              (`District % Prot.` = district_share_prot) +
+              (`District % Cath.` = district_share_cath) +
+              (`District % Agri` = district_agri) +
+              (`District % Industry` = district_indus) ~ (`Politicians`=mean_treatment_far)  + 
               (`Non-Politicians`=mean_control_far) + 
               (`p-val.`=p_val_far) + 
               (`Politicians`=mean_treatment_close) + (`Non-Politicians`=mean_control_close) +

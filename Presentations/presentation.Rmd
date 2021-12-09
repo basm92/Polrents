@@ -285,6 +285,12 @@ knitr::include_graphics("../Tables/bandwidth_test.pdf")
 knitr::include_graphics("../Tables/Density_Plot_MarginWealth.pdf")
 ```
 
+## Wealth Densities per Party and Status
+
+```{r}
+knitr::include_graphics("../Tables/histogram_wealth_party.pdf")
+```
+
 ## Flexible Optimal Bandwidth on Both Sides
 
 ```{=latex}
