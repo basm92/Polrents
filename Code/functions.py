@@ -1,3 +1,6 @@
+import pandas as pd
+from tqdm import tqdm
+
 def get_margin(dataframe):
     
     out = pd.DataFrame()
