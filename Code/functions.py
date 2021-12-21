@@ -38,3 +38,35 @@ def get_margin(dataframe):
         out = out.append(interim)
         
     return out
+    
+def get_match(df_ep):
+    
+    matches = pd.DataFrame()
+    
+    #loop through each unique candidates
+    for i in tqdm(df_ep['naam'].unique()):
+        
+        try: 
+            
+            interim = pd.DataFrame()
+
+            distr_name = df_ep[df_ep['naam'] == i].iloc[0]['districtsnaam']
+            verk_dat = df_ep[df_ep['naam'] == i].iloc[0]['verkiezingdatum']
+
+            closest_verk_dat = all_candidates[(all_candidates['District'] == distr_name) & (all_candidates['Verkiezingdatum'] <= verk_dat)]['Verkiezingdatum'].max()
+            candidate_matches = all_candidates[(all_candidates['District'] == distr_name) & (all_candidates['Verkiezingdatum'] == closest_verk_dat)]["Naam"].tolist()
+
+            found_match = process.extractOne(i, candidate_matches)[0]
+
+                # find name in all_candidates on basis of winning election
+            interim = interim.assign(name_in_elected_people = [i],
+                                     name_in_all_elections = [found_match])
+
+            matches = matches.append(interim)
+
+        except:
+            next
+            
+    return(matches)
+    
+
