@@ -27,12 +27,7 @@ fourthrents <- dataset %>%
 fifthrents <- dataset %>%
   filter(hoevaak_gewonnen_verleden > 3)
 
-## Incumbency advantages
-rdrobust::rdrobust(y = dataset$verk_2_gewonnen, x = dataset$margin) %>% summary()
-rdrobust::rdrobust(y = dataset$verk_3_gewonnen, x = dataset$margin) %>% summary()
-rdrobust::rdrobust(y = dataset$verk_4_gewonnen, x = dataset$margin) %>% summary()
-rdrobust::rdrobust(y = dataset$verk_5_gewonnen, x = dataset$margin) %>% summary()
-rdrobust::rdrobust(y = dataset$verk_6_gewonnen, x = dataset$margin) %>% summary()
+# Regression analyses
 
 rdrobust::rdrobust(y = firstrents_firsttry$defw, x = firstrents_firsttry$margin) %>% summary()
 rdrobust::rdrobust(y = firstrents_secondtry$defw, x = firstrents_secondtry$margin) %>% summary()
@@ -41,3 +36,4 @@ rdrobust::rdrobust(y = secondrents$defw, x = secondrents$margin) %>% summary()
 rdrobust::rdrobust(y = thirdrents$defw, x = thirdrents$margin) %>% summary()
 rdrobust::rdrobust(y = fourthrents$defw, x = fourthrents$margin) %>% summary()
 rdrobust::rdrobust(y = fifthrents$defw, x = fifthrents$margin) %>% summary()
+
