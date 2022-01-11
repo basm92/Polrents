@@ -1,75 +1,75 @@
 Naam,prof_business,prof_politics,prof_colonial
-mr. J. van Riemsdijk,,,
-W. de la Haye,,,
-D. Mulder Dzn.,,,
-mr. S.J. baron van Pallandt,,,
-H.P. Gelderman,,,
-J.E. Stork,,,
-mr. B.A. Reigers,,,
-jhr.mr. H.B. van Tets,,,
-K.W. van Gorkom,,,
-J.F.H. Bekhuis,,,
-mr. W. Terpstra,,,
-jhr.mr. H.G.C.L. Janssens,,,
-W. Bos,,,
-jhr. M. Salvador,,,
-mr. T.M.C. Asser,,,
-J.P. de Bordes,,,
-mr. H.A. Neeb,,,
-mr. J.B.L. Wentholt,,,
-mr. J.T. Buys,,,
-dr. T.C.L. Wijnmalen,,,
-mr. A.A. van Bergen Ijzendoorn,,,
-J. van der Breggen,,,
-C.J. Vaillant,,,
-mr. A.M. Maas Geesteranus,,,
-mr. P.E.A. Janssens,,,
-J.H.A. Diepen,,,
-mr. H.A. van Mens,,,
-mr. F.G.J. baron van Rijckevorsel van Kessel,,,
-mr. J.H.A.M. Essink,,,
-J.G. van Schaardenburg,,,
-F.G. Mellink Pzn.,,,
-J. Hoven,,,
-mr. D. Bonthuis,,,
-A. Vogelsang,,,
-P.J. de Raadt van Hendrik-Ido-Ambacht,,,
-jhr. E. de Wendt Alberda van Ekenstein,,,
-H.W. Wierda,,,
-J.G. Nederhoed,,,
-T. Borgesius,,,
-mr. W. Woldringh,,,
-A. Winkler Prins,,,
-jhr.mr. O.Q. van Swinderen,,,
-J. Hessels Tacoma,,,
-L. Britzel,,,
-jhr.mr. O.Q.J.J. van Swinderen,,,
-J. Wolbers,,,
-J. Binkes,,,
-mr. W. baron van Heemstra,,,
-K. Kater,,,
-mr. B.J. Gratama,,,
-mr. J.C. Bijsterbos,,,
-S.A. van Hoogstraten,,,
-mr. E.J.I. van Sonsbeeck,,,
-A.H. Jannink,,,
-mr. J.F. Pringle,,,
-jhr. B. van Merlen,,,
-mr. H. Verloren van Themaat,,,
-jhr.mr. J.L.B. de Muralt,,,
-G. van Leeuwen,,,
-C. Bloem,,,
-J.D. van Herwerden,,,
-H.W. van Marle,,,
-H.G. Jansen,,,
-jhr. J.P. Cornets de Groot van Kraayenburg,,,
-dr. A. Vrolik,,,
-mr. J. Wertheim,,,
-dr. J. Bosscha jr.,,,
-mr. M.J. van Lennep,,,
-H.F. Bultman,,,
-mr. J.H. van der Sande,,,
-dr. P. Bleeker,,,
+mr. J. van Riemsdijk,0,1,0
+W. de la Haye,0,0,0
+D. Mulder Dzn.,1,1,0
+mr. S.J. baron van Pallandt,0,0,0
+H.P. Gelderman,0,0,0
+J.E. Stork,0,0,0
+mr. B.A. Reigers,0,0,0
+jhr.mr. H.B. van Tets,0,0,0
+K.W. van Gorkom,0,0,0
+J.F.H. Bekhuis,0,0,0
+mr. W. Terpstra,0,0,0
+jhr.mr. H.G.C.L. Janssens,0,0,0
+W. Bos,0,0,0
+jhr. M. Salvador,0,0,0
+mr. T.M.C. Asser,0,0,0
+J.P. de Bordes,0,0,1
+mr. H.A. Neeb,0,0,0
+mr. J.B.L. Wentholt,0,0,0
+mr. J.T. Buys,0,0,0
+dr. T.C.L. Wijnmalen,0,0,0
+mr. A.A. van Bergen Ijzendoorn,0,1,0
+J. van der Breggen,0,1,0
+C.J. Vaillant,0,0,0
+mr. A.M. Maas Geesteranus,0,0,0
+mr. P.E.A. Janssens,0,0,0
+J.H.A. Diepen,0,0,0
+mr. H.A. van Mens,0,0,0
+mr. F.G.J. baron van Rijckevorsel van Kessel,0,0,0
+mr. J.H.A.M. Essink,0,1,0
+J.G. van Schaardenburg,0,0,0
+F.G. Mellink Pzn.,0,0,0
+J. Hoven,0,0,0
+mr. D. Bonthuis,0,0,0
+A. Vogelsang,0,0,0
+P.J. de Raadt van Hendrik-Ido-Ambacht,0,0,0
+jhr. E. de Wendt Alberda van Ekenstein,0,1,0
+H.W. Wierda,0,1,0
+J.G. Nederhoed,0,0,0
+T. Borgesius,0,1,0
+mr. W. Woldringh,0,0,0
+A. Winkler Prins,0,0,0
+jhr.mr. O.Q. van Swinderen,0,0,0
+J. Hessels Tacoma,0,0,0
+L. Britzel,0,0,0
+jhr.mr. O.Q.J.J. van Swinderen,0,0,0
+J. Wolbers,0,0,0
+J. Binkes,0,0,1
+mr. W. baron van Heemstra,0,1,0
+K. Kater,0,0,0
+mr. B.J. Gratama,0,0,0
+mr. J.C. Bijsterbos,0,0,0
+S.A. van Hoogstraten,0,0,0
+mr. E.J.I. van Sonsbeeck,1,0,0
+A.H. Jannink,0,0,0
+mr. J.F. Pringle,0,0,0
+jhr. B. van Merlen,0,0,0
+mr. H. Verloren van Themaat,0,0,0
+jhr.mr. J.L.B. de Muralt,0,0,0
+G. van Leeuwen,0,0,0
+C. Bloem,0,0,0
+J.D. van Herwerden,0,0,0
+H.W. van Marle,0,0,0
+H.G. Jansen,1,0,0
+jhr. J.P. Cornets de Groot van Kraayenburg,0,1,0
+dr. A. Vrolik,1,0,0
+mr. J. Wertheim,0,0,0
+dr. J. Bosscha jr.,0,0,0
+mr. M.J. van Lennep,0,0,0
+H.F. Bultman,0,1,0
+mr. J.H. van der Sande,0,0,0
+dr. P. Bleeker,0,0,0
 jhr.mr. H. van Alphen,,,
 W.J.F. Nuyens,,,
 J. Rinkes Borger,,,
