@@ -4,7 +4,7 @@ library(ggtext); library(RATest); library(lubridate); library(extraDistr)
 # inverse hyperbolic sine transform
 ihs <- function(x) {log(x + sqrt(x^2 + 1))}
 ## Few mutations with the data set
-dataset <- read_delim("./Data/analysis/full_sample_analysis_novars.csv", delim=",") %>%
+dataset <- read_delim("./Data/analysis/full_sample_analysis_allvars.csv", delim=",") %>%
   select(-1) %>%
   janitor::clean_names() %>%
   mutate(defw = log(1+deflated_wealth), defw2 = ihs(deflated_wealth)) %>%
@@ -37,3 +37,13 @@ rdrobust::rdrobust(y = thirdrents$defw, x = thirdrents$margin) %>% summary()
 rdrobust::rdrobust(y = fourthrents$defw, x = fourthrents$margin) %>% summary()
 rdrobust::rdrobust(y = fifthrents$defw, x = fifthrents$margin) %>% summary()
 
+# dataset before party
+
+party <- dataset %>%
+  filter(election_after_arp == 1, hoevaak_gewonnen_verleden == 0) 
+
+withoutparty <- dataset %>%
+  filter(election_after_arp == 0, hoevaak_gewonnen_verleden == 0)
+
+rdrobust::rdrobust(y = party$defw, x = party$margin) %>% summary()
+rdrobust::rdrobust(y = withoutparty$defw, x = withoutparty$margin) %>% summary()
