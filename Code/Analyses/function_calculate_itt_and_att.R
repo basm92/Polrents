@@ -41,5 +41,3 @@ compute_itt_and_att <- function(dataset, t_star){
   return(list(incumbency_advantages, itt, att))
   
 }
-
-compute_itt_and_att(dataset, 5)
