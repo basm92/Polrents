@@ -1,6 +1,6 @@
 # compute_itts_and_atts_function
 
-compute_itt_and_att <- function(dataset, t_star){
+compute_itt_and_att <- function(dataset, t_star, covs = NULL){
   
   # estimate the incumbency advantages until t_star
   
@@ -21,7 +21,7 @@ compute_itt_and_att <- function(dataset, t_star){
     data <- dataset %>%
       filter(hoevaak_gewonnen_verleden == i-1)
     
-    reg <- rdrobust::rdrobust(y = data[['defw']], x = data[['margin']])
+    reg <- rdrobust::rdrobust(y = data[['defw']], x = data[['margin']], covs = covs)
     itt[i, 1] <- reg$coef[1]
     itt[i, 2] <- reg$se[1]
   }

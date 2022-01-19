@@ -23,6 +23,55 @@ get_coef_and_se2 <- function(variable){
   else { paste(coef, " ", "(", se, ")", sep = "")}
 }
 
+# again
+
+get_coef_and_se3 <- function(variable){
+  #var <- deparse(substitute(variable))
+  regression_output <- rdrobust(y = variable, x = firstrents_firsttry[['margin']])
+  
+  t_stat <- as.numeric(regression_output['coef'][[1]][1])/as.numeric(regression_output['se'][[1]][3]) %>%
+    abs()
+  
+  coef <- regression_output['coef'][[1]][1] %>%
+    round(3) %>%
+    format(nsmall=3)
+  se <- regression_output['se'][[1]][3] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  if (t_stat > 1.7) {
+    paste(coef, " ", "(", se, ")","*", sep = "") }
+  else { paste(coef, " ", "(", se, ")", sep = "")}
+}
+
+# and again
+
+get_coef_and_se4 <- function(variable){
+  #var <- deparse(substitute(variable))
+  regression_output <- rdrobust(y = variable, x = secondrents[['margin']])
+  
+  t_stat <- as.numeric(regression_output['coef'][[1]][1])/as.numeric(regression_output['se'][[1]][3]) %>%
+    abs()
+  
+  coef <- regression_output['coef'][[1]][1] %>%
+    round(3) %>%
+    format(nsmall=3)
+  se <- regression_output['se'][[1]][3] %>%
+    round(3) %>%
+    format(nsmall=3)
+  
+  if(between(t_stat, 2.58, 10)){
+    paste(coef, " ", "(", se, ")","***", sep = "")
+  } else if(between(t_stat, 1.96, 2.58)){
+    paste(coef, " ", "(", se, ")","**", sep = "")
+  } else if(between(t_stat, 1.65, 1.96)){
+    paste(coef, " ", "(", se, ")","*", sep = "")
+  } else {
+    paste(coef, " ", "(", se, ")","", sep = "")
+  }
+  
+}
+
 ## Conditional filtering for first table
 
 mean_treatment_far <- function(x){ x[dataset$politician_dummy == 1 & abs(dataset$margin) < far] %>%

@@ -4,65 +4,64 @@
 \centering
 \resizebox{\linewidth}{!}{
 \begin{threeparttable}
-\begin{tabular}[t]{lrrrrrrrrrr}
+\begin{tabular}[t]{lrrrrr}
 \toprule
-\multicolumn{1}{c}{ } & \multicolumn{5}{c}{Politician} & \multicolumn{5}{c}{Non-Politician} \\
-\cmidrule(l{3pt}r{3pt}){2-6} \cmidrule(l{3pt}r{3pt}){7-11}
-  & Mean & SD & Min & Max & N & Mean  & SD  & Min  & Max  & N \\
+  & Mean & SD & Min & Max & N\\
 \midrule
 \addlinespace[0.3em]
-\multicolumn{11}{l}{\textbf{Panel A: Newspaper Recommendations}}\\
-\hspace{1em}rec\_ar & \num{0.16} & \num{0.36} & \num{0.00} & \num{1.00} & 348 & \num{0.13} & \num{0.34} & \num{0.00} & \num{1.00} & 263\\
-\hspace{1em}rec\_lib & \num{0.34} & \num{0.47} & \num{0.00} & \num{1.00} & 348 & \num{0.27} & \num{0.45} & \num{0.00} & \num{1.00} & 263\\
-\hspace{1em}rec\_soc & \num{0.04} & \num{0.19} & \num{0.00} & \num{1.00} & 348 & \num{0.02} & \num{0.15} & \num{0.00} & \num{1.00} & 263\\
-\hspace{1em}rec\_kath & \num{0.20} & \num{0.40} & \num{0.00} & \num{1.00} & 348 & \num{0.15} & \num{0.36} & \num{0.00} & \num{1.00} & 263\\
+\multicolumn{6}{l}{\textbf{Panel A: Newspaper Recommendations}}\\
+\hspace{1em}Rec.: Protestant & \num{0.16} & \num{0.37} & \num{0.00} & \num{1.00} & 6197\\
+\hspace{1em}Rec.: Liberal & \num{0.19} & \num{0.39} & \num{0.00} & \num{1.00} & 6197\\
+\hspace{1em}Rec.: Socialist & \num{0.06} & \num{0.24} & \num{0.00} & \num{1.00} & 6197\\
+\hspace{1em}Rec: Catholic & \num{0.18} & \num{0.38} & \num{0.00} & \num{1.00} & 6197\\
 \addlinespace[0.3em]
-\multicolumn{11}{l}{\textbf{Panel B: Demographic Characteristics Politicians}}\\
-\hspace{1em}lifespan & \num{20.73} & \num{11.66} & \num{0.57} & \num{51.10} & 348 & \num{20.30} & \num{12.46} & \num{-16.13} & \num{64.61} & 263\\
-\hspace{1em}age\_at\_election & \num{51.14} & \num{9.75} & \num{29.19} & \num{76.47} & 348 & \num{48.93} & \num{10.83} & \num{10.41} & \num{74.98} & 263\\
-\hspace{1em}yod & \num{1906.39} & \num{16.23} & \num{1877.00} & \num{1947.00} & 348 & \num{1900.06} & \num{14.62} & \num{1860.00} & \num{1927.00} & 263\\
-\hspace{1em}yoe & \num{1885.60} & \num{15.28} & \num{1848.00} & \num{1916.00} & 348 & \num{1879.66} & \num{15.03} & \num{1848.00} & \num{1913.00} & 263\\
+\multicolumn{6}{l}{\textbf{Panel B: Demographic Characteristics Politicians}}\\
+\hspace{1em}Lifespan & \num{22.41} & \num{14.55} & \num{-47.36} & \num{129.79} & 4993\\
+\hspace{1em}Age at Election & \num{49.35} & \num{12.33} & \num{-61.09} & \num{125.06} & 4711\\
+\hspace{1em}Year of Death & \num{1902.32} & \num{23.31} & \num{1837.00} & \num{1986.00} & 4993\\
+\hspace{1em}Year of Election & \num{1880.61} & \num{19.88} & \num{1848.00} & \num{1918.00} & 6197\\
 \addlinespace[0.3em]
-\multicolumn{11}{l}{\textbf{Panel C: Election Characteristics}}\\
-\hspace{1em}howmany\_before\_alg & \num{2.62} & \num{3.76} & \num{0.00} & \num{24.00} & 348 & \num{0.57} & \num{1.65} & \num{0.00} & \num{14.00} & 263\\
-\hspace{1em}log(turnout) & \num{8.38} & \num{1.04} & \num{6.35} & \num{11.85} & 315 & \num{7.85} & \num{0.82} & \num{6.10} & \num{11.85} & 263\\
-\hspace{1em}log(turnout\_previous\_el) & \num{8.05} & \num{0.98} & \num{5.71} & \num{11.85} & 300 & \num{7.69} & \num{0.78} & \num{5.90} & \num{11.85} & 254\\
-\hspace{1em}log(1 + birthplace\_pop\_1859) & \num{10.09} & \num{1.76} & \num{0.00} & \num{12.03} & 278 & \num{9.31} & \num{1.82} & \num{0.00} & \num{12.03} & 254\\
+\multicolumn{6}{l}{\textbf{Panel C: Election Characteristics}}\\
+\hspace{1em}Log Turnout & \num{7.98} & \num{0.92} & \num{5.70} & \num{11.85} & 6197\\
+\hspace{1em}Log Turnout Previous & \num{7.88} & \num{0.92} & \num{5.81} & \num{11.85} & 5747\\
+\hspace{1em}Log Population 1859 & \num{9.43} & \num{1.87} & \num{0.00} & \num{12.03} & 4058\\
 \addlinespace[0.3em]
-\multicolumn{11}{l}{\textbf{Panel D: Birthplace Characteristics}}\\
-\hspace{1em}birthplace\_share\_cath & \num{0.31} & \num{0.21} & \num{0.00} & \num{1.00} & 269 & \num{0.28} & \num{0.25} & \num{0.00} & \num{0.99} & 247\\
-\hspace{1em}birthplace\_share\_prot & \num{0.65} & \num{0.20} & \num{0.00} & \num{1.00} & 269 & \num{0.69} & \num{0.24} & \num{0.01} & \num{1.00} & 247\\
-\hspace{1em}birthplace\_agri & \num{0.03} & \num{0.07} & \num{0.00} & \num{0.62} & 275 & \num{0.06} & \num{0.11} & \num{0.00} & \num{0.62} & 253\\
-\hspace{1em}birthplace\_indus & \num{0.22} & \num{0.08} & \num{0.00} & \num{0.39} & 275 & \num{0.20} & \num{0.11} & \num{0.00} & \num{0.59} & 253\\
-\hspace{1em}taxespercap\_1859 & \num{3.66} & \num{2.04} & \num{0.50} & \num{7.27} & 348 & \num{3.83} & \num{1.86} & \num{0.50} & \num{7.27} & 263\\
-\hspace{1em}taxespercap\_1889 & \num{4.32} & \num{2.31} & \num{0.50} & \num{8.51} & 348 & \num{4.71} & \num{1.79} & \num{0.50} & \num{10.34} & 263\\
-\hspace{1em}distance\_bp\_hag & \num{187.25} & \num{1050.04} & \num{0.00} & \num{11402.66} & 348 & \num{86.30} & \num{73.60} & \num{0.00} & \num{555.94} & 257\\
+\multicolumn{6}{l}{\textbf{Panel D: Birthplace Characteristics}}\\
+\hspace{1em}Share Protestant & \num{0.62} & \num{0.25} & \num{0.00} & \num{1.00} & 3879\\
+\hspace{1em}Share Catholic & \num{0.35} & \num{0.26} & \num{0.00} & \num{1.00} & 3879\\
+\hspace{1em}Labor Force Share Agricul. & \num{0.06} & \num{0.12} & \num{0.00} & \num{0.62} & 4022\\
+\hspace{1em}Labor Force Share Industry & \num{0.19} & \num{0.10} & \num{0.00} & \num{0.59} & 4022\\
+\hspace{1em}Taxes Per Capita 1859 & \num{4.06} & \num{1.60} & \num{0.37} & \num{7.27} & 4008\\
+\hspace{1em}Taxes Per Capita 1889 & \num{4.95} & \num{1.61} & \num{0.67} & \num{10.34} & 4022\\
+\hspace{1em}Distance to the Hague & \num{91.17} & \num{65.26} & \num{0.00} & \num{250.00} & 4700\\
 \addlinespace[0.3em]
-\multicolumn{11}{l}{\textbf{Panel E: District Characteristics}}\\
-\hspace{1em}district\_share\_prot & \num{0.70} & \num{0.20} & \num{0.00} & \num{1.00} & 316 & \num{0.70} & \num{0.20} & \num{0.02} & \num{1.00} & 239\\
-\hspace{1em}district\_share\_cath & \num{0.26} & \num{0.20} & \num{0.00} & \num{1.00} & 316 & \num{0.27} & \num{0.20} & \num{0.00} & \num{0.98} & 239\\
-\hspace{1em}district\_agri & \num{0.06} & \num{0.10} & \num{0.00} & \num{0.45} & 329 & \num{0.07} & \num{0.11} & \num{0.00} & \num{0.45} & 249\\
-\hspace{1em}district\_indus & \num{0.23} & \num{0.09} & \num{0.00} & \num{0.59} & 329 & \num{0.24} & \num{0.10} & \num{0.00} & \num{0.59} & 249\\
+\multicolumn{6}{l}{\textbf{Panel E: District Characteristics}}\\
+\hspace{1em}Share Protestant & \num{0.64} & \num{0.26} & \num{0.00} & \num{1.00} & 5780\\
+\hspace{1em}Share Catholic & \num{0.33} & \num{0.27} & \num{0.00} & \num{1.00} & 5780\\
+\hspace{1em}Labor Force Share Agricul. & \num{0.06} & \num{0.09} & \num{0.00} & \num{0.47} & 5916\\
+\hspace{1em}Labor Force Share Industry & \num{0.22} & \num{0.10} & \num{0.00} & \num{0.60} & 5916\\
 \addlinespace[0.3em]
-\multicolumn{11}{l}{\textbf{Panel F: Ex-Post Characteristics}}\\
-\hspace{1em}defw & \num{11.31} & \num{2.24} & \num{0.00} & \num{14.77} & 323 & \num{10.32} & \num{2.78} & \num{0.00} & \num{14.36} & 258\\
-\hspace{1em}age\_of\_death & \num{71.87} & \num{9.84} & \num{43.79} & \num{93.72} & 348 & \num{69.23} & \num{12.00} & \num{38.04} & \num{95.50} & 263\\
+\multicolumn{6}{l}{\textbf{Panel F: Ex-Post Characteristics}}\\
+\hspace{1em}Log Deflated Wealth & \num{11.17} & \num{2.25} & \num{0.00} & \num{15.05} & 2893\\
+\hspace{1em}Age of Death & \num{71.45} & \num{10.27} & \num{38.04} & \num{99.80} & 4709\\
 \addlinespace[0.3em]
-\multicolumn{11}{l}{\textbf{Panel G: Party and Career Characteristics}}\\
-\hspace{1em}election\_after\_arp & \num{0.73} & \num{0.44} & \num{0.00} & \num{1.00} & 348 & \num{0.59} & \num{0.49} & \num{0.00} & \num{1.00} & 263\\
-\hspace{1em}election\_after\_rk & \num{0.30} & \num{0.46} & \num{0.00} & \num{1.00} & 348 & \num{0.23} & \num{0.42} & \num{0.00} & \num{1.00} & 263\\
-\hspace{1em}election\_after\_lib & \num{0.73} & \num{0.44} & \num{0.00} & \num{1.00} & 348 & \num{0.59} & \num{0.49} & \num{0.00} & \num{1.00} & 263\\
-\hspace{1em}lib & \num{0.59} & \num{0.49} & \num{0.00} & \num{1.00} & 348 & \num{0.00} & \num{0.00} & \num{0.00} & \num{0.00} & 263\\
-\hspace{1em}prot & \num{0.26} & \num{0.44} & \num{0.00} & \num{1.00} & 348 & \num{0.00} & \num{0.00} & \num{0.00} & \num{0.00} & 263\\
-\hspace{1em}cath & \num{0.11} & \num{0.31} & \num{0.00} & \num{1.00} & 348 & \num{0.00} & \num{0.00} & \num{0.00} & \num{0.00} & 263\\
-\hspace{1em}prof\_business & \num{0.18} & \num{0.38} & \num{0.00} & \num{1.00} & 348 & \num{0.00} & \num{0.00} & \num{0.00} & \num{0.00} & 263\\
-\hspace{1em}prof\_politics & \num{0.15} & \num{0.36} & \num{0.00} & \num{1.00} & 348 & \num{0.00} & \num{0.00} & \num{0.00} & \num{0.00} & 263\\
-\hspace{1em}prof\_colonial & \num{0.11} & \num{0.31} & \num{0.00} & \num{1.00} & 348 & \num{0.00} & \num{0.00} & \num{0.00} & \num{0.00} & 263\\
+\multicolumn{6}{l}{\textbf{Panel G: Party and Career Characteristics}}\\
+\hspace{1em}Elected After ARP & \num{0.56} & \num{0.50} & \num{0.00} & \num{1.00} & 6197\\
+\hspace{1em}Elected After RK & \num{0.30} & \num{0.46} & \num{0.00} & \num{1.00} & 6197\\
+\hspace{1em}Elected After Lib & \num{0.56} & \num{0.50} & \num{0.00} & \num{1.00} & 6197\\
+\hspace{1em}Liberal & \num{0.30} & \num{0.46} & \num{0.00} & \num{1.00} & 6197\\
+\hspace{1em}Protestant & \num{0.24} & \num{0.43} & \num{0.00} & \num{1.00} & 6197\\
+\hspace{1em}Catholic & \num{0.09} & \num{0.29} & \num{0.00} & \num{1.00} & 6197\\
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{Panel H: Career Paths}}\\
+\hspace{1em}Profession: Business & \num{0.01} & \num{0.11} & \num{0.00} & \num{1.00} & 4711\\
+\hspace{1em}Profession: Mayor & \num{0.05} & \num{0.21} & \num{0.00} & \num{1.00} & 4711\\
+\hspace{1em}Profession: Colonial & \num{0.02} & \num{0.14} & \num{0.00} & \num{1.00} & 4711\\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}[para]
 \item \textit{Note: } 
-\item This table shows descriptive statistics for politicians (left panel) and non-politicians (right panel). In panel A, I show newspaper recommendations for each major political faction. Panel B discusses demographic characteristics, and panel C discusses characteristics related to elections. Panels D and E contain birthplace and district characteristics. Panel F contains ex-post variables and Panel G contains several variables related to party and career characteristics.
+\item This table shows descriptive statistics for all observations. In panel A, I show newspaper recommendations for each major political faction. Panel B discusses demographic characteristics, and panel C discusses characteristics related to elections. Panels D and E contain birthplace and district characteristics. Panel F contains ex-post variables and Panel G and H contain several variables related to party and career characteristics.
 \end{tablenotes}
 \end{threeparttable}}
 \end{table}
