@@ -152,9 +152,9 @@ p_val_far <- function(x) {
 
 ## Get coefficient for regression tables
 
-get_coef <- function(variable){
+get_coef <- function(dataset, variable, covs = NULL){
   #var <- deparse(substitute(variable))
-  regression_output <- rdrobust(y = variable, x = dataset[['margin']])
+  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']], covs = covs)
   
   coef <- regression_output['coef'][[1]][1] %>%
     round(3) %>%
@@ -163,8 +163,8 @@ get_coef <- function(variable){
   paste(coef)
 }
 
-get_se_bc <- function(variable){
-  regression_output <- rdrobust(y = variable, x = dataset[['margin']])
+get_se_bc <- function(dataset, variable, covs = NULL){
+  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']], covs = covs)
   se <- regression_output['se'][[1]][2] %>%
     round(3) %>%
     format(nsmall=3)
@@ -175,10 +175,10 @@ get_se_bc <- function(variable){
     paste("(", se, ")", " ", "*", sep = "")
   } else if(between(pv, 0.01, 0.05)){
     paste("(", se, ")", "**", sep = "")
-  } else if(between(pv, 0.01, 0.05)){
+  } else if(between(pv, 10e-10, 0.01)){
     paste("(", se, ")", "***", sep = "")
   } else {
-    paste(se)
+    paste("(", se, ")", sep = "")
   }
 }
 
@@ -202,13 +202,13 @@ get_se_rob <- function(variable){
 }
 
 
-get_coef_w <- function(variable){
+get_coef_w <- function(dataset, variable, covs = NULL){
   #var <- deparse(substitute(variable))
-  regression_output <- rdrobust(y = variable, x = dataset[['margin']])
+  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']], covs = covs)
   h <- regression_output[['bws']][1]
   b <- regression_output[['bws']][2]
   
-  regression_output <- rdrobust(y = variable, x = dataset[['margin']],
+  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']], covs = covs,
                                 b = 2*b,
                                 h = 2*h)
   
@@ -219,13 +219,13 @@ get_coef_w <- function(variable){
   paste(coef)
 }
 
-get_se_bc_w <- function(variable){
+get_se_bc_w <- function(dataset, variable, covs = NULL){
   
-  regression_output <- rdrobust(y = variable, x = dataset[['margin']])
+  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']], covs = covs)
   h <- regression_output[['bws']][1]
   b <- regression_output[['bws']][2]
   
-  regression_output <- rdrobust(y = variable, x = dataset[['margin']],
+  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']], covs = covs,
                                 b = 2*b,
                                 h = 2*h)
   
@@ -247,11 +247,11 @@ get_se_bc_w <- function(variable){
 }
 
 get_se_rob_w <- function(variable){
-  regression_output <- rdrobust(y = variable, x = dataset[['margin']])
+  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']])
   h <- regression_output[['bws']][1]
   b <- regression_output[['bws']][2]
   
-  regression_output <- rdrobust(y = variable, x = dataset[['margin']],
+  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']],
                                 b = 2*b,
                                 h = 2*h)
   
@@ -272,28 +272,32 @@ get_se_rob_w <- function(variable){
   }
 }
 
-mean_wealth_pols <- function(x){
-  x[dataset$politician_dummy == 1 & abs(dataset$margin) < 0.01] %>%
-    mean(na.rm=TRUE) %>%
+mean_wealth_pols <- function(dataset, variable){
+  dataset %>% 
+    filter(between(margin, 0, 0.01)) %>%
+    summarize(mean = mean(!!as.symbol(variable), na.rm=TRUE)) %>%
+    pull() %>% 
     round(3) %>%
     format(nsmall=3)
     
 }
 
-mean_wealth_nonpols <- function(x){
-  x[dataset$politician_dummy == 0 & abs(dataset$margin) < 0.01] %>%
-    mean(na.rm=TRUE) %>%
+mean_wealth_nonpols <- function(dataset, variable){
+  dataset %>% 
+    filter(between(margin, -0.01, 0)) %>%
+    summarize(mean = mean(!!as.symbol(variable), na.rm=TRUE)) %>%
+    pull() %>% 
     round(3) %>%
     format(nsmall=3)
 }
 
-n_pols <- function(variable){
-  regression_output <- rdrobust(y = variable, x = dataset[['margin']])
+n_pols <- function(dataset, variable, covs = NULL){
+  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']], covs = covs)
   regression_output[['N']][2]
 }
 
-n_nonpols <- function(variable){
-  regression_output <- rdrobust(y = variable, x = dataset[['margin']])
+n_nonpols <- function(dataset, variable, covs = NULL){
+  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']], covs = covs)
   regression_output[['N']][1]
 }
 

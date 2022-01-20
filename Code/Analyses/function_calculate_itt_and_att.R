@@ -1,14 +1,33 @@
 # compute_itts_and_atts_function
+compute_covariates <- function(dataset, names_of_vars){
+  
+  output <- list(length = length(names_of_vars))
+  
+  for (i in 1:length(names_of_vars)){
+    output[[i]] <- dataset[[names_of_vars[i]]]
+    
+  }
+  
+  output <- output %>% purrr::reduce(cbind)
+  return(output)
+}
 
-compute_itt_and_att <- function(dataset, t_star, covs = NULL){
+compute_itt_and_att <- function(dataset, t_star, covs = NULL, covs_also_for_inc = FALSE, ...){
   
   # estimate the incumbency advantages until t_star
   
   incumbency_advantages <- vector(length = t_star)
   
   for(i in (t_star+1):2){
+    
+    if(!is.null(covs) & covs_also_for_inc == TRUE){
+      covariates <- compute_covariates(dataset, covs)
+    } else{
+      covariates <- NULL
+    }
+    
     depvar <- paste("verk_", i, "_gewonnen", sep = "")
-    reg <- rdrobust::rdrobust(y = dataset[[depvar]], x = dataset[['margin']])
+    reg <- rdrobust::rdrobust(y = dataset[[depvar]], x = dataset[['margin']], covs = covariates)
     incumbency_advantages[i-1] <- reg$coef[1]
   }
   
@@ -17,11 +36,17 @@ compute_itt_and_att <- function(dataset, t_star, covs = NULL){
   itt <- matrix(nrow = t_star, ncol = 2)
   
   for(i in 1:t_star){
-    
+
     data <- dataset %>%
       filter(hoevaak_gewonnen_verleden == i-1)
     
-    reg <- rdrobust::rdrobust(y = data[['defw']], x = data[['margin']], covs = covs)
+    if(!is.null(covs)){
+      covariates <- compute_covariates(data, covs)
+    } else{
+      covariates <- NULL
+    }
+    
+    reg <- rdrobust::rdrobust(y = data[['defw']], x = data[['margin']], covs = covariates, ...)
     itt[i, 1] <- reg$coef[1]
     itt[i, 2] <- reg$se[1]
   }
