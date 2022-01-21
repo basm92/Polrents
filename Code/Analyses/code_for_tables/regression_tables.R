@@ -1,6 +1,4 @@
 # regression_tables
-
-#covariate balance tables
 library(readxl); library(tidyverse); library(hrbrthemes); library(rdrobust); library(modelsummary)
 library(ggtext); library(lubridate)
 # calculate att etc. 

@@ -4,35 +4,43 @@
 \centering
 \fontsize{10}{12}\selectfont
 \begin{threeparttable}
-\begin{tabular}[t]{lllrllr}
+\begin{tabular}[t]{lrrrr}
 \toprule
-\multicolumn{1}{c}{ } & \multicolumn{3}{c}{No Covariates} & \multicolumn{3}{c}{With Covariates} \\
-\cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
-\multicolumn{1}{c}{ } & \multicolumn{1}{c}{After} & \multicolumn{1}{c}{Before} & \multicolumn{1}{c}{Diff. (p-value)} & \multicolumn{1}{c}{After} & \multicolumn{1}{c}{Before} & \multicolumn{1}{c}{Diff. (p-value)} \\
-\cmidrule(l{3pt}r{3pt}){2-2} \cmidrule(l{3pt}r{3pt}){3-3} \cmidrule(l{3pt}r{3pt}){4-4} \cmidrule(l{3pt}r{3pt}){5-5} \cmidrule(l{3pt}r{3pt}){6-6} \cmidrule(l{3pt}r{3pt}){7-7}
-  & (1) & (2) &    & (3) & (4) &    \\
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{No Covariates} & \multicolumn{2}{c}{With Covariates} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
+\multicolumn{1}{c}{ } & \multicolumn{1}{c}{After} & \multicolumn{1}{c}{Before} & \multicolumn{1}{c}{After} & \multicolumn{1}{c}{Before} \\
+\cmidrule(l{3pt}r{3pt}){2-2} \cmidrule(l{3pt}r{3pt}){3-3} \cmidrule(l{3pt}r{3pt}){4-4} \cmidrule(l{3pt}r{3pt}){5-5}
+  & (1) & (2) & (3) & (4)\\
 \midrule
 \addlinespace[0.3em]
-\multicolumn{7}{l}{\textbf{Panel A: All control observations}}\\
-\hspace{1em}Coefficient & 2.073 & 2.216 & -0.143 & 2.296 & 3.552 & -1.256\\
-\hspace{1em}SE (BC) & (0.952)** & (1.180)** & 0.462 & (0.963)** & (1.209)*** & 0.204\\
-\hspace{1em}SE (Rob.) & (1.161)* & (1.416)* &  & (1.166)** & (1.435)*** & \\
-\hspace{1em}N Treated & 202 & 121 &  & 202 & 121 & \\
-\hspace{1em}N Control & 258 & 258 &  & 258 & 258 & \\
-\hspace{1em}Covariates & No & No &  & Yes & Yes \vphantom{1} & \\
+\multicolumn{5}{l}{\textbf{Panel A: First-try, first-period returns}}\\
+\hspace{1em}Coefficient & 0.744 & 1.1 & 0.543 & 0.689\\
+\hspace{1em}SE (BC) & (0.551)* & (0.431)*** & (0.499) & (0.407)*\\
+\hspace{1em}N Treated & 196 & 308 & 165 & 254\\
+\hspace{1em}N Control & 385 & 803 & 343 & 732\\
+\hspace{1em}Mean Treated (1\%) & 12.336 & 12.311 & 12.405 & 12.506\\
+\hspace{1em}Mean Control (1\%) & 10.770 & 10.666 & 10.937 & 11.004\\
+\hspace{1em}Covariates & No & No & Yes & \vphantom{1} Yes\\
 \addlinespace[0.3em]
-\multicolumn{7}{l}{\textbf{Panel B: Contemporaneous control observations}}\\
-\hspace{1em}Coefficient & 1.635 & 2.705 & -1.07 & 1.887 & 4.683 & -2.796\\
-\hspace{1em}SE (BC) & (1.080) & (1.798) & 0.305 & (1.035)* & (1.807)** & 0.091\\
-\hspace{1em}SE (Rob.) & (1.320) & (2.074) &  & (1.268) & (2.170)** & \\
-\hspace{1em}N Treated & 202 & 92 &  & 202 & 92 & \\
-\hspace{1em}N Control & 151 & 107 &  & 151 & 107 & \\
-\hspace{1em}Covariates & No & No &  & Yes & Yes & \\
+\multicolumn{5}{l}{\textbf{Panel B: Second period returns}}\\
+\hspace{1em}Coefficient & 0.475 & 1.366 & 0.549 & 0.399\\
+\hspace{1em}SE (BC) & (0.443) & (0.712)** & (0.425) & (0.617)\\
+\hspace{1em}N Treated & 152 & 232 & 124 & 194\\
+\hspace{1em}N Control & 86 & 162 & 73 & 129\\
+\hspace{1em}Mean Treated (1\%) & 11.947 & 11.935 & 11.612 & 11.709\\
+\hspace{1em}Mean Control (1\%) & 11.214 & 9.935 & 11.033 & 10.698\\
+\hspace{1em}Covariates & No & No & Yes & Yes\\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}[para]
 \item \textit{Note: } 
-\item The table shows RD estimates using the MSE-optimal bandwidth \citep{cattaneo2019practical}. The Dependent Variable is Log(Personal Wealth). I report bias-corrected and robust standard errors. Panel A uses the entire control group, whereas panel B opts for control-observations from the pre-and post-party periods respectively. Columns (1) and (2) contain estimates with no covariates, and columns (3) and (4) control for potential imbalances in lifespan, age and newspaper recommendations. *: p < 0.1, **: p < 0.05, ***: p < 0.01.
+\item The table shows RD estimates using the MSE-optimal bandwidth \citep{cattaneo2019practical}.  The Dependent
+\item Variable is Log(1+Personal Wealth). I report bias-corrected standard errors.  Panel A estimates the returns for
+\item the first-triers for the first stint, panel B estimates the returns for the second stint, irrespective of the
+\item number of tries. Columns (1) and (3) contain estimates for the post-party period, and columns (2) and (4) for
+\item the pre-party period.  Columns (1) and (2) contain estimates with no covariates, and columns (3) and (4)
+\item control for potential imbalances in lifespan, age, newspaper recommendations and a time trend. *: p < 0.1, **:
+\item p < 0.05, ***: p < 0.01.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}
