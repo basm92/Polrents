@@ -235,7 +235,7 @@ in the remaining columns, I control for age, lifespan and newspaper recommendati
 *: p < 0.10, **: p < 0.05, ***: p < 0.01."
 
 knitr::opts_current$set(label = "results_per_party")
-datasummary_df(bind_rows(panel_a, panel_b) %>%
+datasummary_df(panel_a %>%
                  rename(` ` = names, 
                         "(1)" = prot_one,
                         "(2)" = prot_two,
@@ -247,9 +247,7 @@ datasummary_df(bind_rows(panel_a, panel_b) %>%
                output = "latex",
                title = "RD Estimates by Party") %>%
   kableExtra::add_header_above(c(" " = 1, "Protestants" = 2, "Catholics" = 2, "Liberals" = 2)) %>%
-  kableExtra::group_rows("Panel A: Log(Wealth)", 1, 5)  %>%
-  kableExtra::group_rows("Panel B: Ihs(Wealth)", 6, 10) %>%
   kableExtra::kable_styling(latex_options = c("hold_position"), font_size=10) %>%
-  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::footnote(general = strwrap(notitie), footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
   kableExtra::save_kable("./Tables/rdd_resultsperparty.tex")
 
