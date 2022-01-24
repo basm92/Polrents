@@ -145,14 +145,7 @@ panel_b <- data.frame(names = c("Coefficient",
                               "Yes"))
 
 
-notitie <- "The table shows RD estimates using the MSE-optimal bandwidth \\\\citep{cattaneo2019practical}. 
-The Dependent Variable is Log(1+Personal Wealth). I report bias-corrected standard errors. 
-Panel A estimates the returns for the first-triers for the first stint, panel B estimates the 
-returns for the second stint, irrespective of the number of tries. Columns (1) and (3) contain estimates
-for the post-party period, and columns (2) and (4) for the pre-party period. 
-Columns (1) and (2) contain estimates with no covariates, and columns (3) and (4) control for 
-potential imbalances in lifespan, age, newspaper recommendations and a time trend.
-*: p < 0.1, **: p < 0.05, ***: p < 0.01."
+notitie <- "The table shows RD estimates using the MSE-optimal bandwidth \\\\citep{cattaneo2019practical}. The Dependent Variable is Log(1+Personal Wealth). I report bias-corrected standard errors. Panel A estimates the returns for the first-triers for the first stint, panel B estimates the returns for the second stint, irrespective of the number of tries. Columns (1) and (3) contain estimates for the post-party period, and columns (2) and (4) for the pre-party period. Columns (1) and (2) contain estimates with no covariates, and columns (3) and (4) control for potential imbalances in lifespan, age, newspaper recommendations and a time trend. *: p < 0.1, **: p < 0.05, ***: p < 0.01."
 
 knitr::opts_current$set(label = "results_within_party")
 datasummary_df(bind_rows(panel_a, panel_b) %>%
@@ -170,7 +163,7 @@ datasummary_df(bind_rows(panel_a, panel_b) %>%
   kableExtra::add_header_above(c(" " = 1, "After" = 1, "Before" = 1, "After" = 1, "Before" = 1)) %>%
   kableExtra::add_header_above(c(" " = 1, "No Covariates" = 2, "With Covariates" = 2)) %>%
   kableExtra::kable_styling(latex_options = c("hold_position"), font_size=10) %>%
-  kableExtra::footnote(general = strwrap(notitie), footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
   kableExtra::save_kable("./Tables/in_out_party_effect.tex")
 
 # table between party variation
@@ -229,10 +222,7 @@ panel_a <- data.frame(names = c("Coefficient",
                                   "Yes"))
 
 
-notitie <- "Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level, 
-estimated under the optimal MSE bandwidth per party. Columns (1), (3) and (5) are without covariates, whereas
-in the remaining columns, I control for age, lifespan and newspaper recommendations.
-*: p < 0.10, **: p < 0.05, ***: p < 0.01."
+notitie <- "Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level, estimated under the optimal MSE bandwidth per party. Columns (1), (3) and (5) are without covariates, whereas in the remaining columns, I control for age, lifespan and newspaper recommendations. *: p < 0.10, **: p < 0.05, ***: p < 0.01."
 
 knitr::opts_current$set(label = "results_per_party")
 datasummary_df(panel_a %>%
@@ -248,6 +238,6 @@ datasummary_df(panel_a %>%
                title = "RD Estimates by Party") %>%
   kableExtra::add_header_above(c(" " = 1, "Protestants" = 2, "Catholics" = 2, "Liberals" = 2)) %>%
   kableExtra::kable_styling(latex_options = c("hold_position"), font_size=10) %>%
-  kableExtra::footnote(general = strwrap(notitie), footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
   kableExtra::save_kable("./Tables/rdd_resultsperparty.tex")
 

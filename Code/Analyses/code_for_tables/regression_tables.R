@@ -100,13 +100,7 @@ panel_a <- data.frame(names = c("Coefficient (ITT)",
                                        n_nonpols(firstrents_pooled, 'defw', covs = covariates2),
                                        "2 x Optimal"))
 
-notitie <- "Table showing Bias-corrected standard errors clustered at the Birthplace-level. 
-The first two columns show univariate regressions under the optimal MSE bandwidth, and twice the optimal bandwidth. 
-In columns 3 and 4, selected covariates are added, in particular, covariates that seemed to be unbalanced at the 2\\\\% cutoff. 
-In particular, the regression controls for lifespan, times participated in election, 
-birthplace population, birthplace characteristics, age at election, and socialist recommendations. 
-In addition, I control for politicians' lifespan. Columns 5 and 6 focus on second-triers and columns 7 and 8 pool all attempts.
-*: p < 0.10, **: p < 0.05, ***: p < 0.01. "
+notitie <- "Table showing Bias-corrected standard errors clustered at the Birthplace-level. The first two columns show univariate regressions under the optimal MSE bandwidth, and twice the optimal bandwidth. In columns 3 and 4, selected covariates are added, in particular, covariates that seemed to be unbalanced at the 2\\\\% cutoff. In particular, the regression controls for lifespan, times participated in election, birthplace population, birthplace characteristics, age at election, and socialist recommendations. In addition, I control for politicians' lifespan. Columns 5 and 6 focus on second-triers and columns 7 and 8 pool all attempts. *: p < 0.10, **: p < 0.05, ***: p < 0.01. "
 
 knitr::opts_current$set(label = "mainresults")
 datasummary_df(panel_a %>%
@@ -123,14 +117,14 @@ datasummary_df(panel_a %>%
                output = "latex",
                title = "Main RD Estimates - 1st Stint") %>%
   kableExtra::add_header_above(c(" " = 1, "First Triers" = 4, "Second Triers" = 2, "All Triers" = 2)) %>%
-  kableExtra::kable_styling(latex_options = c("hold_position"), full_width = F, font_size = 10) %>%
-  kableExtra::footnote(general = strwrap(notitie), footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::kable_styling(latex_options = c("hold_position", "scale_down")) %>% #, full_width = F, font_size = 10) %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
   kableExtra::save_kable("./Tables/rdd_mainresults_firststint.tex")
 
 
 # Next table: ATTS without and with covariates
 
-panel_a <- data.frame(names = c("ATT_1", "ATT_2", "ATT_3", "ATT_4", "ATT_5", "ATT_6", "ATT_7"),
+panel_a <- data.frame(names = c("ΑΤΤ_1", "ATT_2", "ATT_3", "ATT_4", "ATT_5", "ATT_6", "ATT_7"),
            `t_star4` = rep(0, 7),
            `t_star5` = rep(0,7),
            `t_star6` = rep(0,7),
@@ -191,13 +185,7 @@ for(j in 2:5){
   
 }
 
-notitie <- "Table showing coefficients effects of stints \\\\{1, \\\\dots, 7\\\\} under different t*. 
-All the ATT coefficients are derived and recursively computed from ITT coefficients, which are in turn 
-estimated using the methodology in \\\\citep{cattaneo2019practical} using MSE-optimal bandwidth.
-Standard errors are calculated using the delta method.
-The estimates in panel A are without control variables and the estimates in panel B control for
-birthplace population, birthplace characteristics, age at election, socialist newspaper recommendations and
-politicians' lifespan. *: p < 0.10, **: p < 0.05, ***: p < 0.01. "
+notitie <- "Table showing coefficients effects of stints \\\\{1, \\\\dots, 7\\\\} under different t*. All the ATT coefficients are derived and recursively computed from ITT coefficients, which are in turn estimated using the methodology in \\\\citep{cattaneo2019practical} using MSE-optimal bandwidth. Standard errors are calculated using the delta method. The estimates in panel A are without control variables and the estimates in panel B control for birthplace population, birthplace characteristics, age at election, socialist newspaper recommendations and politicians' lifespan. *: p < 0.10, **: p < 0.05, ***: p < 0.01. "
 
 knitr::opts_current$set(label = "attresults")
 datasummary_df(bind_rows(panel_a, panel_b) %>%
@@ -212,6 +200,6 @@ datasummary_df(bind_rows(panel_a, panel_b) %>%
   kableExtra::group_rows("Panel A: Without Control Variables", 1, 7) %>%
   kableExtra::group_rows("Panel B: With Control Variables", 8, 14) %>%
   kableExtra::kable_styling(latex_options = c("hold_position"), full_width = F, font_size = 10) %>%
-  kableExtra::footnote(general = strwrap(notitie), footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
   kableExtra::save_kable("./Tables/att_mainresults.tex")
 

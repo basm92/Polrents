@@ -1,0 +1,27 @@
+\begin{table}[!h]
+
+\caption{\label{tab:mainresults_robust}Robustness to Main RD Estimates - 1st Stint}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{threeparttable}
+\begin{tabular}[t]{lllllllll}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{4}{c}{First Triers} & \multicolumn{2}{c}{Second Triers} & \multicolumn{2}{c}{All Triers} \\
+\cmidrule(l{3pt}r{3pt}){2-5} \cmidrule(l{3pt}r{3pt}){6-7} \cmidrule(l{3pt}r{3pt}){8-9}
+  & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8)\\
+\midrule
+Coefficient (ITT) & 1.731 & 1.860 & 2.085 & 2.089 & 2.135 & 1.483 & 1.021 & 0.719\\
+SE (BC) & (0.713)** & (0.540)*** & (0.784)** & (0.610)*** & (0.939)*** & (0.737)** & (0.453)*** & (0.349)**\\
+Mean DV Treated (1\%) & 12.849 & 12.849 & 12.849 & 12.849 & 11.057 & 11.057 & 12.214 & 12.214\\
+Mean DV Control (1\%) & 10.193 & 10.193 & 10.193 & 10.193 & 10.795 & 10.795 & 10.576 & 10.576\\
+N (Politicians) & 103 & 103 & 84 & 84 & 59 & 59 & 277 & 277\\
+N (Non-Politicians) & 172 & 172 & 148 & 148 & 168 & 168 & 721 & 721\\
+Bandwidth & Optimal & 2 x Optimal & Optimal & 2 x Optimal & Optimal & 2 x Optimal & Optimal & 2 x Optimal\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para]
+\item \textit{Note: } 
+\item Table showing Bias-corrected standard errors clustered at the Birthplace-level. The first two columns show univariate regressions under the optimal MSE bandwidth with the option \textit{msecomb2}, and twice the optimal bandwidth. In columns 3 and 4, selected covariates are added, an alternative selection to the covariates in the main results. In particular, the regression controls for district religious share, birthplace population, birthplace religious share, district GDP, lifespan and birthplace labor force composition. Columns 5 and 6 focus on second-triers and columns 7 and 8 pool all attempts. *: p < 0.10, **: p < 0.05, ***: p < 0.01. 
+\end{tablenotes}
+\end{threeparttable}}
+\end{table}

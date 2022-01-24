@@ -1,0 +1,36 @@
+\begin{table}[!h]
+
+\caption{\label{tab:attresults}ATT estimates for different t*}
+\centering
+\fontsize{10}{12}\selectfont
+\begin{threeparttable}
+\begin{tabular}[t]{lllll}
+\toprule
+  & t* = 4 & t* = 5 & t* = 6 & t* = 7\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Panel A: Without Control Variables}}\\
+\hspace{1em}ΑΤΤ\_1 & 1.054** & 1.087** & 0.973* & 0.877\\
+\hspace{1em}ATT\_2 & 1.449* & 1.482* & 1.366 & 1.268\\
+\hspace{1em}ATT\_3 & -0.008 & 0.022 & -0.082 & -0.170\\
+\hspace{1em}ATT\_4 & -0.329 & -0.301 & -0.398 & -0.479\\
+\hspace{1em}ATT\_5 & 0 & 0.256 & 0.169 & 0.095\\
+\hspace{1em}ATT\_6 & 0 & 0 & -1.220 & -1.289\\
+\hspace{1em}ATT\_7 & 0 & 0 & 0 & -0.872\\
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Panel B: With Control Variables}}\\
+\hspace{1em}ATT\_1 & 0.978* & 1.059* & 1.091* & 1.007*\\
+\hspace{1em}ATT\_2 & 0.632 & 0.714 & 0.747 & 0.662\\
+\hspace{1em}ATT\_3 & -0.198 & -0.124 & -0.095 & -0.171\\
+\hspace{1em}ATT\_4 & -0.659 & -0.590 & -0.563 & -0.634\\
+\hspace{1em}ATT\_5 & 0 & 0.624 & 0.648 & 0.584\\
+\hspace{1em}ATT\_6 & 0 & 0 & 0.341 & 0.282\\
+\hspace{1em}ATT\_7 & 0 & 0 & 0 & -0.758\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para]
+\item \textit{Note: } 
+\item Table showing coefficients effects of stints \{1, \dots, 7\} under different t*. All the ATT coefficients are derived and recursively computed from ITT coefficients, which are in turn estimated using the methodology in \citep{cattaneo2019practical} using the \textit{msecomb2} bandwidth selector. Standard errors are calculated using the delta method. The estimates in panel A are without control variables and the estimates in panel B control for birthplace population, birthplace characteristics, age at election, socialist newspaper recommendations and politicians' lifespan. *: p < 0.10, **: p < 0.05, ***: p < 0.01. 
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

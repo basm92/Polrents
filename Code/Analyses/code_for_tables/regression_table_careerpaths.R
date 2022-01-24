@@ -65,12 +65,7 @@ panel_a <- data.frame(names = c("Coefficient (ITT)",
 )
 
 # make table
-notitie <- "Table showing the effect of being elected into politics on three future career paths: 
-taking up a position in finance (business), continuing in non-lower house politics (as a mayor), and taking up a
-career in the colonies. Bias-corrected and Robust standard errors clustered at the Birthplace-level.
-All effects are estimated under the MSE-optimal bandwidth. I control for age, lifespan, newspaper recommendations and economic
-composition of the district and the politicians' birthplace. 
-*: p < 0.10, **: p < 0.05, ***: p < 0.01."
+notitie <- "Table showing the effect of being elected into politics on three future career paths: taking up a position in finance (business), continuing in non-lower house politics (as a mayor), and taking up a career in the colonies. Bias-corrected and Robust standard errors clustered at the Birthplace-level. All effects are estimated under the MSE-optimal bandwidth. I control for age, lifespan, newspaper recommendations and economic composition of the district and the politicians' birthplace. *: p < 0.10, **: p < 0.05, ***: p < 0.01."
 
 knitr::opts_current$set(label = "rdd_results_careerpaths")
 datasummary_df(panel_a %>%
@@ -87,5 +82,5 @@ datasummary_df(panel_a %>%
   kableExtra::add_header_above(c(" " = 1, "Without Covariates" = 3, "With Covariates" = 3)) %>%
   kableExtra::add_header_above(c(" " = 1, rep(c("Business", "Politics", "Colonial"), 2))) %>%
   kableExtra::kable_styling(latex_options = c("hold_position", "scale_down")) %>%
-  kableExtra::footnote(general = strwrap(notitie), footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
+  kableExtra::footnote(general = notitie, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
   kableExtra::save_kable("./Tables/rdd_results_careerpaths.tex")

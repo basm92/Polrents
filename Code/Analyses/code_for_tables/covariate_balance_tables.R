@@ -154,7 +154,7 @@ datasummary(data = dataset %>%
   kableExtra::group_rows("Panel F: Ex-Post Characteristics", 23, 24) %>%
   kableExtra::group_rows("Panel G: Party and Career Characteristics", 25, 30) %>%
   kableExtra::group_rows("Panel H: Career Paths", 31, 33) %>% 
-  kableExtra::kable_styling(latex_options = c("hold_position", "scale_down")) %>%
+  kableExtra::kable_styling(latex_options = c("hold_position"), font_size = 8) %>%
   kableExtra::footnote(general = notes, footnote_as_chunk = T, threeparttable = T, escape = F)  %>%
   kableExtra::save_kable("./Tables/descriptivestats_trad.tex")
   

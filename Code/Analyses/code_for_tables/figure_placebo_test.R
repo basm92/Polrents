@@ -32,4 +32,4 @@ placebo <- fig_data %>%
   geom_segment(aes(x = 0.025, y = 2.3, xend = 0.005, yend = 1.3), arrow = arrow(length = unit(0.2, "cm")))
 
 
-ggplot2::ggsave("./Tables/placebo_test.pdf", placebo, width = 10, height = 5)
+ggplot2::ggsave("./Tables/placebo_test.pdf", placebo, width = 10, height = 3.8)

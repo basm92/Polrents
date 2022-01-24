@@ -152,9 +152,9 @@ p_val_far <- function(x) {
 
 ## Get coefficient for regression tables
 
-get_coef <- function(dataset, variable, covs = NULL){
+get_coef <- function(dataset, variable, covs = NULL, ...){
   #var <- deparse(substitute(variable))
-  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']], covs = covs)
+  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']], covs = covs, ...)
   
   coef <- regression_output['coef'][[1]][1] %>%
     round(3) %>%
@@ -163,8 +163,8 @@ get_coef <- function(dataset, variable, covs = NULL){
   paste(coef)
 }
 
-get_se_bc <- function(dataset, variable, covs = NULL){
-  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']], covs = covs)
+get_se_bc <- function(dataset, variable, covs = NULL, ...){
+  regression_output <- rdrobust(y = dataset[[variable]], x = dataset[['margin']], covs = covs, ...)
   se <- regression_output['se'][[1]][2] %>%
     round(3) %>%
     format(nsmall=3)
