@@ -172,7 +172,7 @@ get_se_bc <- function(dataset, variable, covs = NULL){
   pv <- regression_output['pv'][[1]][2]
   
   if(between(pv, 0.05, 0.1)){
-    paste("(", se, ")", " ", "*", sep = "")
+    paste("(", se, ")", "*", sep = "")
   } else if(between(pv, 0.01, 0.05)){
     paste("(", se, ")", "**", sep = "")
   } else if(between(pv, 10e-10, 0.01)){

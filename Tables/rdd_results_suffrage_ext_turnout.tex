@@ -1,0 +1,57 @@
+\begin{table}[!h]
+
+\caption{\label{tab:rdd_results_suffrage_ext_turnout}RD Estimates by Party}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{threeparttable}
+\begin{tabular}[t]{lllllll}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Without Covariates} & \multicolumn{2}{c}{With Covariates} & \multicolumn{2}{c}{Second Rents} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5} \cmidrule(l{3pt}r{3pt}){6-7}
+  & (1) & (2) & (3) & (4) & (5) & (6)\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{Before and After Suffrage Extension - 1887}}\\
+\hspace{1em}Coefficient (ITT) & 0.994 & 0.914 & 0.835 & 1.109 & 1.710 & 0.617\\
+\hspace{1em}SE (BC) & (0.428)*** & (0.961) & (0.462)** & (1.062) & (1.103)* & (0.687)\\
+\hspace{1em}Mean DV Treated (1\%) & 12.187 & 12.300 & 12.313 & 12.576 & 11.933 & 11.939\\
+\hspace{1em}Mean DV Control (1\%) & 10.562 & 10.677 & 10.939 & 11.918 & 8.701 & 10.962\\
+\hspace{1em}N (Politicians) & 222 & 127 & 189 & 106 & 169 & 91\\
+\hspace{1em}N (Non-Politicians) & 649 & 176 & 612 & 162 & 118 & 57\\
+\hspace{1em}Bandwidth & Optimal & Optimal & Optimal & Optimal & Optimal & \vphantom{2} Optimal\\
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{Before and After Suffrage Extension - 1896}}\\
+\hspace{1em}Coefficient (ITT) & 1.113 & -0.342 & 1.124 & -0.350 & 1.391 & 1.820\\
+\hspace{1em}SE (BC) & (0.400)*** & (0.967) & (0.396)*** & (0.940) & (0.780)** & (1.548)\\
+\hspace{1em}Mean DV Treated (1\%) & 12.370 & 10.734 & 12.370 & 10.734 & 12.006 & 11.650\\
+\hspace{1em}Mean DV Control (1\%) & 10.649 & 9.436 & 10.649 & 9.436 & 9.796 & 11.320\\
+\hspace{1em}N (Politicians) & 267 & 82 & 267 & 82 & 201 & 59\\
+\hspace{1em}N (Non-Politicians) & 728 & 97 & 728 & 97 & 144 & 31\\
+\hspace{1em}Bandwidth & Optimal & Optimal & Optimal & Optimal & Optimal & \vphantom{1} Optimal\\
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{High and Low Turnout}}\\
+\hspace{1em}Coefficient (ITT) & 1.493 & 0.612 & 1.210 & 0.485 & 2.383 & -0.220\\
+\hspace{1em}SE (BC) & (0.563)*** & (0.727) & (0.542)** & (0.809) & (1.106)*** & (0.738)\\
+\hspace{1em}Mean DV Treated (1\%) & 12.032 & 12.303 & 12.122 & 12.673 & 12.394 & 11.685\\
+\hspace{1em}Mean DV Control (1\%) & 10.465 & 10.650 & 10.987 & 10.650 & 9.114 & 11.451\\
+\hspace{1em}N (Politicians) & 177 & 128 & 149 & 109 & 131 & 104\\
+\hspace{1em}N (Non-Politicians) & 428 & 302 & 396 & 290 & 93 & 70\\
+\hspace{1em}Bandwidth & Optimal & Optimal & Optimal & Optimal & Optimal & Optimal\\
+\hspace{1em}Turnout & High & Low & High & Low & High & Low\\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[para]
+\item \textit{Note: } 
+\item Table showing Bias-corrected and Robust standard errors clustered at the Birthplace-level. The
+\item dependent variable in all cases is Log(1+Wealth). All effects are estimated under the MSE-optimal
+\item bandwidth. Panel A shows the differences in political rents before and after the suffrage
+\item extension in 1887. Panel B shows the differences in returns to politics before and after the
+\item suffrage extension in 1896.  Panel C shows the differences in returns between elections with a
+\item positive turnout difference vis-a-vis elections with a negative turnout differences in comparison
+\item to the preceding general election. In panels A and C, I control for age, lifespan, newspaper
+\item recommendations and economic composition of the district and the politicians' birthplace. In
+\item panel B, due to data constraints, I control for age, lifespance and newspaper recommendations.
+\item *: p < 0.10, **: p < 0.05, ***: p < 0.01.
+\end{tablenotes}
+\end{threeparttable}}
+\end{table}
