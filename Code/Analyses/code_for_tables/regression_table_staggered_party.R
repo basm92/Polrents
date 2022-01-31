@@ -56,70 +56,57 @@ dataset_wp <- dataset %>%
 
 make_covariates <- function(dataset){
   cbind(
-    #log(1+dataset$birthplace_pop_1859), 
-    #dataset$yoe,
-    #dataset$age_at_election, 
-    #dataset$taxespercap_1859,
-    dataset$district_prot,
-    dataset$district_cath,
-    #dataset$lifespan,
-    #dataset$party_none,
-    dataset$party_lib,
-    dataset$party_soc,
-    dataset$party_prot,
-    #dataset$party_cath,
-    log(1+dataset$district_pop_1889),
-    log(1+dataset$omvang_electoraat),
-    dataset$distance_bp_hag,
-    #dataset$district_agri,
-    dataset$diff_turn,
-    dataset$age_of_death,
+    dataset$totaal_aantal_stemmen,
+    dataset$hoeveelste_keer_prob_alg,
+    dataset$lifespan,
     dataset$age_at_election,
-    dataset$aantal_zetels,
-    dataset$rec_lib,
-    dataset$rec_soc, 
-    dataset$no_candidates, 
-    dataset$district_serv
-    #dataset$elec_type_alg
-    #dataset$hoeveelste_keer_prob,
+    dataset$no_candidates,
+    dataset$district_cath,      
+    dataset$district_serv,
+    dataset$party_lib,
+    dataset$party_prot,
+    dataset$party_cath
     )
 }
 
+make_covariates2 <- function(dataset){
+  cbind(
+    dataset$totaal_aantal_stemmen,
+    dataset$hoeveelste_keer_prob_alg,
+    dataset$lifespan,
+    dataset$age_at_election,
+    #dataset$age_of_death,
+    dataset$no_candidates,         
+    dataset$district_indus,
+    dataset$party_lib,
+    dataset$party_prot,
+    dataset$party_cath
+  )
+}
 
-# try rd multi
+# no covariates
 high <- rdrobust(dataset_wp$defw, dataset_wp$margin, 
-         weights = if_else(dataset_wp$within_party == 1,0,1),
-         covs = make_covariates(dataset_wp),
-         bwselect = 'msetwo',
-         p = pee,
-         all = TRUE)
+                 weights = if_else(dataset_wp$within_party == 1,0,1),
+                 bwselect = 'msetwo')
+
 low <- rdrobust(dataset_wp$defw, dataset_wp$margin, 
                 weights = if_else(dataset_wp$within_party == 1,1,0),
-                covs = make_covariates(dataset_wp),
-                bwselect = 'msetwo',
-                p = pee,
-                all = TRUE)
+                bwselect = 'msetwo')
 
 2*(1-pnorm((high$coef[1] - low$coef[1]), mean = 0, sd = sqrt(high$se[1]^2 + low$se[1]^2)))
 
-# end
+# first set of covariates
+high <- rdrobust(dataset_wp$defw, dataset_wp$margin, 
+         weights = if_else(dataset_wp$within_party == 1,0,1),
+         covs = make_covariates(dataset_wp),
+         bwselect = 'msetwo')
+low <- rdrobust(dataset_wp$defw, dataset_wp$margin, 
+                weights = if_else(dataset_wp$within_party == 1,1,0),
+                covs = make_covariates(dataset_wp),
+                bwselect = 'msetwo')
 
-calculate_difference <- function(before_treat, after_treat,
-                     before_control, after_control){
-  
-  coef <- (after_treat$coef[1] - before_treat$coef[1]) - 
-    (after_control$coef[1] - before_control$coef[1])
-  
-  se <- sqrt(sum(after_treat$se[1]^2,
-                 after_control$se[1]^2,
-                 before_treat$se[1]^2,
-                 before_control$se[1]^2))
-  
-  out <- list(coef, se, 2*(1-pnorm(abs(coef/se))))
-  
-  return(out)
-  
-}
+2*(1-pnorm((high$coef[1] - low$coef[1]), mean = 0, sd = sqrt(high$se[1]^2 + low$se[1]^2)))
+
 
 #descriptives
 dataset_wp %>% 
@@ -130,185 +117,20 @@ dataset_wp %>%
             after_soc = sum(verkiezingdatum > dmy("26-08-1894") & defw >= 0, na.rm = T),
             after_cath = sum(verkiezingdatum > dmy("05-05-1897") & defw >= 0, na.rm = T))
 
-# prot vs the rest
-treated_before <- dataset_wp %>%
-  filter(party_category == "protestant", defw >= 0, verkiezingdatum < dmy("03-04-1879"))
-control_before <- dataset_wp %>%
-  filter(party_category != "protestant", defw >= 0)
-treated_after <- dataset_wp %>%
-  filter(party_category == "protestant", defw >= 0, 
-         verkiezingdatum > dmy("03-04-1879"))
-control_after <- dataset_wp %>%
-  filter(verkiezingdatum > dmy("03-04-1879"), (party_category == "catholic" & election_after_rk == 0) |
-           (party_category == "liberal" & election_after_lib == 0 )|
-           (party_category == "socialist" & verkiezingdatum < dmy("26-08-1894")) |
-           party_category == "none")
 
-treated_before1 <- rdrobust(treated_before$defw, treated_before$margin,
-                            bwselect = 'mserd',
-                            covs = make_covariates(treated_before))
-treated_after1 <- rdrobust(treated_after$defw, treated_after$margin,
-                           bwselect = 'mserd',
-                           covs = make_covariates(treated_after))
-control_before1 <- rdrobust(control_before$defw, control_before$margin, 
-                            covs = make_covariates(control_before),
-                            bwselect = 'mserd')
-control_after1 <- rdrobust(control_after$defw, control_after$margin, 
-                           covs = make_covariates(control_after),
-                           bwselect = 'mserd')
+# second set of covariates
 
-calculate_difference(treated_before1, treated_after1, control_before1, control_after1)
+high <- rdrobust(dataset_wp$defw, dataset_wp$margin, 
+                 weights = if_else(dataset_wp$within_party == 1,0,1),
+                 covs = make_covariates2(dataset_wp),
+                 bwselect = 'msetwo')
+low <- rdrobust(dataset_wp$defw, dataset_wp$margin, 
+                weights = if_else(dataset_wp$within_party == 1,1,0),
+                covs = make_covariates2(dataset_wp),
+                bwselect = 'msetwo')
 
-# prot and lib vs the rest
-treated_before <- dataset_wp %>%
-  filter((party_category == "protestant" & verkiezingdatum < dmy("03-04-1879")) |
-        (party_category == "liberal" & election_after_lib == 0),
-         defw >= 0)
+2*(1-pnorm((high$coef[1] - low$coef[1]), mean = 0, sd = sqrt(high$se[1]^2 + low$se[1]^2)))
 
-control_before <- dataset_wp %>%
-  filter(party_category != "protestant", 
-         party_category != "liberal", defw >= 0, verkiezingdatum < dmy("03-04-1879"))
+# now, make the tables
 
-treated_after <- dataset_wp %>%
-  filter((party_category == "protestant" & verkiezingdatum > dmy("03-04-1879") )| 
-           (party_category == "liberal" & election_after_lib == 1), 
-         defw >= 0)
-
-control_after <- dataset_wp %>%
-  filter(verkiezingdatum > dmy("03-04-1879"), (party_category == "catholic" & election_after_rk == 0) |
-           (party_category == "liberal" & election_after_lib == 1 )|
-           (party_category == "socialist" & verkiezingdatum < dmy("26-08-1894")) |
-           party_category == "none")
-
-treated_before1 <- rdrobust(treated_before$defw, treated_before$margin,
-                            bwselect = 'mserd',
-                            covs = make_covariates(treated_before))
-treated_after1 <- rdrobust(treated_after$defw, treated_after$margin,
-                           bwselect = 'mserd',
-                           covs = make_covariates(treated_after))
-control_before1 <- rdrobust(control_before$defw, control_before$margin, 
-                            covs = make_covariates(control_before),
-                            bwselect = 'mserd')
-control_after1 <- rdrobust(control_after$defw, control_after$margin, 
-                           covs = make_covariates(control_after),
-                           bwselect = 'mserd')
-
-calculate_difference(treated_before1, treated_after1, control_before1, control_after1)
-
-before_prot <- dataset_wp %>%
-  filter(party_category == "protestant",  ymd(verkiezingdatum) < ymd("1879-04-03"))
-
-before_lib <- dataset_wp %>%
-  filter(party_category == "liberal" | party_category == "none", verkiezingdatum < dmy("03-04-1879"))
-
-after_prot <- dataset_wp %>%
-  filter(party_category == "protestant", between(ymd(verkiezingdatum),
-                                                 ymd("1879-04-03"),
-                                                 ymd("1885-03-04")))
-
-after_lib <- dataset_wp %>%
-  filter(party_category == "liberal" | party_category == "none", 
-         between(ymd(verkiezingdatum),
-                 ymd("1879-04-03"),
-                 ymd("1885-03-04")))
-
-raz <- rdrobust(before_prot$defw, before_prot$margin) 
-dva <- rdrobust(after_prot$defw, after_prot$margin) 
-tri <- rdrobust(before_lib$defw, before_lib$margin) 
-chetire <- rdrobust(after_lib$defw, after_lib$margin) 
-
-calculate_difference(raz, dva, tri, chetire)
-
-## prot vs lib + kath
-before_libkath <- dataset_wp %>%
-  filter(
-    party_category == "liberal" | 
-      party_category == "catholic" | party_category == "none",
-    verkiezingdatum < dmy("03-04-1879"))
-
-after_libkath <-  dataset_wp %>% 
-  filter(
-    party_category == "liberal" | party_category == "catholic" | party_category == "none",
-   between(ymd(verkiezingdatum),
-           ymd("1879-04-03"),
-           ymd("1885-03-04")))
-
-
-raz <- rdrobust(before_prot$defw, before_prot$margin) 
-dva <- rdrobust(after_prot$defw, after_prot$margin) 
-tri <- rdrobust(before_libkath$defw, before_libkath$margin) 
-chetire <- rdrobust(after_libkath$defw, after_libkath$margin) 
-
-calculate_difference(raz, dva, tri, chetire)
-
-## prot (treat) vs kath
-before_kath <- dataset_wp %>%
-  filter(party_category == "catholic", verkiezingdatum < dmy("04-03-1879"))
-after_prot <- dataset_wp %>%
-  filter(party_category == "protestant", between(ymd(verkiezingdatum),
-                                                 ymd("1879-04-03"),
-                                                 ymd("1904-10-15")))
-after_kath <- dataset_wp %>%
-  filter(party_category == "catholic", between(ymd(verkiezingdatum),
-                                                 ymd("1879-04-03"),
-                                                 ymd("1904-10-15")))
-
-raz <- rdrobust(before_prot$defw, before_prot$margin) 
-dva <- rdrobust(after_prot$defw, after_prot$margin) 
-tri <- rdrobust(before_kath$defw, before_kath$margin) 
-chetire <- rdrobust(after_kath$defw, after_kath$margin) 
-
-calculate_difference(raz, dva, tri, chetire)
-
-## prot + lib vs cath
-before_protlib <- dataset_wp %>%
-  filter(
-    (party_category == "protestant" & verkiezingdatum < dmy("04-03-1879")) |
-      ((party_category) == "liberal" & verkiezingdatum < dmy("04-03-1885")))
-
-before_kath <- dataset_wp %>%
-  filter(party_category == "catholic" | party_category == "none", verkiezingdatum < dmy("03-04-1885"))
-
-after_protlib <- dataset_wp %>%
-  filter(
-    (party_category == "protestant" & between(ymd(verkiezingdatum),
-                                              ymd("1885-03-04"),
-                                              ymd("1904-10-15"))) |
-      ((party_category) == "liberal" & between(ymd(verkiezingdatum),
-                                               ymd("1885-03-04"),
-                                               ymd("1904-10-15")))
-    )
-
-after_kath <- dataset_wp %>%
-  filter(party_category == "catholic" | party_category == "none", between(ymd(verkiezingdatum),
-                                                                             ymd("1885-03-04"),
-                                                                             ymd("1950-10-15")))
-
-raz <- rdrobust(before_protlib$defw, before_protlib$margin)#, covs = make_covariates(before_protlib)) 
-dva <- rdrobust(after_protlib$defw, after_protlib$margin, covs = make_covariates(after_protlib)) 
-tri <- rdrobust(before_kath$defw, before_kath$margin, covs = make_covariates(before_kath)) 
-chetire <- rdrobust(after_kath$defw, after_kath$margin, bwselect = 'msetwo', covs = make_covariates(after_kath)) 
-
-calculate_difference(raz, dva, tri, chetire)
-
-## lib (treated) vs cath
-before_lib <- dataset_wp %>%
-  filter(party_category == "liberal", verkiezingdatum < dmy("04-03-1885"))
-before_cath <- dataset_wp %>%
-  filter(party_category == "catholic" | party_category == "none", verkiezingdatum < dmy("04-03-1885"))
-after_lib <- dataset_wp %>%
-  filter(party_category == "liberal", between(ymd(verkiezingdatum),
-                                              ymd("1885-03-04"),
-                                              ymd("1904-10-15")))
-after_cath <- dataset_wp %>%
-  filter(party_category == "catholic" | party_category == "none", between(ymd(verkiezingdatum),
-                                               ymd("1885-03-04"),
-                                               ymd("1904-10-15")))
-
-raz <- rdrobust(before_lib$defw, before_lib$margin) 
-dva <- rdrobust(after_lib$defw, after_lib$margin) 
-tri <- rdrobust(before_kath$defw, before_kath$margin) 
-chetire <- rdrobust(after_kath$defw, after_kath$margin) 
-
-calculate_difference(raz, dva, tri, chetire)
 
