@@ -43,4 +43,156 @@
 	- Fig. 7: Windows van 5 jaar of 10 jaar (niet replace, maar nieuw figuur)
 	- Fig 8: Probeer verhaal te pitchen
 	
-	
+
+## Gesprek Abe 31 jan
+
+- Meer in het algemeen
+- Marno Verbeek - advies over paper + baan
+- Minder gepolijste versies goed kan schatten
+- Aanbevelingsbrief
+- Myra vragen wanneer Marno
+- Peter en Matthijs nieuwe verslagen (Methodologie + Resultaten)
+- Slijmerig - implementatie van de suggesties 
+
+- Beter kijken naar wat zij doen
+- 3 Problemen:
+	- Resultaten worden niet goed benadrukt
+	- 3 voorlaatste alineas inleiding
+	- Wat zijn de belangrijkste resultaten? Die komen er nog niet goed uit
+
+- Harder poetsen aan de inleiding
+	- Harder nadenken over waarom dit interessant voor Nederland
+	- 2 aspecten: 
+		- relevante setting + inst. kenmerken (waarom?)
+			- verandering kiesstelsel, partijen
+		- districtenstelsel van de verkiezingen - direct tegen elkaar opnemen
+
+	- Kracht van analyse: goede identificatie
+	- Twee: interessante setting
+
+- Resultaten: te hoog niveau
+
+- Onderwerp + techniek in titel
+
+Abstract:
+- Waarom belangrijk
+- Research design
+- Resultaten
+
+- Hoofdeffect noemen (positieve effecten - hoe groot), inflatie-vertaald naar vandaag 
+	- Dit misschien niet in de abstract
+- Politieke partijen - daarvan werkt het
+	- Hier misschien een zin over in de abstract
+
+
+- Non-resultaat: career
+- Meer naar Cellini et al. kijken
+
+- In intro uitleggen hoe dynamiek in elkaar zit in woorden
+- 1e alinea: Cellini legt uit waarom hun onderwerp belangrijk is
+- Economische effecten in de resultaten
+- Sneller to the point komen
+
+- 3e alinea: historical perspective
+- Beter de setting en de identificatie uit elkaar trekken
+	- ID probleem, oplossing, assumpties
+
+- Historische achtergrond:
+	- Functie van verhaal: pol. partijen naar de voorgrond wss
+
+- Methodologie:
+	- Wat wilde ik laten zien, 1 alinea toevoegen
+	- Mss alleeen pol. partijen en rest in robustnes checks
+	- Alternative Explanations
+
+- Resultaat politieke partijen: effecten veranderen door de opkomst van politieke partijen
+- Op basis van een schatting van in de tijd veranderingen 
+- Alternatieve verklaringen
+- Namelijk de opkomst van algemeen stemrecht - andere voorkeuren
+- Of ander type politici als gevolg van politieke partijen
+- Maar: afwijzen ten gunste van politieke partijpolitiek
+- Kan bewijzen dat het niet komt door ideologie
+- Veranderingen in het stemrecht maar geen discontinue verandering
+- !!! Belangrijk: Politieke carriere als opstapje naar andere baan - rent-seeking type verklaring
+	- Kan getest worden met mijn data, voor en na rent-seeking onderzoek
+
+- Het loont om de politiek in te gaan 
+
+- Partij theorie: infinite-horizon disciplining role of pol. parties
+
+- Meer algemene vorm
+	- Concurrentie tussen politieke partijen
+	- Waarom politieke partijen zijn ontstaan?
+
+- Staggered introduction of political parties 
+	- Kan ik dat ook toetsen?
+
+- Alternatieve verklaringen afschieten
+
+- Anecdotal evidence
+	- Thorbecke
+	- Politieke partijen goed of niet? Wat is de rol van partijen? 
+
+- Hoe komt het dan ze soms wel en soms niet werken om rents te constrainen?
+- Organizational literature
+
+
+- Titles van tabellen helder
+- Heldere variabelen: bijv. Finance noemen ipv business
+- Vraag als titel van tabel? Titel moet antwoord op een vraag zijn
+- terminologie iets intuitiever 
+- First attempt to be elected - maak het allemaal maar iets langer
+- Namen van variabelen in regressietabel
+- Meer toelichting
+
+- Tabel ATT: 
+	- Panel A weggooien
+	- Panel B: aantal observaties, standard errors
+
+- Meer duiding geven in tabellen
+- Staggered adoption
+
+- Kritiek op de alternatieve verklaringen
+	- Andere mogelijkheden
+
+- Staggered adoption resultaten laten zien
+- Abe laten horen
+
+
+## Oscar
+
+- Historische illustratie van waarom politici wat in hun eigen belang deden
+	- CHU, Conversatieve Katholieken (Moes, Van den Berg & Vis)
+	- Piet van C. werk over Gelderse elite
+	- Ron de Jong: Katholieken Nolens Schaepman vs. Conservatieve Katholieken
+
+- Illustratie van partijdiscipline
+	- Eigen data (stemgedrag over tijd in key wetten)
+	- Cases opzoeken waarin conflicten binnen facties en gewonnen door leider
+		- Kuyper persoonlijkheid
+
+- Half a4tje over lijn tussen verschillende hoofdstukken in het proefschrift
+- Jeroen Koch: meer historisch bewijsmateriaal (of Ron de Jong)
+	- Waar denk je dat ik moet zoeken? 
+
+
+- Verklaring 1e periode effect
+	- Investeringen - waarom eerste 4 jaar en niet later?
+	- Omdat je wss maar 4 jaar blijft
+	- District oligarchen, investeringen na 4 jaar marginal returns van 0
+	- Dus: lobbying, investments
+
+- Wat gebeurt er met newly elected politicians? Hoe worden ze behandeld in het district?
+
+- Mediane zittingsduur?
+
+- LATE Interpretatie van eerste 4 jaar effect:
+	- Kleine marge verkozen, regulatory capture 
+		- Harm Kaal: sleutel? Veel marginale debatten over kleine municipale en district-dingen
+		- Ook illustreren met handelingen in tweede kmaer
+		- Afschaffing van districtenstelsel
+		- Particularistische politiek, alleen district belangen, geen nationaal belang
+
+	- Dus logisch om alles in de eerste 4 jaar te doen 
+	- Ontkracht de "handelen met voorkennis" verklaring
+	- Ontkracht de "human capital" verklaring
