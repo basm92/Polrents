@@ -131,6 +131,38 @@ low <- rdrobust(dataset_wp$defw, dataset_wp$margin,
 
 2*(1-pnorm((high$coef[1] - low$coef[1]), mean = 0, sd = sqrt(high$se[1]^2 + low$se[1]^2)))
 
+# now, try it per party
+#prot
+dataset_prot <- dataset_wp %>%
+  filter(party_category == "protestant")
+
+high <- rdrobust(dataset_prot$defw, dataset_prot$margin, 
+                 weights = if_else(dataset_prot$within_party == 1,0,1),
+                 covs = make_covariates(dataset_prot),
+                 bwselect = 'msetwo')
+low <- rdrobust(dataset_prot$defw, dataset_prot$margin, 
+                weights = if_else(dataset_prot$within_party == 1,1,0),
+                covs = make_covariates(dataset_prot),
+                bwselect = 'msetwo')
+
+2*(1-pnorm((high$coef[1] - low$coef[1]), mean = 0, sd = sqrt(high$se[1]^2 + low$se[1]^2)))
+
+#lib
+dataset_lib <- dataset_wp %>%
+  filter(party_category == "liberal")
+
+high <- rdrobust(dataset_lib$defw, dataset_lib$margin, 
+                 weights = if_else(dataset_lib$within_party == 1,0,1),
+                 covs = make_covariates(dataset_lib),
+                 bwselect = 'msetwo')
+low <- rdrobust(dataset_lib$defw, dataset_lib$margin, 
+                weights = if_else(dataset_lib$within_party == 1,1,0),
+                covs = make_covariates(dataset_lib),
+                bwselect = 'msetwo')
+
+2*(1-pnorm((high$coef[1] - low$coef[1]), mean = 0, sd = sqrt(high$se[1]^2 + low$se[1]^2)))
+
+
 # now, make the tables
 
 
