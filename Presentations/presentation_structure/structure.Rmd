@@ -1,0 +1,158 @@
+---
+title: "Structure Returns to Politics"
+author: "Bas Machielsen"
+date: "2/22/2022"
+output: 
+  beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Table of Contents
+
+\tableofcontents
+
+# Introduction
+
+## Introduction
+
+- Politicians support their self-interest in various ways
+- No clear explanation - institutional explanations difficult to verify
+- Me: Long term perspective - changing institutions
+- Method
+- Results: marginal returns
+- Results: explanation
+- Historical and theoretical relevance
+- Structure of rest of paper
+
+# Historical Background
+
+## Historical background
+
+- District System
+  - Basic tenets of pol. system
+  - Basic logic of elections (abs. majority, reelection, thresholds)
+  - District/representative mapping
+  - Development of electoral system (suffrage extension)
+
+- Political Landscape
+  - What were the precusors of parties? (Kiesverenigingen)
+  - From kiesverenigingen to parties (Main ideological currents)
+  - Role of newspaper recommendations
+
+- Compensation of politicians
+
+# Data Sources
+
+## Data Sources
+
+- Electoral Data
+  - Figures: two figures - geography of close elections, temporal distribution of candidates
+- Politician Data
+- Non-Politician Data
+- Personal Wealth
+- Other Variables
+
+
+# Methods
+
+## Dynamic Regression discontinuity
+
+- Explanation about the method to estimate the dynamic returns
+  - 1 paragraph how the data is used to estimate the returns
+  - Rest already written
+
+# Results
+
+## Descriptive Stats
+
+- Table: Covariate Balance, First attempt - first stint
+- Interpretation
+
+- General descriptive statistics table
+- Interpretation
+
+
+## 1. Dynamic returns to politics
+
+- Main result: show dynamic analysis
+- Interpretation
+  - Real numbers (present day equivalents)
+  - In-office rents: anecdotal evidence
+  - De Jong-affaire, Lintjesaffaire, Spoorweg van der Gaag
+  - [This still needs development]
+- Tables/figures: 
+  - 1 Figure with graphical result for 1st/2nd stint
+  - 2 Tables, 1 with the results for different tries
+  - 1 figure with the full dynamic results
+
+## 2. Party Effect
+
+- Explain method (using newspaper recs) in 1 paragraph
+- Main result: show party interaction effect
+- Interpretation
+  - Party curbs rents
+  - Principal-agent theory
+- Tables/figures: 1 table with interaction effects for party establishment
+
+## 3. Alternative Explanations
+
+- Explanation: Indirect benefits later & Selection (Career Paths)
+  - Explain method
+  - Show results
+  
+- Explanation: Suffrage shocks altered composition of politicians
+  - Explain method
+  - Show results
+    - Before/After Suffrage - DV Wealth
+    - Before/After Suffrage - DV Career Paths
+
+- Explanation: insider information, procurements (Bourveau & Coulomb 2020; Baltrunaite 2020)
+  - Argue for no constant marginal returns
+  
+- Tables/figures: 2 tables, table career paths, table careerpaths/wealth after suffrage
+
+# Conclusion
+
+## Conclusion
+
+- I find that politicians get wealthier because of political career. 
+- Only effect in the first period, consistent with a rent-seeking explanation
+- Political parties curbed this effect
+- Not consistent with other explanations:
+  - Human capital-based or selection (career paths)
+  - Changes of the electorate (suffrage extensions)
+  - Insider information (constant return curve)
+- Implications: 
+  - Political parties discipline politicians
+  - Without, politicians use their discretion to enrich themselves
+  - Strong suspicion in-office rents (anecdotal evidence)
+  
+
+
+# Appendix
+
+## Appendix: Robustness Checks (1)
+
+- Figure: Placebo test first rents
+
+- Table: Covariate balance for the 1st stint - all attempts
+- Table: Covariate balance for the 2nd stint
+
+- Figure: ATT dynamic estimation with flexible bandwidth and diff. covariates
+- Table: ATT dynamic estimation with flex. bandwidth and diff. covariates
+
+## Appendix: Robustness Checks (2)
+
+- Table: Estimates of interaction effect with flex. bandwidth and diff. covariates
+- Table: Estimates for rents within different treatment groups (comparing groups with diff. treatment status)
+
+- Table: Career Paths with flex. bandwidth and different covariates
+- Table: Career Paths Before/after party formation with flex. bandwidth and different covariates
+
+- Table: Before/After Suffrage extensions with flex. bandwidth and different covariates
+- Table: Career Paths before/after suffrage extensions, wealth before/after suffrage extensions with flex. bandwidth and different covariates
+
+
