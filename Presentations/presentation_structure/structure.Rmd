@@ -23,25 +23,26 @@ knitr::opts_chunk$set(echo = TRUE)
 - Me: Long term perspective - changing institutions
 - Method
 - Results: marginal returns
+  - Interpret estimates in terms of minister's sakaries
 - Results: explanation
 - Historical and theoretical relevance
+   - These two paragraphs in the conclusion
 - Structure of rest of paper
 
 # Historical Background
 
 ## Historical background
 
-- District System
+- The Dutch Political System (in the 19th century)
+  - Partijdemocratie in wording - From precursors of parties to political parties
   - Basic tenets of pol. system
   - Basic logic of elections (abs. majority, reelection, thresholds)
   - District/representative mapping
   - Development of electoral system (suffrage extension)
-
-- Political Landscape
-  - What were the precusors of parties? (Kiesverenigingen)
-  - From kiesverenigingen to parties (Main ideological currents)
-  - Role of newspaper recommendations
-
+ 
+- (Dit later)
+- From kiesverenigingen to parties (Main ideological currents) 
+- Role of newspaper recommendations
 - Compensation of politicians
 
 # Data Sources
