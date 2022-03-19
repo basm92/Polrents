@@ -17,7 +17,8 @@ covariates <- cbind(firstrents_firsttry$yoe,
                     firstrents_firsttry$birthplace_agri, 
                     firstrents_firsttry$birthplace_indus, 
                     firstrents_firsttry$lifespan,
-                    firstrents_firsttry$rec_soc)
+                    firstrents_firsttry$rec_soc,
+                    as.factor(firstrents_firsttry$suffrage_period))
 
 covariates2 <- cbind(firstrents_pooled$yoe, 
                      log(1+firstrents_pooled$birthplace_pop_1859), 
